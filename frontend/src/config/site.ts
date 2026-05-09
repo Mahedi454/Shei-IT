@@ -147,3 +147,128 @@ export const processSection = {
     },
   ],
 } as const;
+
+export const selectedWorkSection = {
+  title: "Selected Work",
+  highlight: "Work",
+  description:
+    "Here are some of the digital products we're proud to have built.",
+  items: [
+    {
+      title: "Restaurant Ordering Website",
+      tags: ["Website", "SEO", "Hosting"],
+      accent: "violet",
+      theme: "restaurant",
+    },
+    {
+      title: "Tutor Booking Platform",
+      tags: ["SaaS", "Booking", "Payment"],
+      accent: "blue",
+      theme: "tutor",
+    },
+    {
+      title: "Business Portfolio Website",
+      tags: ["Website", "Branding", "SEO"],
+      accent: "peach",
+      theme: "portfolio",
+    },
+  ],
+} as const;
+
+export const testimonialsSection = {
+  title: "What Our Clients Say",
+  highlight: "Clients Say",
+  description: "Real stories from businesses we've helped grow online.",
+  items: [
+    {
+      quote:
+        "shei-it built our website exactly how we imagined. The design, speed and SEO setup are excellent.",
+      name: "Rahed Ahmed",
+      role: "CEO, Digital Shop",
+      avatar: "RA",
+    },
+    {
+      quote:
+        "The mobile app they built for us is smooth, fast and our customers love it. Great communication and support.",
+      name: "Nusrat Jahan",
+      role: "Founder, TutorPro",
+      avatar: "NJ",
+    },
+    {
+      quote:
+        "Professional team with amazing support. They handled our website maintenance and SEO perfectly.",
+      name: "Mahbub Alam",
+      role: "Marketing Head, BizGrow",
+      avatar: "MA",
+    },
+    {
+      quote:
+        "From planning to deployment, everything was transparent and on time. We now get better leads consistently.",
+      name: "Sadia Karim",
+      role: "Director, FlowCraft",
+      avatar: "SK",
+    },
+  ],
+} as const;
+
+export const ctaSection = {
+  title: "Ready to Build Something Excellent?",
+  description:
+    "Tell us what you need. We'll help you turn it into a real digital product.",
+  primaryAction: {
+    label: "Start a Project",
+    href: "#",
+  },
+} as const;
+
+export const footerConfig = {
+  description:
+    "Excellent IT solutions for modern businesses. We build, launch and support your digital success.",
+  groups: [
+    {
+      title: "Services",
+      links: [
+        { label: "Website Development", href: "#" },
+        { label: "Mobile App Development", href: "#" },
+        { label: "Hosting & Cloud", href: "#" },
+        { label: "SEO & Marketing", href: "#" },
+        { label: "Cross Platform", href: "#" },
+        { label: "Maintenance & Support", href: "#" },
+      ],
+    },
+    {
+      title: "Company",
+      links: [
+        { label: "About Us", href: "#" },
+        { label: "Portfolio", href: "#" },
+        { label: "Pricing", href: "#" },
+        { label: "Blog", href: "#" },
+        { label: "Careers", href: "#" },
+      ],
+    },
+    {
+      title: "Support",
+      links: [
+        { label: "Contact Us", href: "#" },
+        { label: "FAQs", href: "#" },
+        { label: "Privacy Policy", href: "#" },
+        { label: "Terms of Service", href: "#" },
+      ],
+    },
+  ],
+  contact: [
+    { label: "hello@shei-it.com", href: "mailto:hello@shei-it.com", type: "email" },
+    { label: "+880 1234 567890", href: "tel:+8801234567890", type: "phone" },
+    { label: "Dhaka, Bangladesh", href: "#", type: "location" },
+  ],
+  socialLinks: [
+    {
+      label: "Facebook",
+      href: "https://www.facebook.com/profile.php?id=61589534485196",
+      type: "facebook",
+    },
+    { label: "Twitter", href: "#", type: "twitter" },
+    { label: "Instagram", href: "#", type: "instagram" },
+    { label: "LinkedIn", href: "#", type: "linkedin" },
+  ],
+} as const;
