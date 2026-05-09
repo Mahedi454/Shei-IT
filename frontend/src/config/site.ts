@@ -175,6 +175,52 @@ export const selectedWorkSection = {
   ],
 } as const;
 
+export const testimonialsSection = {
+  title: "What Our Clients Say",
+  highlight: "Clients Say",
+  description: "Real stories from businesses we've helped grow online.",
+  items: [
+    {
+      quote:
+        "shei-it built our website exactly how we imagined. The design, speed and SEO setup are excellent.",
+      name: "Rahed Ahmed",
+      role: "CEO, Digital Shop",
+      avatar: "RA",
+    },
+    {
+      quote:
+        "The mobile app they built for us is smooth, fast and our customers love it. Great communication and support.",
+      name: "Nusrat Jahan",
+      role: "Founder, TutorPro",
+      avatar: "NJ",
+    },
+    {
+      quote:
+        "Professional team with amazing support. They handled our website maintenance and SEO perfectly.",
+      name: "Mahbub Alam",
+      role: "Marketing Head, BizGrow",
+      avatar: "MA",
+    },
+    {
+      quote:
+        "From planning to deployment, everything was transparent and on time. We now get better leads consistently.",
+      name: "Sadia Karim",
+      role: "Director, FlowCraft",
+      avatar: "SK",
+    },
+  ],
+} as const;
+
+export const ctaSection = {
+  title: "Ready to Build Something Excellent?",
+  description:
+    "Tell us what you need. We'll help you turn it into a real digital product.",
+  primaryAction: {
+    label: "Start a Project",
+    href: "#",
+  },
+} as const;
+
 export const footerConfig = {
   description:
     "Excellent IT solutions for modern businesses. We build, launch and support your digital success.",

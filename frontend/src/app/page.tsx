@@ -1,7 +1,9 @@
+import { CtaSection } from "@/components/home/cta-section";
 import { HeroSection } from "@/components/home/hero-section";
 import { ProcessSection } from "@/components/home/process-section";
 import { SelectedWorkSection } from "@/components/home/selected-work-section";
 import { ServicesSection } from "@/components/home/services-section";
+import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { SiteHeader } from "@/components/layout/site-header";
 
 export default function Home() {
@@ -15,6 +17,8 @@ export default function Home() {
       <ServicesSection />
       <ProcessSection />
       <SelectedWorkSection />
+      <TestimonialsSection />
+      <CtaSection />
     </main>
   );
 }
