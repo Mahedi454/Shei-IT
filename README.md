@@ -2,18 +2,9 @@
 
 `shei-it` is a premium startup/agency website project for a digital services brand whose name means "Excellent IT" in Bengali.
 
-The repo is organized as a monorepo-style workspace with:
+This repository is Codex-only. Claude-specific files and `AGENTS.md` files should not be kept in the project.
 
-- `frontend/`: Next.js App Router + TypeScript + Tailwind CSS
-- `backend/`: Express.js + TypeScript
-
-## Project Status
-
-Current phase: foundation setup
-
-The goal of this phase is to establish a clean, scalable base before building full pages or business modules.
-
-## Planned Structure
+## Workspace
 
 ```txt
 shei-it/
@@ -22,20 +13,65 @@ shei-it/
   README.md
 ```
 
+- `frontend/`: Next.js App Router + TypeScript + Tailwind CSS
+- `backend/`: Express.js + TypeScript
+
+## Current Direction
+
+Current phase: foundation setup
+
+We are building the project in stages. The immediate goal is a clean, scalable base, not all pages and modules at once.
+
+## Frontend Stack
+
+- Next.js App Router
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- `next-themes`
+- `lucide-react`
+- `clsx`
+- `tailwind-merge`
+
+## Backend Stack
+
+- Express
+- TypeScript
+- CORS
+- `dotenv`
+- `helmet`
+- `morgan`
+
+## Backend Architecture Standard
+
+The backend should follow a proper industry-grade modular pattern from the start.
+
+- Organize code by feature/module
+- Keep `core`, `config`, `middlewares`, `routes`, and `utils` separated
+- Avoid a flat structure that becomes hard to scale
+- Each module should own its route, controller, service, and related logic
+- Shared helpers should stay outside feature modules
+
 Recommended backend structure:
 
 ```txt
 backend/
   src/
-    app.ts
-    server.ts
     config/
       env.ts
-    routes/
-      index.ts
+    core/
+      app.ts
+      server.ts
     middlewares/
       globalErrorHandler.ts
       notFound.ts
+    modules/
+      health/
+        health.controller.ts
+        health.route.ts
+        health.service.ts
+    routes/
+      index.ts
     utils/
       sendResponse.ts
   .env
@@ -63,100 +99,6 @@ frontend/
       home/
       services/
 ```
-
-## Initialization Plan
-
-### 1. Root Setup
-
-- Keep the current workspace as the project root.
-- Maintain two separate apps: `frontend` and `backend`.
-- Add a root `.gitignore` after app scaffolding if needed.
-
-### 2. Frontend Initialization
-
-Create the Next.js app inside `frontend/`:
-
-```bash
-npx create-next-app@latest frontend
-```
-
-Use these options:
-
-```txt
-TypeScript: Yes
-ESLint: Yes
-Tailwind CSS: Yes
-src directory: Yes
-App Router: Yes
-Turbopack: Yes
-Import alias: @/*
-```
-
-Then install the UI dependencies:
-
-```bash
-cd frontend
-npm install framer-motion lucide-react next-themes clsx tailwind-merge
-npm install -D prettier prettier-plugin-tailwindcss
-```
-
-### 3. Backend Initialization
-
-Initialize the Express TypeScript app:
-
-```bash
-cd backend
-npm init -y
-npm install express cors dotenv helmet morgan
-npm install -D typescript ts-node-dev @types/node @types/express @types/cors @types/morgan
-npx tsc --init
-```
-
-Update `backend/package.json` scripts to:
-
-```json
-{
-  "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js"
-  }
-}
-```
-
-Create `backend/.env`:
-
-```env
-PORT=5000
-NODE_ENV=development
-FRONTEND_URL=http://localhost:3000
-```
-
-## Foundation Scope
-
-The first build task should focus only on the shared foundation.
-
-### Frontend foundation
-
-- Theme provider with `next-themes`
-- CSS variable based light/dark theme
-- Navbar
-- Footer
-- Reusable `Container`
-- Reusable `Button`
-- Reusable `SectionHeader`
-- `ThemeToggle`
-- Site config and nav config
-- Home page placeholder built from the design system
-
-### Backend foundation
-
-- Express app bootstrap
-- `cors`, `helmet`, `morgan`, `express.json()`
-- `GET /api/health`
-- Global error handler
-- Not found middleware
-- Port from environment
 
 ## Theme Tokens
 
@@ -224,7 +166,7 @@ Use centralized CSS variables for all theme colors.
 - Rounded 2xl cards
 - Glassmorphism
 - Soft shadows
-- Lavender/purple accent system
+- Purple/lavender accent system
 - Spacious layout and modern typography
 - Dark mode should feel matte, minimal, and premium
 
@@ -238,17 +180,15 @@ Use centralized CSS variables for all theme colors.
 - Blog
 - Contact
 
-These should not all be built at once. The foundation comes first.
+## Codex Context
 
-## Codex Working Context
-
-Use the following prompt as the working context for future implementation:
+Use this as the working prompt for future implementation:
 
 ```txt
-We are building a startup/agency website named “shei-it”.
+We are building a startup/agency website named "shei-it".
 
 Brand meaning:
-“shei-it” means “Excellent IT” in Bengali.
+"shei-it" means "Excellent IT" in Bengali.
 
 Business:
 shei-it provides practical digital services:
@@ -281,6 +221,11 @@ Backend stack:
 - dotenv
 - helmet
 - morgan
+
+Backend architecture:
+- Use an industry-grade modular pattern
+- Organize backend code by feature/module
+- Keep shared config, middlewares, utils, and core bootstrap separated
 
 Design direction:
 Premium SaaS-style agency website.
@@ -327,52 +272,39 @@ Use centralized theme colors through CSS variables.
 Use next-themes with class-based dark mode.
 Use reusable data arrays for nav links, services, projects, blog posts, and footer links.
 Keep the code scalable and clean.
+Use Codex only for this project.
+Do not keep Claude-specific files or AGENTS.md in the repo.
 Do not add backend database yet.
 Backend should only expose a health route for now.
 ```
 
-## First Implementation Task
+## Immediate Build Scope
 
-```txt
-First task:
-Initialize the frontend and backend foundation.
+### Frontend foundation
 
-Frontend:
-- configure theme provider
-- add CSS variables for light and dark theme
-- create Navbar
-- create Footer
-- create Container
-- create Button
-- create SectionHeader
-- create ThemeToggle
-- create site config and nav config
-- create home page placeholder using the design system
+- Theme provider with `next-themes`
+- CSS variable based light/dark theme
+- Navbar
+- Footer
+- Reusable `Container`
+- Reusable `Button`
+- Reusable `SectionHeader`
+- `ThemeToggle`
+- Site config and nav config
+- Home page placeholder using the design system
 
-Backend:
-- create Express app
-- configure cors, helmet, morgan, json parser
-- create /api/health route
-- create global error handler
-- create not found middleware
-- run on PORT from env
+### Backend foundation
 
-Do not implement full pages yet.
-Focus on clean scalable foundation.
-```
-
-## Suggested Execution Order
-
-1. Scaffold `frontend/` with Next.js.
-2. Install frontend dependencies.
-3. Scaffold `backend/` with Node + TypeScript.
-4. Add backend source structure and environment config.
-5. Build the shared frontend design system.
-6. Add the backend health route and middleware chain.
-7. Verify both apps run locally.
+- Express app bootstrap
+- `cors`, `helmet`, `morgan`, `express.json()`
+- `GET /api/health`
+- Global error handler
+- Not found middleware
+- Port from environment
+- Modular feature-based backend structure
 
 ## Next Step
 
-After the scaffolding commands are run, the next Codex task should be:
+The next implementation step should be:
 
-`Initialize the frontend and backend foundation exactly as defined in this README.`
+`Refactor the current backend foundation into the modular structure above, then build the frontend design-system foundation.`
