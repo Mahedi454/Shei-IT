@@ -147,3 +147,55 @@ export const processSection = {
     },
   ],
 } as const;
+
+export const footerConfig = {
+  description:
+    "Excellent IT solutions for modern businesses. We build, launch and support your digital success.",
+  groups: [
+    {
+      title: "Services",
+      links: [
+        { label: "Website Development", href: "#" },
+        { label: "Mobile App Development", href: "#" },
+        { label: "Hosting & Cloud", href: "#" },
+        { label: "SEO & Marketing", href: "#" },
+        { label: "Cross Platform", href: "#" },
+        { label: "Maintenance & Support", href: "#" },
+      ],
+    },
+    {
+      title: "Company",
+      links: [
+        { label: "About Us", href: "#" },
+        { label: "Portfolio", href: "#" },
+        { label: "Pricing", href: "#" },
+        { label: "Blog", href: "#" },
+        { label: "Careers", href: "#" },
+      ],
+    },
+    {
+      title: "Support",
+      links: [
+        { label: "Contact Us", href: "#" },
+        { label: "FAQs", href: "#" },
+        { label: "Privacy Policy", href: "#" },
+        { label: "Terms of Service", href: "#" },
+      ],
+    },
+  ],
+  contact: [
+    { label: "hello@shei-it.com", href: "mailto:hello@shei-it.com", type: "email" },
+    { label: "+880 1234 567890", href: "tel:+8801234567890", type: "phone" },
+    { label: "Dhaka, Bangladesh", href: "#", type: "location" },
+  ],
+  socialLinks: [
+    {
+      label: "Facebook",
+      href: "https://www.facebook.com/profile.php?id=61589534485196",
+      type: "facebook",
+    },
+    { label: "Twitter", href: "#", type: "twitter" },
+    { label: "Instagram", href: "#", type: "instagram" },
+    { label: "LinkedIn", href: "#", type: "linkedin" },
+  ],
+} as const;
