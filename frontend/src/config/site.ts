@@ -4,12 +4,12 @@ export const siteConfig = {
   description:
     "From websites to mobile apps, hosting to SEO - we deliver practical digital solutions built for real business growth.",
   navLinks: [
-    { label: "Home", href: "#", isActive: true },
-    { label: "Services", href: "#", isActive: false },
-    { label: "Portfolio", href: "#", isActive: false },
-    { label: "About Us", href: "#", isActive: false },
-    { label: "Pricing", href: "#", isActive: false },
-    { label: "Contact", href: "#", isActive: false },
+    { label: "Home", href: "/" },
+    { label: "Services", href: "/#services" },
+    { label: "Portfolio", href: "/#portfolio" },
+    { label: "About Us", href: "/about" },
+    { label: "Pricing", href: "/#pricing" },
+    { label: "Contact", href: "/#contact" },
   ],
   stats: [
     {
