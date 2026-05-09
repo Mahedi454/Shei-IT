@@ -1,5 +1,6 @@
 import { HeroSection } from "@/components/home/hero-section";
 import { ProcessSection } from "@/components/home/process-section";
+import { SelectedWorkSection } from "@/components/home/selected-work-section";
 import { ServicesSection } from "@/components/home/services-section";
 import { SiteHeader } from "@/components/layout/site-header";
 
@@ -13,6 +14,7 @@ export default function Home() {
       </section>
       <ServicesSection />
       <ProcessSection />
+      <SelectedWorkSection />
     </main>
   );
 }

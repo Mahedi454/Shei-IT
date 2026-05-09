@@ -148,6 +148,33 @@ export const processSection = {
   ],
 } as const;
 
+export const selectedWorkSection = {
+  title: "Selected Work",
+  highlight: "Work",
+  description:
+    "Here are some of the digital products we're proud to have built.",
+  items: [
+    {
+      title: "Restaurant Ordering Website",
+      tags: ["Website", "SEO", "Hosting"],
+      accent: "violet",
+      theme: "restaurant",
+    },
+    {
+      title: "Tutor Booking Platform",
+      tags: ["SaaS", "Booking", "Payment"],
+      accent: "blue",
+      theme: "tutor",
+    },
+    {
+      title: "Business Portfolio Website",
+      tags: ["Website", "Branding", "SEO"],
+      accent: "peach",
+      theme: "portfolio",
+    },
+  ],
+} as const;
+
 export const footerConfig = {
   description:
     "Excellent IT solutions for modern businesses. We build, launch and support your digital success.",
