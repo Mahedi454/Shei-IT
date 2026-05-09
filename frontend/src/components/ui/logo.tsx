@@ -2,7 +2,6 @@ import Image from "next/image";
 
 import { logo } from "@/assets";
 import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
 
 type LogoProps = {
   className?: string;
@@ -20,19 +19,16 @@ export function Logo({
   priority = false,
 }: LogoProps) {
   return (
-    <span className={cn("flex items-center gap-3", className)}>
+    <span className={`flex items-center gap-3.5 ${className ?? ""}`}>
       <Image
         src={logo}
         alt={`${siteConfig.name} logo`}
         priority={priority}
-        className={cn("h-9 w-9 object-contain", iconClassName)}
+        className={`h-7 w-7 object-contain ${iconClassName ?? ""}`}
       />
       {showText ? (
         <span
-          className={cn(
-            "text-[15px] font-semibold tracking-tight text-[color:var(--foreground)]",
-            textClassName,
-          )}
+          className={`text-[20px] font-bold tracking-[-0.04em] text-[color:var(--foreground)] ${textClassName ?? ""}`}
         >
           {siteConfig.name}
         </span>

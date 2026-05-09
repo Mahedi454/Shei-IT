@@ -11,8 +11,8 @@ export function SiteHeader() {
         <a href="#" className="shrink-0">
           <Logo
             priority
-            iconClassName="h-10 w-10"
-            textClassName="text-[16px]"
+            iconClassName="h-12 w-12"
+            textClassName="text-[22px]"
           />
         </a>
 

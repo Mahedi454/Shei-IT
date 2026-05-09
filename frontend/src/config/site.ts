@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "shei-it",
+  name: "Shei IT",
   tagline: "Excellent IT. Exactly What You Need.",
   description:
     "From websites to mobile apps, hosting to SEO - we deliver practical digital solutions built for real business growth.",

@@ -17,38 +17,42 @@ export function ThemeToggle() {
   const isDark = mounted && theme === "dark";
 
   return (
-    <button
-      type="button"
-      aria-label="Toggle theme"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+    <div
       className={cn(
-        "relative inline-flex h-8 w-[66px] items-center rounded-full border border-white/20 bg-[color:var(--toggle-shell)] p-1 shadow-[var(--shadow-soft)] backdrop-blur-2xl transition-colors dark:border-white/14",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+        "inline-flex items-center gap-1 rounded-full border border-white/20 bg-[color:var(--toggle-shell)] p-1 shadow-[var(--shadow-soft)] backdrop-blur-2xl dark:border-white/14",
       )}
+      role="group"
+      aria-label="Theme switcher"
     >
-      <span className="sr-only">Toggle theme</span>
-      <span
+      <button
+        type="button"
+        aria-label="Activate light theme"
+        aria-pressed={!isDark}
+        onClick={() => setTheme("light")}
         className={cn(
-          "absolute left-1 top-1 h-6 w-6 rounded-full border border-white/12 bg-[color:var(--toggle-thumb)] shadow-[0_8px_20px_rgba(15,23,42,0.16)] transition-transform duration-300 dark:shadow-[0_10px_24px_rgba(0,0,0,0.4)]",
-          isDark ? "translate-x-[28px]" : "translate-x-0",
+          "inline-flex h-8 w-8 items-center justify-center rounded-full transition-all",
+          !isDark
+            ? "bg-[color:var(--toggle-thumb)] text-[color:var(--foreground)] shadow-[0_8px_20px_rgba(15,23,42,0.14)]"
+            : "text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)]",
         )}
-      />
-      <span className="relative z-10 flex w-full items-center justify-between px-2.5 text-[color:var(--foreground)]">
-        <SunMedium
-          className={cn(
-            "h-3 w-3 transition-opacity",
-            isDark ? "opacity-55" : "opacity-100",
-          )}
-          strokeWidth={2}
-        />
-        <MoonStar
-          className={cn(
-            "h-3 w-3 transition-opacity",
-            isDark ? "opacity-100" : "opacity-55",
-          )}
-          strokeWidth={2}
-        />
-      </span>
-    </button>
+      >
+        <SunMedium className="h-3.5 w-3.5" strokeWidth={2} />
+      </button>
+
+      <button
+        type="button"
+        aria-label="Activate dark theme"
+        aria-pressed={isDark}
+        onClick={() => setTheme("dark")}
+        className={cn(
+          "inline-flex h-8 w-8 items-center justify-center rounded-full transition-all",
+          isDark
+            ? "bg-[color:var(--toggle-thumb)] text-[color:var(--foreground)] shadow-[0_8px_20px_rgba(0,0,0,0.28)]"
+            : "text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)]",
+        )}
+      >
+        <MoonStar className="h-3.5 w-3.5" strokeWidth={2} />
+      </button>
+    </div>
   );
 }

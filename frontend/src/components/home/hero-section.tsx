@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import {
   ArrowRight,
@@ -7,6 +9,8 @@ import {
   Headset,
   Sparkles,
 } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 import { homepageBannerDark, homepageBannerLight } from "@/assets";
 import { siteConfig } from "@/config/site";
@@ -20,6 +24,13 @@ const avatarColors = [
 ] as const;
 
 export function HeroSection() {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const statIcons = {
     briefcase: BriefcaseBusiness,
     badge: BadgeCheck,
@@ -27,12 +38,14 @@ export function HeroSection() {
     spark: Headset,
   } as const;
 
+  const bannerImage = mounted && theme === "dark"
+    ? homepageBannerDark
+    : homepageBannerLight;
+
   return (
     <section className="relative pb-18 pt-2">
       <div className="w-full">
         <div className="relative overflow-hidden pb-7 pt-8 lg:pb-10 lg:pt-10">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(139,124,255,0.12),transparent_22%),radial-gradient(circle_at_74%_28%,rgba(159,220,255,0.24),transparent_24%),radial-gradient(circle_at_50%_100%,rgba(111,231,200,0.08),transparent_22%)] dark:bg-[radial-gradient(circle_at_18%_20%,rgba(139,124,255,0.16),transparent_22%),radial-gradient(circle_at_74%_28%,rgba(93,174,255,0.12),transparent_24%),radial-gradient(circle_at_50%_100%,rgba(111,231,200,0.04),transparent_22%)]" />
-
           <div className="relative mx-auto grid w-11/12 max-w-[1440px] items-center gap-10 lg:grid-cols-[minmax(0,0.98fr)_minmax(620px,1.02fr)]">
             <div className="max-w-[38rem] pt-2 lg:pt-6">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-[color:var(--hero-pill)] px-4 py-2 text-[12px] font-medium text-[color:var(--muted-foreground)] shadow-[0_8px_24px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:border-white/8">
@@ -100,16 +113,10 @@ export function HeroSection() {
               <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--purple-glow)] blur-[96px]" />
               <div className="relative w-full max-w-[760px]">
                 <Image
-                  src={homepageBannerLight}
+                  src={bannerImage}
                   alt="shei-it service banner"
                   priority
-                  className="relative z-10 block h-auto w-full dark:hidden"
-                />
-                <Image
-                  src={homepageBannerDark}
-                  alt="shei-it service banner dark"
-                  priority
-                  className="relative z-10 hidden h-auto w-full dark:block"
+                  className="relative z-10 h-auto w-full"
                 />
               </div>
             </div>
