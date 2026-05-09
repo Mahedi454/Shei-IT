@@ -6,8 +6,8 @@ import { ThemeToggle } from "../ui/theme-toggle";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 bg-transparent">
-      <div className="mx-auto flex w-11/12 max-w-[1440px] items-center justify-between gap-4 py-4 backdrop-blur-[1.25px] lg:py-4.5">
+    <header className="sticky top-0 z-50 bg-[rgba(255,255,255,0.15)] dark:bg-[rgba(0,0,0,0.15)]">
+      <div className="mx-auto flex w-11/12 max-w-[1440px] items-center justify-between gap-4 py-3.5 backdrop-blur-[1.25px] lg:py-4">
         <a href="#" className="shrink-0">
           <Logo
             priority
