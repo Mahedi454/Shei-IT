@@ -7,7 +7,7 @@ import { ThemeToggle } from "../ui/theme-toggle";
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 bg-transparent">
-      <div className="mx-auto flex w-11/12 max-w-[1440px] items-center justify-between gap-4 py-4 lg:py-4.5">
+      <div className="mx-auto flex w-11/12 max-w-[1440px] items-center justify-between gap-4 py-4 backdrop-blur-[1.25px] lg:py-4.5">
         <a href="#" className="shrink-0">
           <Logo
             priority
@@ -16,7 +16,7 @@ export function SiteHeader() {
           />
         </a>
 
-        <nav className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/40 p-0.5 shadow-[0_10px_24px_rgba(15,23,42,0.04)] backdrop-blur-2xl dark:border-white/8 dark:bg-white/[0.03] md:flex">
+        <nav className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/40 p-0.5 shadow-[0_10px_24px_rgba(15,23,42,0.04)] backdrop-blur-[50px] dark:border-white/8 dark:bg-white/[0.03] md:flex">
           {siteConfig.navLinks.map((link) => (
             <a
               key={link.label}
