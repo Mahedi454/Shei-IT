@@ -5,10 +5,10 @@ export const siteConfig = {
     "From websites to mobile apps, hosting to SEO - we deliver practical digital solutions built for real business growth.",
   navLinks: [
     { label: "Home", href: "/" },
-    { label: "Services", href: "/#services" },
+    { label: "Services", href: "/services" },
     { label: "Portfolio", href: "/#portfolio" },
     { label: "About Us", href: "/about" },
-    { label: "Pricing", href: "/#pricing" },
+    { label: "Pricing", href: "/pricing" },
     { label: "Contact", href: "/#contact" },
   ],
   stats: [
