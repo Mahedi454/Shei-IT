@@ -13,7 +13,7 @@ export default function PortfolioPage() {
       <PortfolioHeroSection />
 
       <section className="relative pb-20">
-        <div className="mx-auto w-11/12">
+        <div className="mx-auto w-11/12 max-w-[1440px]">
           <div className="mb-7 max-w-2xl">
             <h2 className="text-[2rem] font-semibold tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.4rem]">
               Featured{" "}
