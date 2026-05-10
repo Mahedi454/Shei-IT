@@ -41,7 +41,7 @@ export function AboutStorySection() {
     : ourStoryBannerLight;
 
   return (
-    <section className="relative pb-28 lg:pb-32">
+    <section className="relative pb-16 lg:pb-20">
       <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="grid gap-12 lg:grid-cols-[1.02fr_0.98fr] items-center">
           <div className="relative pb-10 pl-6 sm:pb-12 sm:pl-8">

@@ -125,7 +125,7 @@ function AvatarIllustration({
 
 export function AboutImpactTeamSection() {
   return (
-    <section className="relative pb-28 lg:pb-32">
+    <section className="relative pb-16 lg:pb-20">
       <div className="mx-auto grid w-11/12 max-w-[1440px] gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
         <div>
           <p className="text-[13px] font-semibold uppercase tracking-[0.26em] text-[color:var(--primary)]">

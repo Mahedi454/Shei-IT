@@ -29,7 +29,7 @@ const approachSteps = [
 
 export function AboutApproachSection() {
   return (
-    <section className="relative pb-28 lg:pb-32">
+    <section className="relative pb-16 lg:pb-20">
       <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] items-start">
           <div className="max-w-[36rem]">
