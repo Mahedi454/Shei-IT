@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Compass, Eye, ShieldCheck, Sparkles } from "lucide-react";
+import { Compass, Eye, ShieldCheck } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -41,7 +41,7 @@ export function AboutStorySection() {
     : ourStoryBannerLight;
 
   return (
-    <section className="relative pb-28 lg:pb-32">
+    <section className="relative pb-16 lg:pb-20">
       <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="grid gap-12 lg:grid-cols-[1.02fr_0.98fr] items-center">
           <div className="relative pb-10 pl-6 sm:pb-12 sm:pl-8">
@@ -54,7 +54,7 @@ export function AboutStorySection() {
               />
             </div>
 
-            <div className="absolute bottom-0 left-0 z-20 rounded-[1.8rem] border border-white/80 bg-white px-7 py-6 text-center shadow-[0_24px_60px_rgba(108,99,255,0.14)] backdrop-blur-2xl">
+            <div className="absolute bottom-0 left-0 z-20 rounded-[1.8rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-7 py-6 text-center shadow-[0_24px_60px_rgba(108,99,255,0.14)] backdrop-blur-2xl dark:shadow-[var(--shadow-soft)]">
               <p className="text-[2rem] font-semibold text-[color:var(--primary)]">5+</p>
               <p className="text-[12px] uppercase tracking-[0.26em] text-[color:var(--muted-foreground)]">Years Experience</p>
             </div>

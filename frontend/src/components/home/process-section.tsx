@@ -46,13 +46,13 @@ export function ProcessSection() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-8 xl:grid-cols-5">
+        <div className="mt-14 grid items-stretch gap-8 xl:grid-cols-5">
           {processSection.steps.map((step, index) => {
             const Icon = iconMap[step.icon];
             const isLast = index === processSection.steps.length - 1;
 
             return (
-              <div key={step.title} className="relative">
+              <div key={step.title} className="relative h-full">
                 {!isLast ? (
                   <div className="pointer-events-none absolute left-[calc(100%-0.4rem)] top-8 hidden w-[calc(100%+0.8rem)] items-center xl:flex">
                     <div className="h-0 border-t-2 border-dashed border-[color:var(--primary-soft)]/60 flex-[1_1_0%]" />
@@ -63,7 +63,7 @@ export function ProcessSection() {
                   </div>
                 ) : null}
 
-                <article className="relative rounded-[2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-7 pb-8 pt-14 text-center shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
+                <article className="relative flex h-full flex-col rounded-[2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-7 pb-8 pt-14 text-center shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
                   <span
                     className={`absolute left-1/2 top-0 inline-flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 shadow-[0_18px_40px_rgba(15,23,42,0.08)] ${iconShellMap[step.accent]}`}
                   >

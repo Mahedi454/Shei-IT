@@ -20,7 +20,7 @@ export function AboutHero() {
     : aboutpageBannerLight;
 
   return (
-    <section className="relative overflow-hidden py-20 lg:py-24">
+    <section className="relative overflow-hidden pb-14 pt-20 lg:pb-18 lg:pt-24">
       <div className="relative mx-auto grid w-11/12 max-w-[1440px] items-center gap-12 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="max-w-[36rem]">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-[color:var(--hero-pill)] px-4 py-2 text-[12px] font-medium uppercase tracking-[0.25em] text-[color:var(--muted-foreground)] shadow-[0_10px_30px_rgba(15,23,42,0.08)] dark:border-white/10">
@@ -30,7 +30,7 @@ export function AboutHero() {
 
           <div className="mt-8 space-y-6">
             <h1 className="text-[3rem] font-semibold leading-[0.95] tracking-[-0.07em] text-[color:var(--foreground)] sm:text-[4rem] lg:text-[5rem]">
-              Excellent IT,
+              SHEI IT,
               <span className="block text-[color:var(--primary)]">Built Around Your Needs</span>
             </h1>
             <p className="max-w-[34rem] text-[16px] leading-8 text-[color:var(--muted-foreground)] sm:text-[17px]">

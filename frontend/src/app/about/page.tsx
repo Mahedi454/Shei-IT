@@ -1,6 +1,8 @@
 import { AboutHero } from "@/components/about/about-hero";
 import { AboutStorySection } from "@/components/about/about-story";
 import { AboutApproachSection } from "@/components/about/about-approach";
+import { AboutCtaSection } from "@/components/about/about-cta";
+import { AboutImpactTeamSection } from "@/components/about/about-impact-team";
 import { SiteHeader } from "@/components/layout/site-header";
 
 export default function AboutPage() {
@@ -10,6 +12,8 @@ export default function AboutPage() {
       <AboutHero />
       <AboutStorySection />
       <AboutApproachSection />
+      <AboutImpactTeamSection />
+      <AboutCtaSection />
     </main>
   );
 }

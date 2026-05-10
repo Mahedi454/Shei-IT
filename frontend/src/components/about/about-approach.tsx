@@ -29,7 +29,7 @@ const approachSteps = [
 
 export function AboutApproachSection() {
   return (
-    <section className="relative pb-28 lg:pb-32">
+    <section className="relative pb-16 lg:pb-20">
       <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] items-start">
           <div className="max-w-[36rem]">
@@ -44,18 +44,18 @@ export function AboutApproachSection() {
             </p>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid items-stretch gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {approachSteps.map((step, index) => {
               const Icon = step.icon;
               const isLast = index === approachSteps.length - 1;
 
               return (
-                <div key={step.title} className="relative">
+                <div key={step.title} className="relative h-full">
                   {!isLast ? (
                     <div className="pointer-events-none absolute right-[-2rem] top-1/2 hidden h-0.5 w-[88px] -translate-y-1/2 bg-[color:var(--primary-soft)] xl:block" />
                   ) : null}
 
-                  <article className="rounded-[2rem] border border-[color:var(--stat-border)] bg-transparent p-6 shadow-[0_24px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:bg-transparent dark:shadow-none">
+                  <article className="flex h-full flex-col rounded-[2rem] border border-[color:var(--stat-border)] bg-transparent p-6 shadow-[0_24px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:bg-transparent dark:shadow-none">
                     <span className={`inline-flex h-14 w-14 items-center justify-center rounded-[1.4rem] ${step.accent}`}>
                       <Icon className="h-6 w-6" strokeWidth={2.1} />
                     </span>
