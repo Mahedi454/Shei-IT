@@ -47,14 +47,14 @@ export function PricingHero() {
 
           <div className="mt-9 flex flex-wrap items-center gap-5">
             <a
-              href="/#contact"
+              href="/contact"
               className="inline-flex items-center justify-center gap-3 rounded-[0.75rem] bg-[color:var(--cta-dark)] px-6 py-3.5 text-[14px] font-semibold text-white shadow-[0_20px_40px_rgba(15,23,42,0.2)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.36)]"
             >
               Start Your Project
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
-              href="/#contact"
+              href="/contact"
               className="inline-flex items-center justify-center gap-3 rounded-[0.75rem] border border-[color:var(--button-border)] bg-[color:var(--button-secondary)] px-6 py-3.5 text-[14px] font-semibold text-[color:var(--foreground)] shadow-[0_16px_32px_rgba(15,23,42,0.06)] dark:shadow-none"
             >
               Contact Us

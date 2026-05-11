@@ -53,7 +53,7 @@ export function ServicesHero() {
 
           <div className="mt-10 flex flex-wrap items-center gap-5">
             <a
-              href="/#contact"
+              href="/contact"
               className="inline-flex items-center justify-center gap-3 rounded-[0.9rem] bg-[color:var(--cta-dark)] px-7 py-4 text-[15px] font-semibold text-white shadow-[0_20px_40px_rgba(15,23,42,0.2)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.36)]"
             >
               Discuss Your Project

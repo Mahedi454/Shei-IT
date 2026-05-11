@@ -5,11 +5,11 @@ export const siteConfig = {
     "From websites to mobile apps, hosting to SEO - we deliver practical digital solutions built for real business growth.",
   navLinks: [
     { label: "Home", href: "/" },
-    { label: "Services", href: "/#services" },
-    { label: "Portfolio", href: "/#portfolio" },
+    { label: "Services", href: "/services" },
+    { label: "Portfolio", href: "/portfolio" },
     { label: "About Us", href: "/about" },
     { label: "Pricing", href: "/pricing" },
-    { label: "Contact", href: "/#contact" },
+    { label: "Contact", href: "/contact" },
   ],
   stats: [
     {
@@ -217,7 +217,7 @@ export const ctaSection = {
     "Tell us what you need. We'll help you turn it into a real digital product.",
   primaryAction: {
     label: "Start a Project",
-    href: "#",
+    href: "/contact",
   },
 } as const;
 
@@ -332,7 +332,7 @@ export const footerConfig = {
     {
       title: "Support",
       links: [
-        { label: "Contact Us", href: "#" },
+        { label: "Contact Us", href: "/contact" },
         { label: "FAQs", href: "#" },
         { label: "Privacy Policy", href: "#" },
         { label: "Terms of Service", href: "#" },
@@ -340,8 +340,8 @@ export const footerConfig = {
     },
   ],
   contact: [
-    { label: "hello@shei-it.com", href: "mailto:hello@shei-it.com", type: "email" },
-    { label: "+880 1234 567890", href: "tel:+8801234567890", type: "phone" },
+    { label: "sheiitofficial@gmail.com", href: "mailto:sheiitofficial@gmail.com", type: "email" },
+    { label: "+880 1768 857058", href: "tel:+8801768857058", type: "phone" },
     { label: "Dhaka, Bangladesh", href: "#", type: "location" },
   ],
   socialLinks: [
