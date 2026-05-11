@@ -7,7 +7,7 @@ import { ctaSection } from "@/config/site";
 export function CtaSection() {
   return (
     <section className="relative pb-24 pt-10">
-      <div className="mx-auto w-11/12">
+      <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="relative overflow-hidden rounded-[2rem] border border-[color:var(--stat-border)] bg-[linear-gradient(120deg,#6c63ff_0%,#796dff_35%,#6f78ff_70%,#6d99ff_100%)] px-8 py-10 text-white shadow-[0_24px_60px_rgba(108,99,255,0.22)] sm:px-10 lg:px-14 lg:py-12">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(255,255,255,0.32),transparent_26%),radial-gradient(circle_at_80%_80%,rgba(255,255,255,0.12),transparent_34%)]" />
           <div className="pointer-events-none absolute -left-4 top-6 h-3 w-3 rounded-full bg-[#ffcfab]/90" />

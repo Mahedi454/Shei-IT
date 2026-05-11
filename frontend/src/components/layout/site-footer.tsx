@@ -52,7 +52,7 @@ export function SiteFooter() {
   return (
     <footer className="relative pb-12 pt-10">
       <div className="w-full border-t border-[color:var(--stat-border)]">
-        <div className="mx-auto w-11/12 px-8 py-12 sm:px-10 lg:px-12">
+        <div className="mx-auto w-11/12 max-w-[1440px] px-8 py-12 sm:px-10 lg:px-12">
           <div className="grid gap-10 lg:grid-cols-[1.4fr_3fr_auto]">
             <div className="max-w-sm">
               <a href="#" className="inline-flex">
@@ -141,7 +141,7 @@ export function SiteFooter() {
       </div>
 
       <div className="w-full border-t border-[color:var(--stat-border)]">
-        <div className="mx-auto w-11/12 px-8 pt-6 text-center text-[14px] text-[color:var(--muted-foreground)] sm:px-10 lg:px-12">
+        <div className="mx-auto w-11/12 max-w-[1440px] px-8 pt-6 text-center text-[14px] text-[color:var(--muted-foreground)] sm:px-10 lg:px-12">
           © {year} Shei IT. All rights reserved.
         </div>
       </div>

@@ -123,7 +123,7 @@ function WorkPreview({ theme }: { theme: "restaurant" | "tutor" | "portfolio" })
 export function SelectedWorkSection() {
   return (
     <section className="relative py-24">
-      <div className="mx-auto w-11/12">
+      <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
             <h2 className="text-[2.2rem] font-semibold tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.8rem]">

@@ -5,7 +5,7 @@ export const siteConfig = {
     "From websites to mobile apps, hosting to SEO - we deliver practical digital solutions built for real business growth.",
   navLinks: [
     { label: "Home", href: "/" },
-    { label: "Services", href: "/services" },
+    { label: "Services", href: "/#services" },
     { label: "Portfolio", href: "/#portfolio" },
     { label: "About Us", href: "/about" },
     { label: "Pricing", href: "/pricing" },
@@ -219,6 +219,89 @@ export const ctaSection = {
     label: "Start a Project",
     href: "#",
   },
+} as const;
+
+export const portfolioSection = {
+  badge: "Our Work",
+  title: "Digital Products Designed to Perform",
+  highlight: "Perform",
+  projectsTitle: "Featured Projects",
+  projectsDescription:
+    "A selection of practical products we designed and shipped for measurable growth.",
+  description:
+    "Explore websites, apps, dashboards and digital systems we build to help businesses grow.",
+  projects: [
+    {
+      title: "Restaurant Ordering Website",
+      categories: ["Website", "SEO", "Hosting"],
+      image:
+        "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=80",
+      metric: "+42%",
+      metricLabel: "More Orders",
+    },
+    {
+      title: "Tutor Booking Platform",
+      categories: ["SaaS", "Booking", "Payment"],
+      image:
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+      metric: "Complete",
+      metricLabel: "Workflow",
+    },
+    {
+      title: "Business Portfolio Website",
+      categories: ["Website", "Branding", "SEO"],
+      image:
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+      metric: "Fast &",
+      metricLabel: "SEO Ready",
+    },
+    {
+      title: "E-commerce Store",
+      categories: ["E-commerce", "Payment", "SEO"],
+      image:
+        "https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=1200&q=80",
+      metric: "+35%",
+      metricLabel: "Sales Growth",
+    },
+    {
+      title: "Analytics Dashboard",
+      categories: ["Dashboard", "Analytics", "Charts"],
+      image:
+        "https://images.unsplash.com/photo-1551281044-8b27d3c3d4a4?auto=format&fit=crop&w=1200&q=80",
+      metric: "Real-time",
+      metricLabel: "Data",
+    },
+    {
+      title: "Fitness Tracking App",
+      categories: ["Mobile App", "UI/UX", "API"],
+      image:
+        "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80",
+      metric: "10k+",
+      metricLabel: "Downloads",
+    },
+  ],
+  results: [
+    {
+      value: "120+",
+      label: "Projects Completed",
+      icon: "tools",
+    },
+    {
+      value: "98%",
+      label: "Client Satisfaction",
+      icon: "sparkles",
+    },
+    {
+      value: "3M+",
+      label: "Users Impacted",
+      icon: "users",
+    },
+    {
+      value: "40%",
+      label: "Avg. Growth Increase",
+      icon: "trending",
+    },
+  ],
 } as const;
 
 export const footerConfig = {
