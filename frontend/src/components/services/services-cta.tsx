@@ -28,7 +28,7 @@ export function ServicesCtaSection() {
             </div>
 
             <a
-              href="/#contact"
+              href="/contact"
               className="inline-flex shrink-0 items-center justify-center gap-3 rounded-[0.95rem] bg-white px-8 py-4 text-[15px] font-semibold text-[color:var(--primary)] shadow-[0_18px_40px_rgba(15,23,42,0.16)] md:mr-16 lg:mr-24"
             >
               Get Free Consultation

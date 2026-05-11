@@ -223,7 +223,7 @@ export function PricingPlansSection() {
                 </ul>
 
                 <a
-                  href="/#contact"
+                  href="/contact"
                   className={`mt-auto inline-flex items-center justify-center rounded-[0.9rem] px-7 py-4 text-[15px] font-semibold ${
                     plan.featured
                       ? "bg-[image:var(--gradient-primary)] text-white shadow-[0_18px_40px_rgba(108,99,255,0.22)]"

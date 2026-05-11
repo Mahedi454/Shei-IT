@@ -47,7 +47,7 @@ export function AboutHero() {
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
-              href="#contact"
+              href="/contact"
               className="inline-flex items-center justify-center gap-3 rounded-full border border-[color:var(--button-border)] bg-[color:var(--button-secondary)] px-7 py-4 text-[15px] font-semibold text-[color:var(--foreground)] shadow-[0_16px_32px_rgba(15,23,42,0.06)]"
             >
               Let&apos;s Work Together
