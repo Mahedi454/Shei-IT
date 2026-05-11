@@ -1,11 +1,16 @@
+"use client";
+
 import { Briefcase, Check, Gem, Send, ShieldCheck } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+
+type BillingCycle = "monthly" | "yearly";
 
 const plans = [
   {
     name: "Starter",
     description: "Perfect for small projects and startups",
-    price: "$49",
-    suffix: "/month",
+    monthlyPrice: 49,
     icon: Send,
     accent:
       "bg-[linear-gradient(180deg,rgba(139,124,255,0.18),rgba(139,124,255,0.08))] text-[color:var(--primary)]",
@@ -22,8 +27,7 @@ const plans = [
   {
     name: "Business",
     description: "Ideal for growing businesses",
-    price: "$99",
-    suffix: "/month",
+    monthlyPrice: 99,
     icon: ShieldCheck,
     accent:
       "bg-[linear-gradient(180deg,rgba(93,174,255,0.18),rgba(93,174,255,0.08))] text-[color:var(--blue)]",
@@ -41,8 +45,7 @@ const plans = [
   {
     name: "Professional",
     description: "For advanced websites and systems",
-    price: "$199",
-    suffix: "/month",
+    monthlyPrice: 199,
     icon: Briefcase,
     accent:
       "bg-[linear-gradient(180deg,rgba(111,231,200,0.2),rgba(111,231,200,0.08))] text-[color:var(--mint)]",
@@ -60,8 +63,7 @@ const plans = [
   {
     name: "Enterprise",
     description: "Custom solutions for large businesses",
-    price: "Custom",
-    suffix: "",
+    monthlyPrice: null,
     icon: Gem,
     accent:
       "bg-[linear-gradient(180deg,rgba(255,159,90,0.18),rgba(255,159,90,0.08))] text-[color:var(--orange)]",
@@ -78,22 +80,88 @@ const plans = [
   },
 ] as const;
 
+const yearlyDiscount = 0.15;
+
+function getPlanPrice(
+  monthlyPrice: number | null,
+  billingCycle: BillingCycle,
+) {
+  if (monthlyPrice === null) {
+    return {
+      price: "Custom",
+      suffix: "",
+    };
+  }
+
+  if (billingCycle === "yearly") {
+    return {
+      price: `$${Math.round(monthlyPrice * 12 * (1 - yearlyDiscount)).toLocaleString()}`,
+      suffix: "/year",
+    };
+  }
+
+  return {
+    price: `$${monthlyPrice}`,
+    suffix: "/month",
+  };
+}
+
 export function PricingPlansSection() {
+  const [billingCycle, setBillingCycle] = useState<BillingCycle>("monthly");
+
   return (
     <section className="relative pb-24 lg:pb-28">
       <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="mx-auto flex w-fit rounded-[1.1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-1 shadow-[0_16px_44px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:shadow-none">
-          <button className="rounded-[0.85rem] bg-[color:var(--card-solid)] px-9 py-3 text-[14px] font-semibold text-[color:var(--foreground)] shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
-            Monthly
+          <button
+            type="button"
+            aria-pressed={billingCycle === "monthly"}
+            onClick={() => setBillingCycle("monthly")}
+            className={`relative rounded-[0.85rem] px-9 py-3 text-[14px] font-semibold transition-colors ${
+              billingCycle === "monthly"
+                ? "text-[color:var(--foreground)]"
+                : "text-[color:var(--muted-foreground)]"
+            }`}
+          >
+            {billingCycle === "monthly" ? (
+              <motion.span
+                layoutId="billing-cycle-pill"
+                className="absolute inset-0 rounded-[0.85rem] bg-[color:var(--card-solid)] shadow-[0_10px_24px_rgba(15,23,42,0.06)]"
+                transition={{ type: "spring", stiffness: 420, damping: 34 }}
+              />
+            ) : null}
+            <span className="relative z-10">Monthly</span>
           </button>
-          <button className="rounded-[0.85rem] px-9 py-3 text-[14px] font-semibold text-[color:var(--muted-foreground)]">
-            Yearly <span className="text-[color:var(--mint)]">(Save 15%)</span>
+          <button
+            type="button"
+            aria-pressed={billingCycle === "yearly"}
+            onClick={() => setBillingCycle("yearly")}
+            className={`relative rounded-[0.85rem] px-9 py-3 text-[14px] font-semibold transition-colors ${
+              billingCycle === "yearly"
+                ? "text-[color:var(--foreground)]"
+                : "text-[color:var(--muted-foreground)]"
+            }`}
+          >
+            {billingCycle === "yearly" ? (
+              <motion.span
+                layoutId="billing-cycle-pill"
+                className="absolute inset-0 rounded-[0.85rem] bg-[color:var(--card-solid)] shadow-[0_10px_24px_rgba(15,23,42,0.06)]"
+                transition={{ type: "spring", stiffness: 420, damping: 34 }}
+              />
+            ) : null}
+            <span className="relative z-10">
+              Yearly <span className="text-[color:var(--mint)]">(Save 15%)</span>
+            </span>
           </button>
         </div>
 
         <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {plans.map((plan) => {
             const Icon = plan.icon;
+            const { price, suffix } = getPlanPrice(
+              plan.monthlyPrice,
+              billingCycle,
+            );
 
             return (
               <article
@@ -119,16 +187,25 @@ export function PricingPlansSection() {
                   {plan.description}
                 </p>
 
-                <div className="mt-7 flex items-end gap-2">
-                  <span className="text-[2.55rem] font-semibold leading-none tracking-[-0.06em] text-[color:var(--foreground)]">
-                    {plan.price}
-                  </span>
-                  {plan.suffix ? (
-                    <span className="pb-1 text-[14px] font-medium text-[color:var(--muted-foreground)]">
-                      {plan.suffix}
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={`${plan.name}-${billingCycle}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.22, ease: "easeOut" }}
+                    className="mt-7 flex items-end gap-2"
+                  >
+                    <span className="text-[2.55rem] font-semibold leading-none tracking-[-0.06em] text-[color:var(--foreground)]">
+                      {price}
                     </span>
-                  ) : null}
-                </div>
+                    {suffix ? (
+                      <span className="pb-1 text-[14px] font-medium text-[color:var(--muted-foreground)]">
+                        {suffix}
+                      </span>
+                    ) : null}
+                  </motion.div>
+                </AnimatePresence>
 
                 <ul className="mt-8 space-y-4">
                   {plan.features.map((feature) => (

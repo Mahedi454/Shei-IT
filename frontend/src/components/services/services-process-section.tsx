@@ -142,23 +142,35 @@ export function ServicesProcessSection() {
               together with our clients. Your success is always our priority.
             </p>
 
-            <div className="mt-7 flex items-center gap-5">
+            <div className="mt-7 flex items-center gap-1">
               <span
                 aria-label="Mahedi Hasan signature"
-                className="block h-16 w-40 bg-no-repeat brightness-0 contrast-200 dark:!hidden"
+                role="img"
+                className="block h-18 w-30 bg-[color:var(--foreground)] dark:hidden"
                 style={{
-                  backgroundImage: `url(${signMahediLight.src})`,
-                  backgroundPosition: "52% 50%",
-                  backgroundSize: "122% auto",
+                  WebkitMaskImage: `url(${signMahediLight.src})`,
+                  maskImage: `url(${signMahediLight.src})`,
+                  WebkitMaskPosition: "left center",
+                  maskPosition: "left center",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskSize: "contain",
+                  maskSize: "contain",
                 }}
               />
               <span
                 aria-label="Mahedi Hasan signature"
-                className="!hidden h-16 w-40 bg-no-repeat dark:!block"
+                role="img"
+                className="hidden h-18 w-30 bg-[color:var(--foreground)] dark:block"
                 style={{
-                  backgroundImage: `url(${signMahediDark.src})`,
-                  backgroundPosition: "52% 50%",
-                  backgroundSize: "122% auto",
+                  WebkitMaskImage: `url(${signMahediDark.src})`,
+                  maskImage: `url(${signMahediDark.src})`,
+                  WebkitMaskPosition: "left center",
+                  maskPosition: "left center",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskSize: "contain",
+                  maskSize: "contain",
                 }}
               />
               <span className="text-[13px] font-semibold text-[color:var(--muted-foreground)]">

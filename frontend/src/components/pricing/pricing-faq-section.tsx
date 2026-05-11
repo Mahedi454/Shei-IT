@@ -1,15 +1,45 @@
+"use client";
+
 import { ArrowRight, ChevronDown, HelpCircle, Send } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 
 const faqs = [
-  "Can I upgrade my plan later?",
-  "Do you offer ongoing support?",
-  "Do you provide domain and hosting?",
-  "Will my website be SEO-friendly?",
-  "How long does it take to complete a project?",
-  "Do you offer refunds?",
+  {
+    question: "Can I upgrade my plan later?",
+    answer:
+      "Yes. You can upgrade whenever your website needs more pages, features, integrations, or support. We will adjust the plan based on the new scope.",
+  },
+  {
+    question: "Do you offer ongoing support?",
+    answer:
+      "Yes. Support is included with every plan, and we also offer maintenance packages for updates, improvements, security checks, and content changes.",
+  },
+  {
+    question: "Do you provide domain and hosting?",
+    answer:
+      "Yes. We can help you choose, set up, and connect your domain and hosting. If you already have them, we can work with your existing provider.",
+  },
+  {
+    question: "Will my website be SEO-friendly?",
+    answer:
+      "Yes. We build with clean structure, responsive layouts, fast performance, metadata, and basic on-page SEO so your website starts from a strong foundation.",
+  },
+  {
+    question: "How long does it take to complete a project?",
+    answer:
+      "Most small websites take 1 to 2 weeks. Larger websites, custom features, or advanced systems may take longer depending on the final requirements.",
+  },
+  {
+    question: "Do you offer refunds?",
+    answer:
+      "Refunds depend on the project stage and completed work. Before starting, we clarify the scope, timeline, and payment terms so everything is transparent.",
+  },
 ] as const;
 
 export function PricingFaqSection() {
+  const [openFaq, setOpenFaq] = useState<string | null>(null);
+
   return (
     <section className="relative pb-16 lg:pb-20">
       <div className="mx-auto w-11/12 max-w-[1440px]">
@@ -22,21 +52,59 @@ export function PricingFaqSection() {
           </h2>
         </div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-2">
-          {faqs.map((question) => (
-            <button
-              key={question}
-              className="flex items-center gap-5 rounded-[1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 py-5 text-left shadow-[0_16px_44px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none"
+        <div className="mt-8 grid items-start gap-4 lg:grid-cols-2">
+          {faqs.map((faq) => {
+            const isOpen = openFaq === faq.question;
+
+            return (
+            <article
+              key={faq.question}
+              className="overflow-hidden rounded-[1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_16px_44px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none"
             >
-              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[0.85rem] bg-[linear-gradient(180deg,rgba(139,124,255,0.18),rgba(139,124,255,0.08))] text-[color:var(--primary)]">
-                <HelpCircle className="h-5 w-5" strokeWidth={2.2} />
-              </span>
-              <span className="flex-1 text-[15px] font-semibold text-[color:var(--foreground)]">
-                {question}
-              </span>
-              <ChevronDown className="h-5 w-5 shrink-0 text-[color:var(--foreground)]" strokeWidth={2.2} />
-            </button>
-          ))}
+              <button
+                type="button"
+                aria-expanded={isOpen}
+                onClick={() => setOpenFaq(isOpen ? null : faq.question)}
+                className="flex w-full items-center gap-5 px-6 py-5 text-left"
+              >
+                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[0.85rem] bg-[linear-gradient(180deg,rgba(139,124,255,0.18),rgba(139,124,255,0.08))] text-[color:var(--primary)]">
+                  <HelpCircle className="h-5 w-5" strokeWidth={2.2} />
+                </span>
+                <span className="flex-1 text-[15px] font-semibold text-[color:var(--foreground)]">
+                  {faq.question}
+                </span>
+                <motion.span
+                  animate={{ rotate: isOpen ? 180 : 0 }}
+                  transition={{ duration: 0.22, ease: "easeOut" }}
+                  className="inline-flex h-5 w-5 shrink-0 items-center justify-center text-[color:var(--foreground)]"
+                >
+                  <ChevronDown className="h-5 w-5" strokeWidth={2.2} />
+                </motion.span>
+              </button>
+
+              <AnimatePresence initial={false}>
+                {isOpen ? (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <motion.p
+                      initial={{ y: -8 }}
+                      animate={{ y: 0 }}
+                      exit={{ y: -8 }}
+                      transition={{ duration: 0.24, ease: "easeOut" }}
+                      className="px-6 pb-6 pl-[5.75rem] pr-8 text-[14px] font-medium leading-7 text-[color:var(--muted-foreground)]"
+                    >
+                      {faq.answer}
+                    </motion.p>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </article>
+            );
+          })}
         </div>
 
         <div className="relative mt-7 overflow-hidden rounded-[1.45rem] bg-[linear-gradient(100deg,#6c63ff_0%,#735dff_42%,#4f8cff_100%)] px-6 py-8 shadow-[0_28px_80px_rgba(108,99,255,0.24)] sm:px-10 lg:px-14">
