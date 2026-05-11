@@ -9,6 +9,7 @@ export const siteConfig = {
     { label: "Portfolio", href: "/portfolio" },
     { label: "About Us", href: "/about" },
     { label: "Pricing", href: "/pricing" },
+    { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
   ],
   stats: [
@@ -325,7 +326,7 @@ export const footerConfig = {
         { label: "About Us", href: "#" },
         { label: "Portfolio", href: "#" },
         { label: "Pricing", href: "#" },
-        { label: "Blog", href: "#" },
+        { label: "Blog", href: "/blog" },
         { label: "Careers", href: "#" },
       ],
     },
