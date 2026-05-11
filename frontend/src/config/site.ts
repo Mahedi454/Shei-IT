@@ -52,6 +52,7 @@ export const servicesSection = {
         "Fast, responsive and SEO-friendly websites that represent your business perfectly.",
       icon: "code",
       accent: "violet",
+      href: "/services/website-development",
     },
     {
       title: "Mobile App Development",
@@ -312,7 +313,7 @@ export const footerConfig = {
     {
       title: "Services",
       links: [
-        { label: "Website Development", href: "#" },
+        { label: "Website Development", href: "/services/website-development" },
         { label: "Mobile App Development", href: "#" },
         { label: "Hosting & Cloud", href: "#" },
         { label: "SEO & Marketing", href: "#" },
