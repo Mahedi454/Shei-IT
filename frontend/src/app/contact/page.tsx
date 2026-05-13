@@ -1,7 +1,13 @@
-import { ContactHero } from "@/components/contact/contact-hero";
-import { ContactMessageSection } from "@/components/contact/contact-message-section";
-import { ContactSupportSection } from "@/components/contact/contact-support-section";
+import { Mail, MapPin, Phone } from "lucide-react";
+
 import { SiteHeader } from "@/components/layout/site-header";
+import { ContactForm } from "@/components/public/contact-form";
+
+const details = [
+  { label: "hello@shei-it.com", icon: Mail },
+  { label: "+880 1234 567890", icon: Phone },
+  { label: "Dhaka, Bangladesh", icon: MapPin },
+] as const;
 
 export default function ContactPage() {
   return (
