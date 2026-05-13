@@ -162,6 +162,19 @@ button {
   background: rgba(108, 99, 255, 0.18);
 }
 
+.admin-input {
+  border: 1px solid var(--stat-border);
+  border-radius: 0.75rem;
+  background: var(--card-solid);
+  padding: 0.75rem 1rem;
+  color: var(--foreground);
+  outline: none;
+}
+
+.admin-input::placeholder {
+  color: var(--muted-foreground);
+}
+
 html.dark body {
   background-image: radial-gradient(
     circle at top,

@@ -63,6 +63,8 @@ export function AboutHero() {
               src={bannerImage}
               alt="About page hero illustration"
               priority
+              quality={85}
+              sizes="(min-width: 1280px) 740px, (min-width: 1024px) 52vw, 92vw"
               className="relative z-10 w-full rounded-[2rem] object-cover"
             />
           </div>

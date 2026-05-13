@@ -45,6 +45,8 @@ export function PortfolioHeroSection() {
           <Image
             src={heroAsset}
             alt="Portfolio showcase hero"
+            quality={85}
+            sizes="(min-width: 1280px) 720px, (min-width: 1024px) 50vw, 92vw"
             className="h-auto w-full object-contain"
             priority
           />

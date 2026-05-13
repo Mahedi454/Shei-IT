@@ -5,11 +5,11 @@ export const siteConfig = {
     "From websites to mobile apps, hosting to SEO - we deliver practical digital solutions built for real business growth.",
   navLinks: [
     { label: "Home", href: "/" },
-    { label: "Services", href: "/#services" },
+    { label: "Services", href: "/services" },
     { label: "Portfolio", href: "/portfolio" },
     { label: "About Us", href: "/about" },
-    { label: "Pricing", href: "/#pricing" },
-    { label: "Contact", href: "/#contact" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "Contact", href: "/contact" },
   ],
   stats: [
     {
@@ -322,17 +322,17 @@ export const footerConfig = {
     {
       title: "Company",
       links: [
-        { label: "About Us", href: "#" },
-        { label: "Portfolio", href: "#" },
-        { label: "Pricing", href: "#" },
-        { label: "Blog", href: "#" },
+        { label: "About Us", href: "/about" },
+        { label: "Portfolio", href: "/portfolio" },
+        { label: "Pricing", href: "/pricing" },
+        { label: "Blog", href: "/blog" },
         { label: "Careers", href: "#" },
       ],
     },
     {
       title: "Support",
       links: [
-        { label: "Contact Us", href: "#" },
+        { label: "Contact Us", href: "/contact" },
         { label: "FAQs", href: "#" },
         { label: "Privacy Policy", href: "#" },
         { label: "Terms of Service", href: "#" },

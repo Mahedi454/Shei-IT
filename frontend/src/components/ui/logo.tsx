@@ -24,6 +24,7 @@ export function Logo({
         src={logo}
         alt={`${siteConfig.name} logo`}
         priority={priority}
+        sizes="48px"
         className={`h-7 w-7 object-contain ${iconClassName ?? ""}`}
       />
       {showText ? (

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { SiteFooter } from "@/components/layout/site-footer";
+import { RootShell } from "@/components/layout/root-shell";
+import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import "./globals.css";
 
@@ -38,10 +39,9 @@ export default function RootLayout({
           themes={["light", "dark"]}
           disableTransitionOnChange
         >
-          <div id="top" className="flex min-h-screen flex-col">
-            <div className="flex-1">{children}</div>
-            <SiteFooter />
-          </div>
+          <SmoothScrollProvider>
+            <RootShell>{children}</RootShell>
+          </SmoothScrollProvider>
         </ThemeProvider>
       </body>
     </html>

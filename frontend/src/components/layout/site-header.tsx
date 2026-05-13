@@ -13,7 +13,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 bg-[rgba(255,255,255,0.15)] dark:bg-[rgba(0,0,0,0.15)]">
       <div className="mx-auto flex w-11/12 max-w-[1440px] items-center justify-between gap-4 py-3.5 backdrop-blur-[1.25px] lg:py-4">
-        <a href="#" className="shrink-0">
+        <a href="/" className="shrink-0">
           <Logo
             priority
             iconClassName="h-12 w-12"
@@ -44,7 +44,7 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2.5">
           <a
-            href="/#contact"
+            href="/contact"
             className="hidden items-center rounded-full bg-[color:var(--talk-bg)] px-5 py-2 text-[12px] font-semibold text-[color:var(--talk-fg)] shadow-[0_12px_24px_rgba(15,23,42,0.1)] transition-transform hover:-translate-y-0.5 md:inline-flex"
           >
             Let&apos;s Talk
