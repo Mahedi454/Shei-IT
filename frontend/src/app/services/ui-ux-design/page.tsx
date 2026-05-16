@@ -13,10 +13,13 @@ import {
   Code2,
   Crown,
   Gauge,
+  Globe2,
   Headphones,
+  Layers,
   Lightbulb,
   LockKeyhole,
   MonitorSmartphone,
+  MousePointerClick,
   PackageCheck,
   RefreshCw,
   Rocket,
@@ -30,64 +33,57 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import cssIcon from "@/assets/web dev images/css-3-svgrepo-com.svg";
+import illustratorIcon from "@/assets/ui-ux images/adobe-illustrator-svgrepo-com.svg";
+import photoshopIcon from "@/assets/ui-ux images/adobe-photoshop-svgrepo-com.svg";
+import adobeXdIcon from "@/assets/ui-ux images/adobe-xd-svgrepo-com.svg";
 import ctaImage from "@/assets/cta-image.png";
-import fastApiIcon from "@/assets/web dev images/fastapi-svgrepo-com.svg";
-import htmlIcon from "@/assets/web dev images/html-5-svgrepo-com.svg";
-import javascriptIcon from "@/assets/web dev images/javascript-svgrepo-com.svg";
-import laravelIcon from "@/assets/web dev images/laravel-svgrepo-com.svg";
-import mysqlIcon from "@/assets/web dev images/mysql-svgrepo-com.svg";
-import nextIcon from "@/assets/web dev images/next-dot-js-svgrepo-com.svg";
-import phpIcon from "@/assets/web dev images/php-svgrepo-com.svg";
-import reactIcon from "@/assets/web dev images/react-svgrepo-com.svg";
-import wordpressIcon from "@/assets/web dev images/wordpress-svgrepo-com.svg";
-import websiteBannerDark from "@/assets/website-banner-dark.png";
-import websiteBannerLight from "@/assets/website-banner-light.png";
+import figmaIcon from "@/assets/ui-ux images/figma-svgrepo-com.svg";
+import framerIcon from "@/assets/ui-ux images/framer-svgrepo-com.svg";
+import sketchIcon from "@/assets/ui-ux images/sketch-svgrepo-com.svg";
 import { SiteHeader } from "@/components/layout/site-header";
 
 const stats = [
   { value: "5+", label: "Years Experience", icon: BadgeCheck },
-  { value: "150+", label: "Websites Built", icon: MonitorSmartphone },
+  { value: "140+", label: "Screens Designed", icon: MonitorSmartphone },
   { value: "98%", label: "Client Satisfaction", icon: Sparkles },
   { value: "24/7", label: "Support", icon: Headphones },
 ] as const;
 
 const offers = [
   {
-    title: "Custom Website Development",
+    title: "UI/UX Design",
     description:
-      "Tailored websites built from scratch to match your brand and business needs.",
+      "Clean, modern interfaces designed around real users and business goals.",
+    icon: Brush,
+    accent: "violet",
+  },
+  {
+    title: "Wireframes & Prototypes",
+    description:
+      "Interactive flows and layouts that make ideas easy to test before build.",
+    icon: MousePointerClick,
+    accent: "violet",
+  },
+  {
+    title: "Mobile & Web App Design",
+    description:
+      "Responsive product screens for websites, dashboards and mobile apps.",
     icon: MonitorSmartphone,
     accent: "violet",
   },
   {
-    title: "Responsive Design & Mobile-First",
+    title: "Design Systems",
     description:
-      "Pixel-perfect designs that look and work flawlessly on all devices.",
-    icon: Code2,
-    accent: "violet",
-  },
-  {
-    title: "E-Commerce Development",
-    description:
-      "Secure, scalable online stores with smooth shopping experiences and payment integration.",
-    icon: ShoppingCart,
-    accent: "violet",
-  },
-  {
-    title: "CMS Development",
-    description:
-      "Easy-to-manage websites using WordPress or custom CMS solutions.",
-    icon: ShieldCheck,
+      "Reusable components, styles and guidelines for consistent products.",
+    icon: Layers,
     accent: "mint",
   },
   {
-    title: "Website Redesign & Revamp",
+    title: "UX Audit & Redesign",
     description:
-      "Modernize your existing website for better performance and conversions.",
+      "Improve existing interfaces for clarity, trust and better conversion.",
     icon: RefreshCw,
     accent: "violet",
   },
@@ -95,29 +91,29 @@ const offers = [
 
 const reasons = [
   {
-    title: "SEO-Friendly",
-    description:
-      "Built with clean code and best practices for higher rankings.",
+    title: "User-Centered",
+    description: "Every screen is shaped around what users need to do next.",
     icon: Search,
   },
   {
-    title: "Lightning Fast",
-    description: "Optimized for speed and performance.",
+    title: "Clear Interaction",
+    description: "Flows, controls and layouts designed to reduce confusion.",
     icon: Timer,
   },
   {
-    title: "Secure & Reliable",
-    description: "Strong security and regular updates for peace of mind.",
-    icon: LockKeyhole,
+    title: "Brand Consistent",
+    description:
+      "Visual systems that feel polished and aligned with your brand.",
+    icon: Sparkles,
   },
   {
     title: "Conversion Focused",
-    description: "Designed to turn visitors into customers.",
+    description: "Designed to guide users toward meaningful business actions.",
     icon: Target,
   },
   {
-    title: "Scalable Solutions",
-    description: "Websites that grow with your business.",
+    title: "Scalable Systems",
+    description: "Reusable components that make future product work easier.",
     icon: PackageCheck,
   },
   {
@@ -129,119 +125,117 @@ const reasons = [
 
 const processSteps = [
   {
-    title: "Discovery & Planning",
-    description: "We understand your goals, audience, and requirements.",
+    title: "Research & Discovery",
+    description: "We understand your users, goals, problems and product scope.",
     icon: Lightbulb,
     accent: "violet",
   },
   {
     title: "Design & Prototyping",
-    description: "Wireframes and UI/UX designs for your approval.",
+    description: "Wireframes, visual designs and clickable prototypes.",
     icon: Brush,
     accent: "violet",
   },
   {
-    title: "Development",
-    description: "Clean, scalable, and secure coding with best practices.",
-    icon: Code2,
+    title: "Design System",
+    description: "Reusable components, styles and interaction patterns.",
+    icon: Layers,
     accent: "violet",
   },
   {
-    title: "Testing & QA",
-    description: "Thorough testing for bugs, speed, and security.",
+    title: "Review & Testing",
+    description: "Feedback, usability review and design refinement.",
     icon: ShieldCheck,
     accent: "mint",
   },
   {
-    title: "Launch & Support",
-    description: "On-time launch and ongoing maintenance.",
+    title: "Handoff & Support",
+    description: "Developer-ready files, notes and ongoing design support.",
     icon: Rocket,
     accent: "violet",
   },
 ] as const;
 
 const technologies = [
-  { label: "HTML5", icon: htmlIcon },
-  { label: "CSS", icon: cssIcon },
-  { label: "JavaScript", icon: javascriptIcon },
-  { label: "React", icon: reactIcon },
-  { label: "Next.js", icon: nextIcon },
-  { label: "WordPress", icon: wordpressIcon },
-  { label: "FastAPI", icon: fastApiIcon },
-  { label: "PHP", icon: phpIcon },
-  { label: "Laravel", icon: laravelIcon },
-  { label: "MySQL", icon: mysqlIcon },
+  { label: "Figma", icon: figmaIcon },
+  { label: "Adobe XD", icon: adobeXdIcon },
+  { label: "Photoshop", icon: photoshopIcon },
+  { label: "Illustrator", icon: illustratorIcon },
+  { label: "Framer", icon: framerIcon },
+  { label: "Sketch", icon: sketchIcon },
 ] as const;
 
 const pricingPackages = [
   {
-    name: "Starter Package",
-    description: "Best for personal brands, portfolios and small businesses.",
+    name: "Starter Design",
+    description: "Best for landing pages, simple apps and early ideas.",
     price: "$149",
-    note: "Starter website package",
+    note: "Starter UI/UX package",
     timeline: "5 - 7 days",
     action: "Get Started",
     icon: Send,
     accent: "violet",
     popular: false,
     features: [
-      "Up to 5 Pages",
-      "Responsive Design",
+      "Up to 5 Screens",
+      "Basic Wireframes",
       "Modern UI Design",
-      "Contact Form",
-      "Basic SEO Setup",
-      "Speed Optimization",
-      "Social Media Integration",
+      "Responsive Layout",
+      "Clickable Prototype",
+      "Design Handoff",
+      "1 Revision Round",
       "1 Month Support",
     ],
   },
   {
-    name: "Business Package",
-    description: "Ideal for growing businesses and corporate websites.",
+    name: "Business Design",
+    description: "Ideal for growing websites, apps and digital products.",
     price: "$349",
-    note: "Business website package",
+    note: "Business UI/UX package",
     timeline: "10 - 14 days",
     action: "Choose Plan",
     icon: BriefcaseBusiness,
     accent: "featured",
     popular: true,
     features: [
-      "Up to 10 Pages",
+      "Up to 12 Screens",
       "Custom UI/UX Design",
-      "CMS Integration",
-      "Blog System",
-      "Advanced SEO Setup",
-      "Analytics Integration",
-      "Security Optimization",
-      "Performance Optimization",
+      "User Flow Mapping",
+      "Clickable Prototype",
+      "Responsive Design",
+      "Component Library",
+      "Design System Basics",
+      "Developer Handoff",
+      "2 Revision Rounds",
       "3 Months Support",
     ],
   },
   {
-    name: "Pro Package",
-    description: "Perfect for online stores and conversion-focused businesses.",
+    name: "Pro Design",
+    description:
+      "Perfect for SaaS, dashboards and conversion-focused products.",
     price: "$699",
-    note: "E-commerce website package",
+    note: "Advanced UI/UX package",
     timeline: "2 - 4 weeks",
-    action: "Launch Store",
+    action: "Design Product",
     icon: ShoppingCart,
     accent: "orange",
     popular: false,
     features: [
-      "Unlimited Products",
-      "Payment Gateway",
-      "Inventory Management",
-      "Customer Dashboard",
-      "Order Management",
-      "Coupon System",
-      "Mobile Optimization",
-      "Advanced Analytics",
+      "Up to 25 Screens",
+      "Advanced UX Flows",
+      "Dashboard Design",
+      "Interactive Prototype",
+      "Full Design System",
+      "Usability Review",
+      "Developer Documentation",
+      "3 Revision Rounds",
       "6 Months Support",
     ],
   },
   {
-    name: "Custom Package",
-    description: "For complex platforms and custom web applications.",
+    name: "Custom Design",
+    description: "For complex products, full design systems and redesigns.",
     price: "Custom",
     note: "Custom project scope",
     timeline: "Depends on scope",
@@ -251,74 +245,105 @@ const pricingPackages = [
     popular: false,
     features: [
       "Requirement Analysis",
-      "Custom Dashboard",
-      "API Integration",
-      "Database Architecture",
-      "Authentication System",
-      "Admin Panel",
-      "Scalability Planning",
-      "Maintenance Plan",
+      "Product UX Strategy",
+      "Custom Design System",
+      "Complex User Flows",
+      "Multi-Platform Design",
+      "Usability Testing Plan",
+      "Design QA",
+      "Team Handoff",
+      "Ongoing Design Support",
     ],
   },
 ] as const;
 
 const faqs = [
   {
-    question: "How fast can you build my website?",
+    question: "How fast can you design my product?",
     answer:
-      "Starter websites usually take 5 to 7 days, business websites take 10 to 14 days, and larger web applications depend on scope.",
+      "Starter designs usually take 5 to 7 days, business projects take 10 to 14 days, and complex products depend on scope.",
   },
   {
     question: "What information do you need to start?",
     answer:
-      "We need your business goals, page list, brand assets, content, reference websites, and any required features or integrations.",
+      "We need your product goals, page or screen list, brand assets, content, reference designs, and any existing user feedback.",
   },
   {
     question: "Do you provide ongoing support?",
     answer:
-      "Yes. Every package includes support, and we can also provide monthly maintenance for updates, backups, fixes, and improvements.",
+      "Yes. Every package includes support, and we can also provide ongoing design improvements, new screens and design QA.",
   },
   {
-    question: "Will my website be SEO-friendly?",
+    question: "Do you provide developer handoff?",
     answer:
-      "Yes. We build with responsive layouts, clean structure, metadata, performance basics, and SEO-friendly page foundations.",
+      "Yes. We prepare organized design files, assets, style notes and handoff details so developers can build accurately.",
   },
   {
     question: "Can I schedule a call before starting?",
     answer:
-      "Yes. You can book a consultation so we can understand your website goals and recommend the right package.",
+      "Yes. You can book a consultation so we can understand your design goals and recommend the right package.",
   },
 ] as const;
 
-function WebsiteBanner() {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const bannerImage =
-    mounted && theme === "dark" ? websiteBannerDark : websiteBannerLight;
-
+function UiUxMockup() {
   return (
-    <div className="relative flex items-center justify-center lg:justify-end">
-      <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--purple-glow)] blur-[120px]" />
-      <div className="relative w-full max-w-[760px]">
-        <Image
-          src={bannerImage}
-          alt="Website development banner"
-          priority
-          quality={90}
-          sizes="(min-width: 1280px) 760px, (min-width: 1024px) 58vw, 92vw"
-          className="relative z-10 h-auto w-full object-contain"
-        />
+    <div className="relative mx-auto aspect-[1.18/1] w-full max-w-[660px]">
+      <div className="absolute left-[9%] top-[7%] h-[74%] w-[76%] rounded-full bg-[color:var(--purple-glow)]" />
+      <div className="absolute right-[6%] top-[9%] h-5 w-5 rounded-full bg-[linear-gradient(135deg,#fff,#ff9f5a)] shadow-[0_10px_24px_rgba(255,159,90,0.35)]" />
+      <div className="absolute left-[15%] top-[5%] h-10 w-10 rounded-full bg-[linear-gradient(135deg,#a78bfa,#6c63ff)] shadow-[0_16px_36px_rgba(108,99,255,0.35)]" />
+      <div className="absolute right-[11%] bottom-[19%] h-20 w-20 rounded-[1.6rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] backdrop-blur-xl">
+        <div className="flex h-full items-center justify-center text-[color:var(--primary)]">
+          <Globe2 className="h-9 w-9" strokeWidth={2.1} />
+        </div>
+      </div>
+      <div className="absolute left-[7%] top-[24%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--primary)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
+        <Code2 className="h-8 w-8" strokeWidth={2.2} />
+      </div>
+      <div className="absolute left-[1%] top-[47%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--blue)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
+        <Gauge className="h-8 w-8" strokeWidth={2.2} />
+      </div>
+      <div className="absolute bottom-[7%] right-[2%] z-20 h-20 w-20 rounded-[1.5rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
+        <div className="absolute left-6 top-6 h-8 w-4 rounded-full bg-[color:var(--mint)]" />
+        <div className="absolute bottom-4 left-4 h-9 w-9 rounded-full border-[10px] border-[color:var(--primary-soft)]" />
+      </div>
+      <div className="absolute bottom-[2%] right-[22%] h-16 w-16 rounded-[1.25rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
+        <div className="mx-auto mt-4 h-9 w-3 rounded-full bg-[color:var(--mint)]" />
+        <div className="absolute left-5 top-8 h-4 w-8 -rotate-45 rounded-full bg-[color:var(--orange)]" />
+      </div>
+
+      <div className="absolute bottom-[13%] left-[20%] z-10 h-[16%] w-[58%] -skew-x-12 rounded-b-[1rem] bg-[linear-gradient(180deg,#d7dbe7,#9ca3af)] shadow-[0_26px_42px_rgba(15,23,42,0.2)]" />
+      <div className="absolute bottom-[21%] left-[27%] z-20 h-[3%] w-[40%] rounded-full bg-[linear-gradient(90deg,#6b7280,#d1d5db,#4b5563)]" />
+      <div className="absolute left-[22%] top-[13%] z-30 h-[62%] w-[62%] rotate-[5deg] rounded-[1rem] border-[10px] border-[#262b36] bg-[color:var(--card-solid)] shadow-[0_34px_80px_rgba(15,23,42,0.28)] dark:bg-[#151722]">
+        <div className="h-full rounded-[0.45rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(245,247,255,0.88))] p-4 dark:bg-[linear-gradient(180deg,rgba(27,28,40,0.96),rgba(12,12,18,0.94))]">
+          <div className="flex gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#fca5a5]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#fde68a]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#86efac]" />
+          </div>
+          <div className="mt-5 h-8 rounded-md bg-[image:var(--gradient-primary)]" />
+          <div className="mt-5 grid grid-cols-[1.2fr_1fr] gap-4">
+            <div className="h-28 rounded-lg bg-[linear-gradient(135deg,rgba(139,124,255,0.24),rgba(93,174,255,0.12))]">
+              <div className="mx-auto mt-8 h-12 w-16 rounded-t-full bg-[color:var(--primary-soft)] opacity-65" />
+              <div className="mx-auto -mt-2 h-10 w-24 rounded-t-full bg-[color:var(--blue)] opacity-35" />
+            </div>
+            <div className="space-y-3">
+              <div className="h-3 w-20 rounded-full bg-[color:var(--background-secondary)]" />
+              <div className="h-3 w-28 rounded-full bg-[color:var(--background-secondary)]" />
+              <div className="h-9 w-24 rounded-lg bg-[color:var(--background-secondary)]" />
+            </div>
+          </div>
+          <div className="mt-5 grid grid-cols-3 gap-3">
+            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
+            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
+            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-export default function WebsiteDevelopmentPage() {
+export default function UiUxDesignPage() {
   const [openFaq, setOpenFaq] = useState<string | null>(null);
 
   return (
@@ -339,9 +364,7 @@ export default function WebsiteDevelopmentPage() {
               Services
             </a>
             <ChevronRight className="h-3.5 w-3.5" />
-            <span className="text-[color:var(--foreground)]">
-              Website Development
-            </span>
+            <span className="text-[color:var(--foreground)]">UI/UX Design</span>
           </nav>
 
           <div className="mt-10 grid items-center gap-10 lg:grid-cols-[0.86fr_1.14fr]">
@@ -352,19 +375,18 @@ export default function WebsiteDevelopmentPage() {
               </div>
 
               <h1 className="mt-6 text-[3rem] font-semibold leading-[1.04] tracking-[-0.07em] text-[color:var(--foreground)] sm:text-[4rem] lg:text-[4.5rem]">
-                Website
+                UI/UX
                 <span className="block bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
-                  Development
+                  Design
                 </span>
               </h1>
               <p className="mt-5 max-w-[38rem] text-[17px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-                Modern, fast and scalable websites that drive results.
+                Clean, modern product design that users understand quickly.
               </p>
               <p className="mt-4 max-w-[40rem] text-[15px] leading-8 text-[color:var(--muted-foreground)]">
-                We build high-performing, SEO-friendly websites that are
-                visually polished, secure and tailored to your business goals.
-                From simple business sites to advanced web applications, we have
-                you covered.
+                We design polished websites, apps and dashboards that feel
+                intuitive, trustworthy and tailored to your business goals. From
+                first wireframes to developer handoff, we have you covered.
               </p>
 
               <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -412,7 +434,7 @@ export default function WebsiteDevelopmentPage() {
               </div>
             </div>
 
-            <WebsiteBanner />
+            <UiUxMockup />
           </div>
         </div>
       </section>
@@ -425,12 +447,12 @@ export default function WebsiteDevelopmentPage() {
                 What We Offer
               </p>
               <h2 className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Complete Website Solutions
+                Complete UI/UX Design Solutions
               </h2>
             </div>
             <p className="max-w-[42rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)] lg:justify-self-end">
-              We provide end-to-end web development services to help your
-              business establish a strong digital presence and grow online.
+              We provide end-to-end design services to help your product look
+              polished, feel clear and guide users naturally.
             </p>
           </div>
 
@@ -473,12 +495,11 @@ export default function WebsiteDevelopmentPage() {
               Why Choose Us
             </p>
             <h2 className="mt-3 max-w-[26rem] text-[1.8rem] font-semibold leading-[1.12] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.25rem]">
-              Websites That Perform, Convert & Scale
+              Designs That Guide, Convert & Scale
             </h2>
             <p className="mt-4 max-w-[29rem] text-[14px] font-medium leading-7 text-[color:var(--muted-foreground)]">
-              We combine design, technology, and strategy to deliver websites
-              that not only look great but also help you achieve real business
-              results.
+              We combine research, visual design and interaction strategy to
+              create interfaces that are beautiful, usable and business-focused.
             </p>
           </div>
 
@@ -518,7 +539,7 @@ export default function WebsiteDevelopmentPage() {
               </h2>
             </div>
             <p className="max-w-[40rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-              A clear, transparent process to deliver outstanding websites, on
+              A clear, transparent process to deliver polished design work, on
               time and on budget.
             </p>
           </div>
@@ -539,7 +560,7 @@ export default function WebsiteDevelopmentPage() {
                   >
                     <Icon className="h-8 w-8" strokeWidth={2.1} />
                   </span>
-                  <div className="min-h-[124px] rounded-[1.15rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 pb-6 pt-8 text-center shadow-[0_18px_48px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
+                  <div className="flex h-[190px] flex-col items-center justify-center rounded-[1.15rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 pb-6 pt-8 text-center shadow-[0_18px_48px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
                     <h3 className="text-[1.08rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]">
                       {step.title}
                     </h3>
@@ -558,16 +579,16 @@ export default function WebsiteDevelopmentPage() {
                 Technologies We Use
               </p>
               <h2 className="mt-3 max-w-[34rem] text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Modern Technologies for Powerful Websites
+                Modern Technologies for Powerful Design
               </h2>
             </div>
             <p className="max-w-[40rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-              We use industry-leading technologies to build fast, secure, and
-              future-ready websites.
+              We use industry-leading design tools to plan, prototype and hand
+              off polished digital experiences.
             </p>
           </div>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-5 xl:grid-cols-10">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
             {technologies.map((tech) => (
               <div
                 key={tech.label}
@@ -601,9 +622,9 @@ export default function WebsiteDevelopmentPage() {
               </h2>
             </div>
             <p className="max-w-[43rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-              Choose the perfect website package based on your business goals.
-              From startup landing pages to advanced platforms, we have you
-              covered.
+              Choose the perfect design package based on your business goals.
+              From simple screens to complete product design systems, we have
+              you covered.
             </p>
           </div>
 

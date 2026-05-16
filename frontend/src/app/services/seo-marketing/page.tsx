@@ -13,7 +13,9 @@ import {
   Code2,
   Crown,
   Gauge,
+  Globe2,
   Headphones,
+  LineChart,
   Lightbulb,
   LockKeyhole,
   MonitorSmartphone,
@@ -27,67 +29,61 @@ import {
   Sparkles,
   Target,
   Timer,
+  TrendingUp,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import cssIcon from "@/assets/web dev images/css-3-svgrepo-com.svg";
+import ahrefsIcon from "@/assets/SEO marketing images/Ahrefs.png";
 import ctaImage from "@/assets/cta-image.png";
-import fastApiIcon from "@/assets/web dev images/fastapi-svgrepo-com.svg";
-import htmlIcon from "@/assets/web dev images/html-5-svgrepo-com.svg";
-import javascriptIcon from "@/assets/web dev images/javascript-svgrepo-com.svg";
-import laravelIcon from "@/assets/web dev images/laravel-svgrepo-com.svg";
-import mysqlIcon from "@/assets/web dev images/mysql-svgrepo-com.svg";
-import nextIcon from "@/assets/web dev images/next-dot-js-svgrepo-com.svg";
-import phpIcon from "@/assets/web dev images/php-svgrepo-com.svg";
-import reactIcon from "@/assets/web dev images/react-svgrepo-com.svg";
-import wordpressIcon from "@/assets/web dev images/wordpress-svgrepo-com.svg";
-import websiteBannerDark from "@/assets/website-banner-dark.png";
-import websiteBannerLight from "@/assets/website-banner-light.png";
+import googleAnalyticsIcon from "@/assets/SEO marketing images/google-analytics-svgrepo-com.svg";
+import metaIcon from "@/assets/SEO marketing images/meta.png";
+import searchConsoleIcon from "@/assets/SEO marketing images/search-console-icon-2025-1.svg";
+import semrushIcon from "@/assets/SEO marketing images/Semrush-Logo.png";
+import yoastIcon from "@/assets/SEO marketing images/Yoast SEO.png";
 import { SiteHeader } from "@/components/layout/site-header";
 
 const stats = [
   { value: "5+", label: "Years Experience", icon: BadgeCheck },
-  { value: "150+", label: "Websites Built", icon: MonitorSmartphone },
+  { value: "120+", label: "Campaigns Run", icon: TrendingUp },
   { value: "98%", label: "Client Satisfaction", icon: Sparkles },
   { value: "24/7", label: "Support", icon: Headphones },
 ] as const;
 
 const offers = [
   {
-    title: "Custom Website Development",
+    title: "SEO Strategy & Audit",
     description:
-      "Tailored websites built from scratch to match your brand and business needs.",
-    icon: MonitorSmartphone,
+      "Technical audits, keyword research and growth plans for better rankings.",
+    icon: Search,
     accent: "violet",
   },
   {
-    title: "Responsive Design & Mobile-First",
+    title: "On-Page Optimization",
     description:
-      "Pixel-perfect designs that look and work flawlessly on all devices.",
+      "Metadata, headings, content structure and page improvements that search engines understand.",
     icon: Code2,
     accent: "violet",
   },
   {
-    title: "E-Commerce Development",
+    title: "Content Marketing",
     description:
-      "Secure, scalable online stores with smooth shopping experiences and payment integration.",
-    icon: ShoppingCart,
+      "Helpful content plans, blog topics and landing pages built around user intent.",
+    icon: Brush,
     accent: "violet",
   },
   {
-    title: "CMS Development",
+    title: "Analytics & Tracking",
     description:
-      "Easy-to-manage websites using WordPress or custom CMS solutions.",
-    icon: ShieldCheck,
+      "Google Analytics, Search Console, events and conversion tracking setup.",
+    icon: LineChart,
     accent: "mint",
   },
   {
-    title: "Website Redesign & Revamp",
+    title: "Paid Social & Remarketing",
     description:
-      "Modernize your existing website for better performance and conversions.",
+      "Targeted Meta campaigns and retargeting flows to bring qualified traffic.",
     icon: RefreshCw,
     accent: "violet",
   },
@@ -95,29 +91,32 @@ const offers = [
 
 const reasons = [
   {
-    title: "SEO-Friendly",
+    title: "Search Visibility",
     description:
-      "Built with clean code and best practices for higher rankings.",
+      "Built around better rankings, impressions and organic discovery.",
     icon: Search,
   },
   {
-    title: "Lightning Fast",
-    description: "Optimized for speed and performance.",
+    title: "Performance Focused",
+    description:
+      "Optimized pages, content and campaigns for measurable growth.",
     icon: Timer,
   },
   {
-    title: "Secure & Reliable",
-    description: "Strong security and regular updates for peace of mind.",
-    icon: LockKeyhole,
+    title: "Data Driven",
+    description:
+      "Decisions backed by analytics, search data and campaign metrics.",
+    icon: LineChart,
   },
   {
     title: "Conversion Focused",
-    description: "Designed to turn visitors into customers.",
+    description: "Designed to turn traffic into leads, sales and real actions.",
     icon: Target,
   },
   {
-    title: "Scalable Solutions",
-    description: "Websites that grow with your business.",
+    title: "Scalable Growth",
+    description:
+      "Marketing systems that improve as your content and traffic grow.",
     icon: PackageCheck,
   },
   {
@@ -129,119 +128,115 @@ const reasons = [
 
 const processSteps = [
   {
-    title: "Discovery & Planning",
-    description: "We understand your goals, audience, and requirements.",
+    title: "Audit & Research",
+    description: "We review your website, competitors, keywords and audience.",
     icon: Lightbulb,
     accent: "violet",
   },
   {
-    title: "Design & Prototyping",
-    description: "Wireframes and UI/UX designs for your approval.",
+    title: "Strategy Planning",
+    description:
+      "We create a practical roadmap for SEO, content and campaigns.",
     icon: Brush,
     accent: "violet",
   },
   {
-    title: "Development",
-    description: "Clean, scalable, and secure coding with best practices.",
+    title: "Optimization",
+    description: "We improve pages, metadata, technical issues and tracking.",
     icon: Code2,
     accent: "violet",
   },
   {
-    title: "Testing & QA",
-    description: "Thorough testing for bugs, speed, and security.",
+    title: "Campaign Launch",
+    description: "We launch content, ads, tracking and reporting workflows.",
     icon: ShieldCheck,
     accent: "mint",
   },
   {
-    title: "Launch & Support",
-    description: "On-time launch and ongoing maintenance.",
+    title: "Measure & Improve",
+    description: "We monitor results and keep improving based on real data.",
     icon: Rocket,
     accent: "violet",
   },
 ] as const;
 
 const technologies = [
-  { label: "HTML5", icon: htmlIcon },
-  { label: "CSS", icon: cssIcon },
-  { label: "JavaScript", icon: javascriptIcon },
-  { label: "React", icon: reactIcon },
-  { label: "Next.js", icon: nextIcon },
-  { label: "WordPress", icon: wordpressIcon },
-  { label: "FastAPI", icon: fastApiIcon },
-  { label: "PHP", icon: phpIcon },
-  { label: "Laravel", icon: laravelIcon },
-  { label: "MySQL", icon: mysqlIcon },
+  { label: "Google Analytics", icon: googleAnalyticsIcon },
+  { label: "Search Console", icon: searchConsoleIcon },
+  { label: "Ahrefs", icon: ahrefsIcon },
+  { label: "Semrush", icon: semrushIcon },
+  { label: "Yoast SEO", icon: yoastIcon },
+  { label: "Meta", icon: metaIcon },
 ] as const;
 
 const pricingPackages = [
   {
-    name: "Starter Package",
-    description: "Best for personal brands, portfolios and small businesses.",
+    name: "Starter SEO",
+    description: "Best for small websites that need a clean SEO foundation.",
     price: "$149",
-    note: "Starter website package",
-    timeline: "5 - 7 days",
+    note: "Starter SEO package",
+    timeline: "7 - 10 days",
     action: "Get Started",
     icon: Send,
     accent: "violet",
     popular: false,
     features: [
-      "Up to 5 Pages",
-      "Responsive Design",
-      "Modern UI Design",
-      "Contact Form",
-      "Basic SEO Setup",
-      "Speed Optimization",
-      "Social Media Integration",
+      "SEO Audit",
+      "Keyword Research",
+      "Up to 5 Pages Optimized",
+      "Metadata Setup",
+      "Search Console Setup",
+      "Google Analytics Setup",
+      "Basic Speed Review",
       "1 Month Support",
     ],
   },
   {
-    name: "Business Package",
-    description: "Ideal for growing businesses and corporate websites.",
+    name: "Business Growth",
+    description: "Ideal for businesses that want steady organic growth.",
     price: "$349",
-    note: "Business website package",
-    timeline: "10 - 14 days",
+    note: "Business SEO package",
+    timeline: "2 - 4 weeks",
     action: "Choose Plan",
     icon: BriefcaseBusiness,
     accent: "featured",
     popular: true,
     features: [
-      "Up to 10 Pages",
-      "Custom UI/UX Design",
-      "CMS Integration",
-      "Blog System",
-      "Advanced SEO Setup",
+      "Full SEO Audit",
+      "Competitor Research",
+      "Up to 12 Pages Optimized",
+      "Content Plan",
+      "Technical SEO Fixes",
       "Analytics Integration",
-      "Security Optimization",
-      "Performance Optimization",
+      "Monthly Report",
+      "Conversion Tracking",
       "3 Months Support",
     ],
   },
   {
-    name: "Pro Package",
-    description: "Perfect for online stores and conversion-focused businesses.",
+    name: "Pro Marketing",
+    description: "Perfect for SEO, content and paid campaign growth.",
     price: "$699",
-    note: "E-commerce website package",
-    timeline: "2 - 4 weeks",
-    action: "Launch Store",
+    note: "Advanced marketing package",
+    timeline: "4 - 8 weeks",
+    action: "Grow Traffic",
     icon: ShoppingCart,
     accent: "orange",
     popular: false,
     features: [
-      "Unlimited Products",
-      "Payment Gateway",
-      "Inventory Management",
-      "Customer Dashboard",
-      "Order Management",
-      "Coupon System",
-      "Mobile Optimization",
+      "Advanced SEO Strategy",
+      "Content Calendar",
+      "Landing Page Optimization",
+      "Meta Ads Setup",
+      "Remarketing Setup",
+      "Conversion Funnel Review",
       "Advanced Analytics",
       "6 Months Support",
     ],
   },
   {
-    name: "Custom Package",
-    description: "For complex platforms and custom web applications.",
+    name: "Custom Growth",
+    description: "For complex SEO, content and multi-channel campaigns.",
     price: "Custom",
     note: "Custom project scope",
     timeline: "Depends on scope",
@@ -251,74 +246,105 @@ const pricingPackages = [
     popular: false,
     features: [
       "Requirement Analysis",
-      "Custom Dashboard",
-      "API Integration",
-      "Database Architecture",
-      "Authentication System",
-      "Admin Panel",
-      "Scalability Planning",
-      "Maintenance Plan",
+      "Custom SEO Strategy",
+      "Multi-Channel Campaigns",
+      "Technical SEO Roadmap",
+      "Content Production Plan",
+      "Analytics Dashboard",
+      "Lead Funnel Planning",
+      "Growth Experiments",
+      "Monthly Optimization",
     ],
   },
 ] as const;
 
 const faqs = [
   {
-    question: "How fast can you build my website?",
+    question: "How fast can SEO show results?",
     answer:
-      "Starter websites usually take 5 to 7 days, business websites take 10 to 14 days, and larger web applications depend on scope.",
+      "SEO foundations can be set up within days, but meaningful ranking and traffic improvements usually take 2 to 3 months depending on competition.",
   },
   {
     question: "What information do you need to start?",
     answer:
-      "We need your business goals, page list, brand assets, content, reference websites, and any required features or integrations.",
+      "We need your website URL, target locations, service list, business goals, existing analytics access, and competitors or keywords you care about.",
   },
   {
     question: "Do you provide ongoing support?",
     answer:
-      "Yes. Every package includes support, and we can also provide monthly maintenance for updates, backups, fixes, and improvements.",
+      "Yes. SEO and marketing work best with ongoing optimization, reporting, content updates and campaign improvements.",
   },
   {
-    question: "Will my website be SEO-friendly?",
+    question: "Can you set up analytics and tracking?",
     answer:
-      "Yes. We build with responsive layouts, clean structure, metadata, performance basics, and SEO-friendly page foundations.",
+      "Yes. We can configure Google Analytics, Search Console, conversion events, campaign tracking and reporting workflows.",
   },
   {
     question: "Can I schedule a call before starting?",
     answer:
-      "Yes. You can book a consultation so we can understand your website goals and recommend the right package.",
+      "Yes. You can book a consultation so we can understand your growth goals and recommend the right package.",
   },
 ] as const;
 
-function WebsiteBanner() {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const bannerImage =
-    mounted && theme === "dark" ? websiteBannerDark : websiteBannerLight;
-
+function SeoMarketingMockup() {
   return (
-    <div className="relative flex items-center justify-center lg:justify-end">
-      <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--purple-glow)] blur-[120px]" />
-      <div className="relative w-full max-w-[760px]">
-        <Image
-          src={bannerImage}
-          alt="Website development banner"
-          priority
-          quality={90}
-          sizes="(min-width: 1280px) 760px, (min-width: 1024px) 58vw, 92vw"
-          className="relative z-10 h-auto w-full object-contain"
-        />
+    <div className="relative mx-auto aspect-[1.18/1] w-full max-w-[660px]">
+      <div className="absolute left-[9%] top-[7%] h-[74%] w-[76%] rounded-full bg-[color:var(--purple-glow)]" />
+      <div className="absolute right-[6%] top-[9%] h-5 w-5 rounded-full bg-[linear-gradient(135deg,#fff,#ff9f5a)] shadow-[0_10px_24px_rgba(255,159,90,0.35)]" />
+      <div className="absolute left-[15%] top-[5%] h-10 w-10 rounded-full bg-[linear-gradient(135deg,#a78bfa,#6c63ff)] shadow-[0_16px_36px_rgba(108,99,255,0.35)]" />
+      <div className="absolute right-[11%] bottom-[19%] h-20 w-20 rounded-[1.6rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] backdrop-blur-xl">
+        <div className="flex h-full items-center justify-center text-[color:var(--primary)]">
+          <Globe2 className="h-9 w-9" strokeWidth={2.1} />
+        </div>
+      </div>
+      <div className="absolute left-[7%] top-[24%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--primary)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
+        <Code2 className="h-8 w-8" strokeWidth={2.2} />
+      </div>
+      <div className="absolute left-[1%] top-[47%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--blue)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
+        <Gauge className="h-8 w-8" strokeWidth={2.2} />
+      </div>
+      <div className="absolute bottom-[7%] right-[2%] z-20 h-20 w-20 rounded-[1.5rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
+        <div className="absolute left-6 top-6 h-8 w-4 rounded-full bg-[color:var(--mint)]" />
+        <div className="absolute bottom-4 left-4 h-9 w-9 rounded-full border-[10px] border-[color:var(--primary-soft)]" />
+      </div>
+      <div className="absolute bottom-[2%] right-[22%] h-16 w-16 rounded-[1.25rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
+        <div className="mx-auto mt-4 h-9 w-3 rounded-full bg-[color:var(--mint)]" />
+        <div className="absolute left-5 top-8 h-4 w-8 -rotate-45 rounded-full bg-[color:var(--orange)]" />
+      </div>
+
+      <div className="absolute bottom-[13%] left-[20%] z-10 h-[16%] w-[58%] -skew-x-12 rounded-b-[1rem] bg-[linear-gradient(180deg,#d7dbe7,#9ca3af)] shadow-[0_26px_42px_rgba(15,23,42,0.2)]" />
+      <div className="absolute bottom-[21%] left-[27%] z-20 h-[3%] w-[40%] rounded-full bg-[linear-gradient(90deg,#6b7280,#d1d5db,#4b5563)]" />
+      <div className="absolute left-[22%] top-[13%] z-30 h-[62%] w-[62%] rotate-[5deg] rounded-[1rem] border-[10px] border-[#262b36] bg-[color:var(--card-solid)] shadow-[0_34px_80px_rgba(15,23,42,0.28)] dark:bg-[#151722]">
+        <div className="h-full rounded-[0.45rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(245,247,255,0.88))] p-4 dark:bg-[linear-gradient(180deg,rgba(27,28,40,0.96),rgba(12,12,18,0.94))]">
+          <div className="flex gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#fca5a5]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#fde68a]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#86efac]" />
+          </div>
+          <div className="mt-5 h-8 rounded-md bg-[image:var(--gradient-primary)]" />
+          <div className="mt-5 grid grid-cols-[1.2fr_1fr] gap-4">
+            <div className="h-28 rounded-lg bg-[linear-gradient(135deg,rgba(139,124,255,0.24),rgba(93,174,255,0.12))]">
+              <div className="mx-auto mt-8 h-12 w-16 rounded-t-full bg-[color:var(--primary-soft)] opacity-65" />
+              <div className="mx-auto -mt-2 h-10 w-24 rounded-t-full bg-[color:var(--blue)] opacity-35" />
+            </div>
+            <div className="space-y-3">
+              <div className="h-3 w-20 rounded-full bg-[color:var(--background-secondary)]" />
+              <div className="h-3 w-28 rounded-full bg-[color:var(--background-secondary)]" />
+              <div className="h-9 w-24 rounded-lg bg-[color:var(--background-secondary)]" />
+            </div>
+          </div>
+          <div className="mt-5 grid grid-cols-3 gap-3">
+            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
+            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
+            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-export default function WebsiteDevelopmentPage() {
+export default function SeoMarketingPage() {
   const [openFaq, setOpenFaq] = useState<string | null>(null);
 
   return (
@@ -340,7 +366,7 @@ export default function WebsiteDevelopmentPage() {
             </a>
             <ChevronRight className="h-3.5 w-3.5" />
             <span className="text-[color:var(--foreground)]">
-              Website Development
+              SEO & Marketing
             </span>
           </nav>
 
@@ -352,19 +378,18 @@ export default function WebsiteDevelopmentPage() {
               </div>
 
               <h1 className="mt-6 text-[3rem] font-semibold leading-[1.04] tracking-[-0.07em] text-[color:var(--foreground)] sm:text-[4rem] lg:text-[4.5rem]">
-                Website
+                SEO &
                 <span className="block bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
-                  Development
+                  Marketing
                 </span>
               </h1>
               <p className="mt-5 max-w-[38rem] text-[17px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-                Modern, fast and scalable websites that drive results.
+                Practical SEO and marketing that drives measurable growth.
               </p>
               <p className="mt-4 max-w-[40rem] text-[15px] leading-8 text-[color:var(--muted-foreground)]">
-                We build high-performing, SEO-friendly websites that are
-                visually polished, secure and tailored to your business goals.
-                From simple business sites to advanced web applications, we have
-                you covered.
+                We improve search visibility, traffic quality and conversions
+                with clear strategy, technical SEO, analytics and practical
+                digital campaigns tailored to your business goals.
               </p>
 
               <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -412,7 +437,7 @@ export default function WebsiteDevelopmentPage() {
               </div>
             </div>
 
-            <WebsiteBanner />
+            <SeoMarketingMockup />
           </div>
         </div>
       </section>
@@ -425,12 +450,12 @@ export default function WebsiteDevelopmentPage() {
                 What We Offer
               </p>
               <h2 className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Complete Website Solutions
+                Complete SEO & Marketing Solutions
               </h2>
             </div>
             <p className="max-w-[42rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)] lg:justify-self-end">
-              We provide end-to-end web development services to help your
-              business establish a strong digital presence and grow online.
+              We provide end-to-end SEO and marketing services to help your
+              business attract qualified traffic and turn visitors into leads.
             </p>
           </div>
 
@@ -473,12 +498,11 @@ export default function WebsiteDevelopmentPage() {
               Why Choose Us
             </p>
             <h2 className="mt-3 max-w-[26rem] text-[1.8rem] font-semibold leading-[1.12] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.25rem]">
-              Websites That Perform, Convert & Scale
+              Marketing That Ranks, Converts & Scales
             </h2>
             <p className="mt-4 max-w-[29rem] text-[14px] font-medium leading-7 text-[color:var(--muted-foreground)]">
-              We combine design, technology, and strategy to deliver websites
-              that not only look great but also help you achieve real business
-              results.
+              We combine search data, content, analytics and campaign strategy
+              to deliver growth work that is practical and measurable.
             </p>
           </div>
 
@@ -518,7 +542,7 @@ export default function WebsiteDevelopmentPage() {
               </h2>
             </div>
             <p className="max-w-[40rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-              A clear, transparent process to deliver outstanding websites, on
+              A clear, transparent process to deliver focused growth work, on
               time and on budget.
             </p>
           </div>
@@ -539,7 +563,7 @@ export default function WebsiteDevelopmentPage() {
                   >
                     <Icon className="h-8 w-8" strokeWidth={2.1} />
                   </span>
-                  <div className="min-h-[124px] rounded-[1.15rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 pb-6 pt-8 text-center shadow-[0_18px_48px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
+                  <div className="flex h-[190px] flex-col items-center justify-center rounded-[1.15rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 pb-6 pt-8 text-center shadow-[0_18px_48px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
                     <h3 className="text-[1.08rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]">
                       {step.title}
                     </h3>
@@ -558,16 +582,16 @@ export default function WebsiteDevelopmentPage() {
                 Technologies We Use
               </p>
               <h2 className="mt-3 max-w-[34rem] text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Modern Technologies for Powerful Websites
+                Modern Technologies for Powerful Marketing
               </h2>
             </div>
             <p className="max-w-[40rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-              We use industry-leading technologies to build fast, secure, and
-              future-ready websites.
+              We use industry-leading tools to research, measure and improve
+              your SEO and marketing performance.
             </p>
           </div>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-5 xl:grid-cols-10">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
             {technologies.map((tech) => (
               <div
                 key={tech.label}
@@ -601,9 +625,9 @@ export default function WebsiteDevelopmentPage() {
               </h2>
             </div>
             <p className="max-w-[43rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-              Choose the perfect website package based on your business goals.
-              From startup landing pages to advanced platforms, we have you
-              covered.
+              Choose the perfect SEO and marketing package based on your
+              business goals. From foundation setup to advanced growth
+              campaigns, we have you covered.
             </p>
           </div>
 

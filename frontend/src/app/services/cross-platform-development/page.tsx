@@ -13,9 +13,11 @@ import {
   Code2,
   Crown,
   Gauge,
+  Globe2,
   Headphones,
   Lightbulb,
   LockKeyhole,
+  Layers,
   MonitorSmartphone,
   PackageCheck,
   RefreshCw,
@@ -30,64 +32,61 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import cssIcon from "@/assets/web dev images/css-3-svgrepo-com.svg";
+import capacitorIcon from "@/assets/cross platform dev images/capacitor-svgrepo-com.svg";
 import ctaImage from "@/assets/cta-image.png";
-import fastApiIcon from "@/assets/web dev images/fastapi-svgrepo-com.svg";
-import htmlIcon from "@/assets/web dev images/html-5-svgrepo-com.svg";
-import javascriptIcon from "@/assets/web dev images/javascript-svgrepo-com.svg";
-import laravelIcon from "@/assets/web dev images/laravel-svgrepo-com.svg";
-import mysqlIcon from "@/assets/web dev images/mysql-svgrepo-com.svg";
-import nextIcon from "@/assets/web dev images/next-dot-js-svgrepo-com.svg";
-import phpIcon from "@/assets/web dev images/php-svgrepo-com.svg";
-import reactIcon from "@/assets/web dev images/react-svgrepo-com.svg";
-import wordpressIcon from "@/assets/web dev images/wordpress-svgrepo-com.svg";
-import websiteBannerDark from "@/assets/website-banner-dark.png";
-import websiteBannerLight from "@/assets/website-banner-light.png";
+import dartIcon from "@/assets/cross platform dev images/dart.svg";
+import dockerIcon from "@/assets/cross platform dev images/docker2-svgrepo-com.svg";
+import expoIcon from "@/assets/cross platform dev images/expo-icon-svgrepo-com.svg";
+import firebaseIcon from "@/assets/cross platform dev images/firebase-svgrepo-com.svg";
+import flutterIcon from "@/assets/cross platform dev images/flutter-svgrepo-com.svg";
+import ionicIcon from "@/assets/cross platform dev images/ionic-icon-svgrepo-com.svg";
+import javascriptIcon from "@/assets/cross platform dev images/javascript-svgrepo-com.svg";
+import reactIcon from "@/assets/cross platform dev images/react-svgrepo-com.svg";
+import typescriptIcon from "@/assets/cross platform dev images/typescript-official-svgrepo-com.svg";
 import { SiteHeader } from "@/components/layout/site-header";
 
 const stats = [
   { value: "5+", label: "Years Experience", icon: BadgeCheck },
-  { value: "150+", label: "Websites Built", icon: MonitorSmartphone },
+  { value: "90+", label: "Products Built", icon: MonitorSmartphone },
   { value: "98%", label: "Client Satisfaction", icon: Sparkles },
   { value: "24/7", label: "Support", icon: Headphones },
 ] as const;
 
 const offers = [
   {
-    title: "Custom Website Development",
+    title: "Cross-Platform App Development",
     description:
-      "Tailored websites built from scratch to match your brand and business needs.",
-    icon: MonitorSmartphone,
+      "Build one product that works smoothly across mobile, web and desktop.",
+    icon: Layers,
     accent: "violet",
   },
   {
-    title: "Responsive Design & Mobile-First",
+    title: "Shared Codebase Architecture",
     description:
-      "Pixel-perfect designs that look and work flawlessly on all devices.",
+      "Reusable logic, components and workflows to reduce build time and cost.",
     icon: Code2,
     accent: "violet",
   },
   {
-    title: "E-Commerce Development",
+    title: "Mobile & Web UI/UX",
     description:
-      "Secure, scalable online stores with smooth shopping experiences and payment integration.",
-    icon: ShoppingCart,
+      "Consistent interfaces designed to feel native on every platform.",
+    icon: Brush,
     accent: "violet",
   },
   {
-    title: "CMS Development",
+    title: "API & Cloud Integration",
     description:
-      "Easy-to-manage websites using WordPress or custom CMS solutions.",
+      "Authentication, backend APIs, real-time data and cloud services connected.",
     icon: ShieldCheck,
     accent: "mint",
   },
   {
-    title: "Website Redesign & Revamp",
+    title: "Platform Migration & Optimization",
     description:
-      "Modernize your existing website for better performance and conversions.",
+      "Modernize existing apps into a unified, faster cross-platform product.",
     icon: RefreshCw,
     accent: "violet",
   },
@@ -95,14 +94,14 @@ const offers = [
 
 const reasons = [
   {
-    title: "SEO-Friendly",
+    title: "Multi-Platform Ready",
     description:
-      "Built with clean code and best practices for higher rankings.",
-    icon: Search,
+      "Prepared for Android, iOS, web and desktop delivery from one plan.",
+    icon: Layers,
   },
   {
-    title: "Lightning Fast",
-    description: "Optimized for speed and performance.",
+    title: "Fast Performance",
+    description: "Optimized for responsive screens and smooth interactions.",
     icon: Timer,
   },
   {
@@ -111,13 +110,13 @@ const reasons = [
     icon: LockKeyhole,
   },
   {
-    title: "Conversion Focused",
-    description: "Designed to turn visitors into customers.",
+    title: "User Focused",
+    description: "Designed around consistent user journeys across devices.",
     icon: Target,
   },
   {
-    title: "Scalable Solutions",
-    description: "Websites that grow with your business.",
+    title: "Scalable Codebase",
+    description: "Shared architecture that grows without duplicating effort.",
     icon: PackageCheck,
   },
   {
@@ -129,20 +128,20 @@ const reasons = [
 
 const processSteps = [
   {
-    title: "Discovery & Planning",
-    description: "We understand your goals, audience, and requirements.",
+    title: "Discovery & Strategy",
+    description: "We define your users, platforms, features and release plan.",
     icon: Lightbulb,
     accent: "violet",
   },
   {
     title: "Design & Prototyping",
-    description: "Wireframes and UI/UX designs for your approval.",
+    description: "Unified UI/UX flows for mobile, web and desktop experiences.",
     icon: Brush,
     accent: "violet",
   },
   {
-    title: "Development",
-    description: "Clean, scalable, and secure coding with best practices.",
+    title: "Cross-Platform Build",
+    description: "Clean shared-code development with platform-specific polish.",
     icon: Code2,
     accent: "violet",
   },
@@ -161,56 +160,57 @@ const processSteps = [
 ] as const;
 
 const technologies = [
-  { label: "HTML5", icon: htmlIcon },
-  { label: "CSS", icon: cssIcon },
+  { label: "Flutter", icon: flutterIcon },
+  { label: "Dart", icon: dartIcon },
+  { label: "React Native", icon: reactIcon },
+  { label: "Expo", icon: expoIcon },
+  { label: "Ionic", icon: ionicIcon },
+  { label: "Capacitor", icon: capacitorIcon },
+  { label: "TypeScript", icon: typescriptIcon },
   { label: "JavaScript", icon: javascriptIcon },
-  { label: "React", icon: reactIcon },
-  { label: "Next.js", icon: nextIcon },
-  { label: "WordPress", icon: wordpressIcon },
-  { label: "FastAPI", icon: fastApiIcon },
-  { label: "PHP", icon: phpIcon },
-  { label: "Laravel", icon: laravelIcon },
-  { label: "MySQL", icon: mysqlIcon },
+  { label: "Firebase", icon: firebaseIcon },
+  { label: "Docker", icon: dockerIcon },
 ] as const;
 
 const pricingPackages = [
   {
-    name: "Starter Package",
-    description: "Best for personal brands, portfolios and small businesses.",
-    price: "$149",
-    note: "Starter website package",
-    timeline: "5 - 7 days",
+    name: "Starter Cross-Platform",
+    description: "Best for MVPs and simple multi-platform products.",
+    price: "$399",
+    note: "Starter cross-platform package",
+    timeline: "2 - 3 weeks",
     action: "Get Started",
     icon: Send,
     accent: "violet",
     popular: false,
     features: [
-      "Up to 5 Pages",
-      "Responsive Design",
-      "Modern UI Design",
-      "Contact Form",
-      "Basic SEO Setup",
-      "Speed Optimization",
-      "Social Media Integration",
+      "Up to 6 Screens",
+      "Android & iOS Build",
+      "Responsive UI Design",
+      "Shared Codebase Setup",
+      "Basic Authentication",
+      "API Integration",
+      "App Testing",
       "1 Month Support",
     ],
   },
   {
-    name: "Business Package",
-    description: "Ideal for growing businesses and corporate websites.",
-    price: "$349",
-    note: "Business website package",
-    timeline: "10 - 14 days",
+    name: "Business Cross-Platform",
+    description: "Ideal for growing teams that need mobile and web support.",
+    price: "$899",
+    note: "Business cross-platform package",
+    timeline: "4 - 6 weeks",
     action: "Choose Plan",
     icon: BriefcaseBusiness,
     accent: "featured",
     popular: true,
     features: [
-      "Up to 10 Pages",
+      "Up to 14 Screens",
+      "Android, iOS & Web",
       "Custom UI/UX Design",
-      "CMS Integration",
-      "Blog System",
-      "Advanced SEO Setup",
+      "Reusable Component System",
+      "User Authentication",
+      "Admin Dashboard",
       "Analytics Integration",
       "Security Optimization",
       "Performance Optimization",
@@ -218,30 +218,30 @@ const pricingPackages = [
     ],
   },
   {
-    name: "Pro Package",
-    description: "Perfect for online stores and conversion-focused businesses.",
-    price: "$699",
-    note: "E-commerce website package",
-    timeline: "2 - 4 weeks",
-    action: "Launch Store",
-    icon: ShoppingCart,
+    name: "Pro Cross-Platform",
+    description: "Perfect for SaaS, marketplace and real-time products.",
+    price: "$1,699",
+    note: "Advanced cross-platform package",
+    timeline: "8 - 12 weeks",
+    action: "Launch Product",
+    icon: Layers,
     accent: "orange",
     popular: false,
     features: [
-      "Unlimited Products",
+      "Advanced App Features",
       "Payment Gateway",
-      "Inventory Management",
-      "Customer Dashboard",
-      "Order Management",
-      "Coupon System",
-      "Mobile Optimization",
+      "Real-Time Database",
+      "User Dashboard",
+      "Role-Based Access",
+      "Push Notifications",
+      "Platform-Specific Polish",
       "Advanced Analytics",
       "6 Months Support",
     ],
   },
   {
-    name: "Custom Package",
-    description: "For complex platforms and custom web applications.",
+    name: "Custom Platform",
+    description: "For complex ecosystems across mobile, web and desktop.",
     price: "Custom",
     note: "Custom project scope",
     timeline: "Depends on scope",
@@ -251,8 +251,8 @@ const pricingPackages = [
     popular: false,
     features: [
       "Requirement Analysis",
-      "Custom Dashboard",
-      "API Integration",
+      "Custom Platform Architecture",
+      "Advanced API Integration",
       "Database Architecture",
       "Authentication System",
       "Admin Panel",
@@ -264,14 +264,14 @@ const pricingPackages = [
 
 const faqs = [
   {
-    question: "How fast can you build my website?",
+    question: "How fast can you build my cross-platform product?",
     answer:
-      "Starter websites usually take 5 to 7 days, business websites take 10 to 14 days, and larger web applications depend on scope.",
+      "Starter cross-platform products usually take 2 to 3 weeks, business products take 4 to 6 weeks, and larger platforms depend on scope.",
   },
   {
     question: "What information do you need to start?",
     answer:
-      "We need your business goals, page list, brand assets, content, reference websites, and any required features or integrations.",
+      "We need your business goals, target platforms, feature list, brand assets, reference products, and any required integrations.",
   },
   {
     question: "Do you provide ongoing support?",
@@ -279,46 +279,76 @@ const faqs = [
       "Yes. Every package includes support, and we can also provide monthly maintenance for updates, backups, fixes, and improvements.",
   },
   {
-    question: "Will my website be SEO-friendly?",
+    question: "Can one codebase support multiple platforms?",
     answer:
-      "Yes. We build with responsive layouts, clean structure, metadata, performance basics, and SEO-friendly page foundations.",
+      "Yes. We use shared architecture where it makes sense, while still applying platform-specific polish for better user experience.",
   },
   {
     question: "Can I schedule a call before starting?",
     answer:
-      "Yes. You can book a consultation so we can understand your website goals and recommend the right package.",
+      "Yes. You can book a consultation so we can understand your platform goals and recommend the right package.",
   },
 ] as const;
 
-function WebsiteBanner() {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const bannerImage =
-    mounted && theme === "dark" ? websiteBannerDark : websiteBannerLight;
-
+function CrossPlatformMockup() {
   return (
-    <div className="relative flex items-center justify-center lg:justify-end">
-      <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--purple-glow)] blur-[120px]" />
-      <div className="relative w-full max-w-[760px]">
-        <Image
-          src={bannerImage}
-          alt="Website development banner"
-          priority
-          quality={90}
-          sizes="(min-width: 1280px) 760px, (min-width: 1024px) 58vw, 92vw"
-          className="relative z-10 h-auto w-full object-contain"
-        />
+    <div className="relative mx-auto aspect-[1.18/1] w-full max-w-[660px]">
+      <div className="absolute left-[9%] top-[7%] h-[74%] w-[76%] rounded-full bg-[color:var(--purple-glow)]" />
+      <div className="absolute right-[6%] top-[9%] h-5 w-5 rounded-full bg-[linear-gradient(135deg,#fff,#ff9f5a)] shadow-[0_10px_24px_rgba(255,159,90,0.35)]" />
+      <div className="absolute left-[15%] top-[5%] h-10 w-10 rounded-full bg-[linear-gradient(135deg,#a78bfa,#6c63ff)] shadow-[0_16px_36px_rgba(108,99,255,0.35)]" />
+      <div className="absolute right-[11%] bottom-[19%] h-20 w-20 rounded-[1.6rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] backdrop-blur-xl">
+        <div className="flex h-full items-center justify-center text-[color:var(--primary)]">
+          <Globe2 className="h-9 w-9" strokeWidth={2.1} />
+        </div>
+      </div>
+      <div className="absolute left-[7%] top-[24%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--primary)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
+        <Code2 className="h-8 w-8" strokeWidth={2.2} />
+      </div>
+      <div className="absolute left-[1%] top-[47%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--blue)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
+        <Gauge className="h-8 w-8" strokeWidth={2.2} />
+      </div>
+      <div className="absolute bottom-[7%] right-[2%] z-20 h-20 w-20 rounded-[1.5rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
+        <div className="absolute left-6 top-6 h-8 w-4 rounded-full bg-[color:var(--mint)]" />
+        <div className="absolute bottom-4 left-4 h-9 w-9 rounded-full border-[10px] border-[color:var(--primary-soft)]" />
+      </div>
+      <div className="absolute bottom-[2%] right-[22%] h-16 w-16 rounded-[1.25rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
+        <div className="mx-auto mt-4 h-9 w-3 rounded-full bg-[color:var(--mint)]" />
+        <div className="absolute left-5 top-8 h-4 w-8 -rotate-45 rounded-full bg-[color:var(--orange)]" />
+      </div>
+
+      <div className="absolute bottom-[13%] left-[20%] z-10 h-[16%] w-[58%] -skew-x-12 rounded-b-[1rem] bg-[linear-gradient(180deg,#d7dbe7,#9ca3af)] shadow-[0_26px_42px_rgba(15,23,42,0.2)]" />
+      <div className="absolute bottom-[21%] left-[27%] z-20 h-[3%] w-[40%] rounded-full bg-[linear-gradient(90deg,#6b7280,#d1d5db,#4b5563)]" />
+      <div className="absolute left-[22%] top-[13%] z-30 h-[62%] w-[62%] rotate-[5deg] rounded-[1rem] border-[10px] border-[#262b36] bg-[color:var(--card-solid)] shadow-[0_34px_80px_rgba(15,23,42,0.28)] dark:bg-[#151722]">
+        <div className="h-full rounded-[0.45rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(245,247,255,0.88))] p-4 dark:bg-[linear-gradient(180deg,rgba(27,28,40,0.96),rgba(12,12,18,0.94))]">
+          <div className="flex gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#fca5a5]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#fde68a]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#86efac]" />
+          </div>
+          <div className="mt-5 h-8 rounded-md bg-[image:var(--gradient-primary)]" />
+          <div className="mt-5 grid grid-cols-[1.2fr_1fr] gap-4">
+            <div className="h-28 rounded-lg bg-[linear-gradient(135deg,rgba(139,124,255,0.24),rgba(93,174,255,0.12))]">
+              <div className="mx-auto mt-8 h-12 w-16 rounded-t-full bg-[color:var(--primary-soft)] opacity-65" />
+              <div className="mx-auto -mt-2 h-10 w-24 rounded-t-full bg-[color:var(--blue)] opacity-35" />
+            </div>
+            <div className="space-y-3">
+              <div className="h-3 w-20 rounded-full bg-[color:var(--background-secondary)]" />
+              <div className="h-3 w-28 rounded-full bg-[color:var(--background-secondary)]" />
+              <div className="h-9 w-24 rounded-lg bg-[color:var(--background-secondary)]" />
+            </div>
+          </div>
+          <div className="mt-5 grid grid-cols-3 gap-3">
+            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
+            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
+            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-export default function WebsiteDevelopmentPage() {
+export default function CrossPlatformDevelopmentPage() {
   const [openFaq, setOpenFaq] = useState<string | null>(null);
 
   return (
@@ -340,7 +370,7 @@ export default function WebsiteDevelopmentPage() {
             </a>
             <ChevronRight className="h-3.5 w-3.5" />
             <span className="text-[color:var(--foreground)]">
-              Website Development
+              Cross Platform Development
             </span>
           </nav>
 
@@ -352,19 +382,18 @@ export default function WebsiteDevelopmentPage() {
               </div>
 
               <h1 className="mt-6 text-[3rem] font-semibold leading-[1.04] tracking-[-0.07em] text-[color:var(--foreground)] sm:text-[4rem] lg:text-[4.5rem]">
-                Website
+                Cross Platform
                 <span className="block bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
                   Development
                 </span>
               </h1>
               <p className="mt-5 max-w-[38rem] text-[17px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-                Modern, fast and scalable websites that drive results.
+                Modern, fast and scalable products for every platform.
               </p>
               <p className="mt-4 max-w-[40rem] text-[15px] leading-8 text-[color:var(--muted-foreground)]">
-                We build high-performing, SEO-friendly websites that are
-                visually polished, secure and tailored to your business goals.
-                From simple business sites to advanced web applications, we have
-                you covered.
+                We build polished cross-platform apps that work across mobile,
+                web and desktop while staying secure, scalable and aligned with
+                your business goals.
               </p>
 
               <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -412,7 +441,7 @@ export default function WebsiteDevelopmentPage() {
               </div>
             </div>
 
-            <WebsiteBanner />
+            <CrossPlatformMockup />
           </div>
         </div>
       </section>
@@ -425,12 +454,13 @@ export default function WebsiteDevelopmentPage() {
                 What We Offer
               </p>
               <h2 className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Complete Website Solutions
+                Complete Cross Platform Solutions
               </h2>
             </div>
             <p className="max-w-[42rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)] lg:justify-self-end">
-              We provide end-to-end web development services to help your
-              business establish a strong digital presence and grow online.
+              We provide end-to-end cross-platform development services to help
+              your business reach users across devices with one cohesive
+              product.
             </p>
           </div>
 
@@ -473,12 +503,11 @@ export default function WebsiteDevelopmentPage() {
               Why Choose Us
             </p>
             <h2 className="mt-3 max-w-[26rem] text-[1.8rem] font-semibold leading-[1.12] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.25rem]">
-              Websites That Perform, Convert & Scale
+              Products That Perform, Engage & Scale
             </h2>
             <p className="mt-4 max-w-[29rem] text-[14px] font-medium leading-7 text-[color:var(--muted-foreground)]">
-              We combine design, technology, and strategy to deliver websites
-              that not only look great but also help you achieve real business
-              results.
+              We combine design, technology, and strategy to deliver products
+              that feel consistent across platforms and support business growth.
             </p>
           </div>
 
@@ -518,7 +547,7 @@ export default function WebsiteDevelopmentPage() {
               </h2>
             </div>
             <p className="max-w-[40rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-              A clear, transparent process to deliver outstanding websites, on
+              A clear, transparent process to deliver outstanding products, on
               time and on budget.
             </p>
           </div>
@@ -539,7 +568,7 @@ export default function WebsiteDevelopmentPage() {
                   >
                     <Icon className="h-8 w-8" strokeWidth={2.1} />
                   </span>
-                  <div className="min-h-[124px] rounded-[1.15rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 pb-6 pt-8 text-center shadow-[0_18px_48px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
+                  <div className="flex h-[190px] flex-col items-center justify-center rounded-[1.15rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 pb-6 pt-8 text-center shadow-[0_18px_48px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
                     <h3 className="text-[1.08rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]">
                       {step.title}
                     </h3>
@@ -558,12 +587,12 @@ export default function WebsiteDevelopmentPage() {
                 Technologies We Use
               </p>
               <h2 className="mt-3 max-w-[34rem] text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Modern Technologies for Powerful Websites
+                Modern Technologies for Powerful Platforms
               </h2>
             </div>
             <p className="max-w-[40rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
               We use industry-leading technologies to build fast, secure, and
-              future-ready websites.
+              future-ready cross-platform products.
             </p>
           </div>
 
@@ -601,9 +630,8 @@ export default function WebsiteDevelopmentPage() {
               </h2>
             </div>
             <p className="max-w-[43rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-              Choose the perfect website package based on your business goals.
-              From startup landing pages to advanced platforms, we have you
-              covered.
+              Choose the perfect cross-platform package based on your business
+              goals. From MVPs to advanced platforms, we have you covered.
             </p>
           </div>
 

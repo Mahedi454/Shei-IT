@@ -13,9 +13,11 @@ import {
   Code2,
   Crown,
   Gauge,
+  Globe2,
   Headphones,
   Lightbulb,
   LockKeyhole,
+  MonitorCog,
   MonitorSmartphone,
   PackageCheck,
   RefreshCw,
@@ -27,67 +29,61 @@ import {
   Sparkles,
   Target,
   Timer,
+  Wrench,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import cssIcon from "@/assets/web dev images/css-3-svgrepo-com.svg";
 import ctaImage from "@/assets/cta-image.png";
-import fastApiIcon from "@/assets/web dev images/fastapi-svgrepo-com.svg";
-import htmlIcon from "@/assets/web dev images/html-5-svgrepo-com.svg";
-import javascriptIcon from "@/assets/web dev images/javascript-svgrepo-com.svg";
-import laravelIcon from "@/assets/web dev images/laravel-svgrepo-com.svg";
-import mysqlIcon from "@/assets/web dev images/mysql-svgrepo-com.svg";
-import nextIcon from "@/assets/web dev images/next-dot-js-svgrepo-com.svg";
-import phpIcon from "@/assets/web dev images/php-svgrepo-com.svg";
-import reactIcon from "@/assets/web dev images/react-svgrepo-com.svg";
-import wordpressIcon from "@/assets/web dev images/wordpress-svgrepo-com.svg";
-import websiteBannerDark from "@/assets/website-banner-dark.png";
-import websiteBannerLight from "@/assets/website-banner-light.png";
+import dockerIcon from "@/assets/maintaince support images/docker2-svgrepo-com.svg";
+import githubIcon from "@/assets/maintaince support images/github-142-svgrepo-com.svg";
+import grafanaIcon from "@/assets/maintaince support images/grafana-svgrepo-com.svg";
+import jiraIcon from "@/assets/maintaince support images/jira-svgrepo-com.svg";
+import sentryIcon from "@/assets/maintaince support images/sentry-svgrepo-com.svg";
+import uptimeRobotIcon from "@/assets/maintaince support images/uptimerobot-svgrepo-com.svg";
 import { SiteHeader } from "@/components/layout/site-header";
 
 const stats = [
   { value: "5+", label: "Years Experience", icon: BadgeCheck },
-  { value: "150+", label: "Websites Built", icon: MonitorSmartphone },
+  { value: "100+", label: "Systems Supported", icon: MonitorCog },
   { value: "98%", label: "Client Satisfaction", icon: Sparkles },
   { value: "24/7", label: "Support", icon: Headphones },
 ] as const;
 
 const offers = [
   {
-    title: "Custom Website Development",
+    title: "Website & App Maintenance",
     description:
-      "Tailored websites built from scratch to match your brand and business needs.",
-    icon: MonitorSmartphone,
+      "Regular updates, fixes and improvements for websites and applications.",
+    icon: Wrench,
     accent: "violet",
   },
   {
-    title: "Responsive Design & Mobile-First",
+    title: "Bug Fixing & Troubleshooting",
     description:
-      "Pixel-perfect designs that look and work flawlessly on all devices.",
+      "Find and fix issues quickly so your digital products keep working.",
     icon: Code2,
     accent: "violet",
   },
   {
-    title: "E-Commerce Development",
+    title: "Monitoring & Uptime",
     description:
-      "Secure, scalable online stores with smooth shopping experiences and payment integration.",
-    icon: ShoppingCart,
+      "Track uptime, errors and performance before small issues become big problems.",
+    icon: Gauge,
     accent: "violet",
   },
   {
-    title: "CMS Development",
+    title: "Security Updates",
     description:
-      "Easy-to-manage websites using WordPress or custom CMS solutions.",
+      "Patch dependencies, improve protection and keep your systems safer.",
     icon: ShieldCheck,
     accent: "mint",
   },
   {
-    title: "Website Redesign & Revamp",
+    title: "Performance Improvements",
     description:
-      "Modernize your existing website for better performance and conversions.",
+      "Optimize speed, stability and user experience through ongoing improvements.",
     icon: RefreshCw,
     accent: "violet",
   },
@@ -95,14 +91,14 @@ const offers = [
 
 const reasons = [
   {
-    title: "SEO-Friendly",
+    title: "Reliable Uptime",
     description:
-      "Built with clean code and best practices for higher rankings.",
-    icon: Search,
+      "Monitoring and maintenance that help keep services available.",
+    icon: Gauge,
   },
   {
-    title: "Lightning Fast",
-    description: "Optimized for speed and performance.",
+    title: "Fast Fixes",
+    description: "Quick troubleshooting for bugs, errors and broken workflows.",
     icon: Timer,
   },
   {
@@ -111,13 +107,13 @@ const reasons = [
     icon: LockKeyhole,
   },
   {
-    title: "Conversion Focused",
-    description: "Designed to turn visitors into customers.",
+    title: "Business Continuity",
+    description: "Support plans designed to reduce downtime and disruption.",
     icon: Target,
   },
   {
-    title: "Scalable Solutions",
-    description: "Websites that grow with your business.",
+    title: "Continuous Improvement",
+    description: "Ongoing enhancements that help your product stay useful.",
     icon: PackageCheck,
   },
   {
@@ -129,119 +125,115 @@ const reasons = [
 
 const processSteps = [
   {
-    title: "Discovery & Planning",
-    description: "We understand your goals, audience, and requirements.",
+    title: "Audit & Handover",
+    description: "We review your product, access, issues and support needs.",
     icon: Lightbulb,
     accent: "violet",
   },
   {
-    title: "Design & Prototyping",
-    description: "Wireframes and UI/UX designs for your approval.",
-    icon: Brush,
+    title: "Monitoring Setup",
+    description: "We configure uptime, error and performance monitoring.",
+    icon: Gauge,
     accent: "violet",
   },
   {
-    title: "Development",
-    description: "Clean, scalable, and secure coding with best practices.",
+    title: "Fixes & Updates",
+    description: "We handle bugs, patches, content updates and improvements.",
     icon: Code2,
     accent: "violet",
   },
   {
     title: "Testing & QA",
-    description: "Thorough testing for bugs, speed, and security.",
+    description: "Thorough testing after fixes, updates and maintenance work.",
     icon: ShieldCheck,
     accent: "mint",
   },
   {
-    title: "Launch & Support",
-    description: "On-time launch and ongoing maintenance.",
+    title: "Report & Improve",
+    description: "We share updates, status and recommendations for next steps.",
     icon: Rocket,
     accent: "violet",
   },
 ] as const;
 
 const technologies = [
-  { label: "HTML5", icon: htmlIcon },
-  { label: "CSS", icon: cssIcon },
-  { label: "JavaScript", icon: javascriptIcon },
-  { label: "React", icon: reactIcon },
-  { label: "Next.js", icon: nextIcon },
-  { label: "WordPress", icon: wordpressIcon },
-  { label: "FastAPI", icon: fastApiIcon },
-  { label: "PHP", icon: phpIcon },
-  { label: "Laravel", icon: laravelIcon },
-  { label: "MySQL", icon: mysqlIcon },
+  { label: "GitHub", icon: githubIcon },
+  { label: "Sentry", icon: sentryIcon },
+  { label: "Grafana", icon: grafanaIcon },
+  { label: "Jira", icon: jiraIcon },
+  { label: "UptimeRobot", icon: uptimeRobotIcon },
+  { label: "Docker", icon: dockerIcon },
 ] as const;
 
 const pricingPackages = [
   {
-    name: "Starter Package",
-    description: "Best for personal brands, portfolios and small businesses.",
-    price: "$149",
-    note: "Starter website package",
-    timeline: "5 - 7 days",
+    name: "Starter Support",
+    description: "Best for small websites that need light monthly support.",
+    price: "$99",
+    note: "Starter maintenance package",
+    timeline: "Monthly support",
     action: "Get Started",
     icon: Send,
     accent: "violet",
     popular: false,
     features: [
-      "Up to 5 Pages",
-      "Responsive Design",
-      "Modern UI Design",
-      "Contact Form",
-      "Basic SEO Setup",
-      "Speed Optimization",
-      "Social Media Integration",
+      "Monthly Health Check",
+      "Basic Bug Fixes",
+      "Content Updates",
+      "Plugin or Dependency Review",
+      "Backup Check",
+      "Basic Uptime Monitoring",
+      "Email Support",
       "1 Month Support",
     ],
   },
   {
-    name: "Business Package",
-    description: "Ideal for growing businesses and corporate websites.",
-    price: "$349",
-    note: "Business website package",
-    timeline: "10 - 14 days",
+    name: "Business Support",
+    description: "Ideal for active business sites, apps and dashboards.",
+    price: "$249",
+    note: "Business maintenance package",
+    timeline: "Monthly support",
     action: "Choose Plan",
     icon: BriefcaseBusiness,
     accent: "featured",
     popular: true,
     features: [
-      "Up to 10 Pages",
-      "Custom UI/UX Design",
-      "CMS Integration",
-      "Blog System",
-      "Advanced SEO Setup",
-      "Analytics Integration",
-      "Security Optimization",
-      "Performance Optimization",
+      "Priority Bug Fixing",
+      "Security Updates",
+      "Uptime Monitoring",
+      "Error Tracking",
+      "Performance Review",
+      "Monthly Report",
+      "Content & Feature Updates",
+      "Backup Verification",
       "3 Months Support",
     ],
   },
   {
-    name: "Pro Package",
-    description: "Perfect for online stores and conversion-focused businesses.",
-    price: "$699",
-    note: "E-commerce website package",
-    timeline: "2 - 4 weeks",
-    action: "Launch Store",
-    icon: ShoppingCart,
+    name: "Pro Support",
+    description: "Perfect for stores, SaaS products and critical workflows.",
+    price: "$499",
+    note: "Advanced maintenance package",
+    timeline: "Monthly support",
+    action: "Protect Product",
+    icon: MonitorCog,
     accent: "orange",
     popular: false,
     features: [
-      "Unlimited Products",
-      "Payment Gateway",
-      "Inventory Management",
-      "Customer Dashboard",
-      "Order Management",
-      "Coupon System",
-      "Mobile Optimization",
-      "Advanced Analytics",
+      "Advanced Monitoring",
+      "Priority Response",
+      "Incident Support",
+      "Dependency Updates",
+      "Database Backup Checks",
+      "Performance Optimization",
+      "Release Support",
+      "Technical Recommendations",
       "6 Months Support",
     ],
   },
   {
-    name: "Custom Package",
-    description: "For complex platforms and custom web applications.",
+    name: "Custom Support",
+    description: "For complex platforms that need dedicated technical support.",
     price: "Custom",
     note: "Custom project scope",
     timeline: "Depends on scope",
@@ -251,74 +243,105 @@ const pricingPackages = [
     popular: false,
     features: [
       "Requirement Analysis",
-      "Custom Dashboard",
-      "API Integration",
-      "Database Architecture",
-      "Authentication System",
-      "Admin Panel",
-      "Scalability Planning",
-      "Maintenance Plan",
+      "Dedicated Support Plan",
+      "Custom SLA",
+      "Infrastructure Monitoring",
+      "Incident Response Workflow",
+      "Security Maintenance",
+      "Release Management",
+      "Scalability Review",
+      "Maintenance Roadmap",
     ],
   },
 ] as const;
 
 const faqs = [
   {
-    question: "How fast can you build my website?",
+    question: "How fast can you start support?",
     answer:
-      "Starter websites usually take 5 to 7 days, business websites take 10 to 14 days, and larger web applications depend on scope.",
+      "We can usually begin after a short audit and access handover. Simple support setups can start within 1 to 2 business days.",
   },
   {
     question: "What information do you need to start?",
     answer:
-      "We need your business goals, page list, brand assets, content, reference websites, and any required features or integrations.",
+      "We need access to your website or app, hosting, repository, admin panel, current issue list, and any backup or monitoring tools.",
   },
   {
     question: "Do you provide ongoing support?",
     answer:
-      "Yes. Every package includes support, and we can also provide monthly maintenance for updates, backups, fixes, and improvements.",
+      "Yes. Maintenance & Support is built for ongoing help, including updates, fixes, monitoring, reports and improvements.",
   },
   {
-    question: "Will my website be SEO-friendly?",
+    question: "Can you fix urgent issues?",
     answer:
-      "Yes. We build with responsive layouts, clean structure, metadata, performance basics, and SEO-friendly page foundations.",
+      "Yes. We can help with urgent bugs, downtime, broken features and release issues depending on the support plan and access.",
   },
   {
     question: "Can I schedule a call before starting?",
     answer:
-      "Yes. You can book a consultation so we can understand your website goals and recommend the right package.",
+      "Yes. You can book a consultation so we can understand your support needs and recommend the right package.",
   },
 ] as const;
 
-function WebsiteBanner() {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const bannerImage =
-    mounted && theme === "dark" ? websiteBannerDark : websiteBannerLight;
-
+function MaintenanceSupportMockup() {
   return (
-    <div className="relative flex items-center justify-center lg:justify-end">
-      <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--purple-glow)] blur-[120px]" />
-      <div className="relative w-full max-w-[760px]">
-        <Image
-          src={bannerImage}
-          alt="Website development banner"
-          priority
-          quality={90}
-          sizes="(min-width: 1280px) 760px, (min-width: 1024px) 58vw, 92vw"
-          className="relative z-10 h-auto w-full object-contain"
-        />
+    <div className="relative mx-auto aspect-[1.18/1] w-full max-w-[660px]">
+      <div className="absolute left-[9%] top-[7%] h-[74%] w-[76%] rounded-full bg-[color:var(--purple-glow)]" />
+      <div className="absolute right-[6%] top-[9%] h-5 w-5 rounded-full bg-[linear-gradient(135deg,#fff,#ff9f5a)] shadow-[0_10px_24px_rgba(255,159,90,0.35)]" />
+      <div className="absolute left-[15%] top-[5%] h-10 w-10 rounded-full bg-[linear-gradient(135deg,#a78bfa,#6c63ff)] shadow-[0_16px_36px_rgba(108,99,255,0.35)]" />
+      <div className="absolute right-[11%] bottom-[19%] h-20 w-20 rounded-[1.6rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] backdrop-blur-xl">
+        <div className="flex h-full items-center justify-center text-[color:var(--primary)]">
+          <Globe2 className="h-9 w-9" strokeWidth={2.1} />
+        </div>
+      </div>
+      <div className="absolute left-[7%] top-[24%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--primary)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
+        <Code2 className="h-8 w-8" strokeWidth={2.2} />
+      </div>
+      <div className="absolute left-[1%] top-[47%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--blue)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
+        <Gauge className="h-8 w-8" strokeWidth={2.2} />
+      </div>
+      <div className="absolute bottom-[7%] right-[2%] z-20 h-20 w-20 rounded-[1.5rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
+        <div className="absolute left-6 top-6 h-8 w-4 rounded-full bg-[color:var(--mint)]" />
+        <div className="absolute bottom-4 left-4 h-9 w-9 rounded-full border-[10px] border-[color:var(--primary-soft)]" />
+      </div>
+      <div className="absolute bottom-[2%] right-[22%] h-16 w-16 rounded-[1.25rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
+        <div className="mx-auto mt-4 h-9 w-3 rounded-full bg-[color:var(--mint)]" />
+        <div className="absolute left-5 top-8 h-4 w-8 -rotate-45 rounded-full bg-[color:var(--orange)]" />
+      </div>
+
+      <div className="absolute bottom-[13%] left-[20%] z-10 h-[16%] w-[58%] -skew-x-12 rounded-b-[1rem] bg-[linear-gradient(180deg,#d7dbe7,#9ca3af)] shadow-[0_26px_42px_rgba(15,23,42,0.2)]" />
+      <div className="absolute bottom-[21%] left-[27%] z-20 h-[3%] w-[40%] rounded-full bg-[linear-gradient(90deg,#6b7280,#d1d5db,#4b5563)]" />
+      <div className="absolute left-[22%] top-[13%] z-30 h-[62%] w-[62%] rotate-[5deg] rounded-[1rem] border-[10px] border-[#262b36] bg-[color:var(--card-solid)] shadow-[0_34px_80px_rgba(15,23,42,0.28)] dark:bg-[#151722]">
+        <div className="h-full rounded-[0.45rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(245,247,255,0.88))] p-4 dark:bg-[linear-gradient(180deg,rgba(27,28,40,0.96),rgba(12,12,18,0.94))]">
+          <div className="flex gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#fca5a5]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#fde68a]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#86efac]" />
+          </div>
+          <div className="mt-5 h-8 rounded-md bg-[image:var(--gradient-primary)]" />
+          <div className="mt-5 grid grid-cols-[1.2fr_1fr] gap-4">
+            <div className="h-28 rounded-lg bg-[linear-gradient(135deg,rgba(139,124,255,0.24),rgba(93,174,255,0.12))]">
+              <div className="mx-auto mt-8 h-12 w-16 rounded-t-full bg-[color:var(--primary-soft)] opacity-65" />
+              <div className="mx-auto -mt-2 h-10 w-24 rounded-t-full bg-[color:var(--blue)] opacity-35" />
+            </div>
+            <div className="space-y-3">
+              <div className="h-3 w-20 rounded-full bg-[color:var(--background-secondary)]" />
+              <div className="h-3 w-28 rounded-full bg-[color:var(--background-secondary)]" />
+              <div className="h-9 w-24 rounded-lg bg-[color:var(--background-secondary)]" />
+            </div>
+          </div>
+          <div className="mt-5 grid grid-cols-3 gap-3">
+            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
+            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
+            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-export default function WebsiteDevelopmentPage() {
+export default function MaintenanceSupportPage() {
   const [openFaq, setOpenFaq] = useState<string | null>(null);
 
   return (
@@ -340,7 +363,7 @@ export default function WebsiteDevelopmentPage() {
             </a>
             <ChevronRight className="h-3.5 w-3.5" />
             <span className="text-[color:var(--foreground)]">
-              Website Development
+              Maintenance & Support
             </span>
           </nav>
 
@@ -352,19 +375,18 @@ export default function WebsiteDevelopmentPage() {
               </div>
 
               <h1 className="mt-6 text-[3rem] font-semibold leading-[1.04] tracking-[-0.07em] text-[color:var(--foreground)] sm:text-[4rem] lg:text-[4.5rem]">
-                Website
+                Maintenance &
                 <span className="block bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
-                  Development
+                  Support
                 </span>
               </h1>
               <p className="mt-5 max-w-[38rem] text-[17px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-                Modern, fast and scalable websites that drive results.
+                Reliable technical support that keeps your product running.
               </p>
               <p className="mt-4 max-w-[40rem] text-[15px] leading-8 text-[color:var(--muted-foreground)]">
-                We build high-performing, SEO-friendly websites that are
-                visually polished, secure and tailored to your business goals.
-                From simple business sites to advanced web applications, we have
-                you covered.
+                We maintain websites, apps and digital systems with updates,
+                fixes, monitoring and continuous improvements tailored to your
+                business needs.
               </p>
 
               <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -412,7 +434,7 @@ export default function WebsiteDevelopmentPage() {
               </div>
             </div>
 
-            <WebsiteBanner />
+            <MaintenanceSupportMockup />
           </div>
         </div>
       </section>
@@ -425,12 +447,12 @@ export default function WebsiteDevelopmentPage() {
                 What We Offer
               </p>
               <h2 className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Complete Website Solutions
+                Complete Maintenance & Support Solutions
               </h2>
             </div>
             <p className="max-w-[42rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)] lg:justify-self-end">
-              We provide end-to-end web development services to help your
-              business establish a strong digital presence and grow online.
+              We provide end-to-end maintenance and support services to keep
+              your digital products stable, secure and improving over time.
             </p>
           </div>
 
@@ -473,12 +495,11 @@ export default function WebsiteDevelopmentPage() {
               Why Choose Us
             </p>
             <h2 className="mt-3 max-w-[26rem] text-[1.8rem] font-semibold leading-[1.12] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.25rem]">
-              Websites That Perform, Convert & Scale
+              Support That Protects, Improves & Scales
             </h2>
             <p className="mt-4 max-w-[29rem] text-[14px] font-medium leading-7 text-[color:var(--muted-foreground)]">
-              We combine design, technology, and strategy to deliver websites
-              that not only look great but also help you achieve real business
-              results.
+              We combine monitoring, maintenance, security and technical
+              guidance to reduce downtime and keep your product healthy.
             </p>
           </div>
 
@@ -518,7 +539,7 @@ export default function WebsiteDevelopmentPage() {
               </h2>
             </div>
             <p className="max-w-[40rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-              A clear, transparent process to deliver outstanding websites, on
+              A clear, transparent process to deliver dependable support, on
               time and on budget.
             </p>
           </div>
@@ -539,7 +560,7 @@ export default function WebsiteDevelopmentPage() {
                   >
                     <Icon className="h-8 w-8" strokeWidth={2.1} />
                   </span>
-                  <div className="min-h-[124px] rounded-[1.15rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 pb-6 pt-8 text-center shadow-[0_18px_48px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
+                  <div className="flex h-[190px] flex-col items-center justify-center rounded-[1.15rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 pb-6 pt-8 text-center shadow-[0_18px_48px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
                     <h3 className="text-[1.08rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]">
                       {step.title}
                     </h3>
@@ -558,16 +579,16 @@ export default function WebsiteDevelopmentPage() {
                 Technologies We Use
               </p>
               <h2 className="mt-3 max-w-[34rem] text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Modern Technologies for Powerful Websites
+                Modern Technologies for Powerful Support
               </h2>
             </div>
             <p className="max-w-[40rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-              We use industry-leading technologies to build fast, secure, and
-              future-ready websites.
+              We use industry-leading tools to monitor, debug, manage and
+              improve your digital products.
             </p>
           </div>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-5 xl:grid-cols-10">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
             {technologies.map((tech) => (
               <div
                 key={tech.label}
@@ -601,9 +622,9 @@ export default function WebsiteDevelopmentPage() {
               </h2>
             </div>
             <p className="max-w-[43rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
-              Choose the perfect website package based on your business goals.
-              From startup landing pages to advanced platforms, we have you
-              covered.
+              Choose the perfect maintenance package based on your business
+              needs. From light updates to dedicated product support, we have
+              you covered.
             </p>
           </div>
 
