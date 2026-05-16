@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import { aboutpageBannerDark, aboutpageBannerLight } from "@/assets";
+import { useTheme } from "@/components/providers/theme-provider";
 
 export function AboutHero() {
   const { theme } = useTheme();

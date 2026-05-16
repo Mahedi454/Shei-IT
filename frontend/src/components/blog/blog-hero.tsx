@@ -11,10 +11,10 @@ import {
   Sparkles,
   TrendingUp,
 } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import { blogpageBannerDark, blogpageBannerLight } from "@/assets";
+import { useTheme } from "@/components/providers/theme-provider";
 
 const topics = [
   { label: "All Topics", icon: Sparkles, active: true },

@@ -1,9 +1,9 @@
 "use client";
 
 import { MoonStar, SunMedium } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
+import { useTheme } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
 
 export function ThemeToggle() {

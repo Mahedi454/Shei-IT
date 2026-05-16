@@ -4,27 +4,11 @@ import admin from "firebase-admin";
 import { env } from "./env";
 
 const getServiceAccount = () => {
-  if (env.FIREBASE_SERVICE_ACCOUNT_JSON) {
-    return JSON.parse(env.FIREBASE_SERVICE_ACCOUNT_JSON);
+  if (!env.FIREBASE_SERVICE_ACCOUNT) {
+    return null;
   }
 
-  if (env.FIREBASE_SERVICE_ACCOUNT_PATH) {
-    return JSON.parse(fs.readFileSync(env.FIREBASE_SERVICE_ACCOUNT_PATH, "utf8"));
-  }
-
-  if (
-    env.FIREBASE_PROJECT_ID &&
-    env.FIREBASE_CLIENT_EMAIL &&
-    env.FIREBASE_PRIVATE_KEY
-  ) {
-    return {
-      projectId: env.FIREBASE_PROJECT_ID,
-      clientEmail: env.FIREBASE_CLIENT_EMAIL,
-      privateKey: env.FIREBASE_PRIVATE_KEY,
-    };
-  }
-
-  return null;
+  return JSON.parse(fs.readFileSync(env.FIREBASE_SERVICE_ACCOUNT, "utf8"));
 };
 
 export const getFirebaseAdmin = () => {

@@ -9,10 +9,10 @@ import {
   ShieldCheck,
   UserRound,
 } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import { contactpageBannerDark, contactpageBannerLight } from "@/assets";
+import { useTheme } from "@/components/providers/theme-provider";
 
 const trustItems = [
   {

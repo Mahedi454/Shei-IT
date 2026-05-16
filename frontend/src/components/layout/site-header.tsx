@@ -11,8 +11,8 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 bg-[rgba(255,255,255,0.15)] dark:bg-[rgba(0,0,0,0.15)]">
-      <div className="mx-auto flex w-11/12 max-w-[1440px] items-center justify-between gap-4 py-3.5 backdrop-blur-[1.25px] lg:py-4">
+    <header className="sticky top-0 z-50 bg-[rgba(255,255,255,0.22)] dark:bg-[rgba(0,0,0,0.24)]">
+      <div className="mx-auto flex w-11/12 max-w-[1440px] items-center justify-between gap-4 py-3 backdrop-blur-[1.25px] lg:py-3.5">
         <a href="/" className="shrink-0">
           <Logo
             priority
@@ -30,7 +30,7 @@ export function SiteHeader() {
                 key={link.label}
                 href={link.href}
                 className={cn(
-                  "relative rounded-full px-5 py-1.5 text-[12px] font-medium tracking-tight transition-colors",
+                  "relative rounded-full px-5 py-1.25 text-[12px] font-medium tracking-tight transition-colors",
                   isActive
                     ? "bg-[color:var(--nav-active)] text-[color:var(--foreground)] shadow-[0_6px_16px_rgba(108,99,255,0.08)]"
                     : "text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)]",
@@ -45,7 +45,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-2.5">
           <a
             href="/contact"
-            className="hidden items-center rounded-full bg-[color:var(--talk-bg)] px-5 py-2 text-[12px] font-semibold text-[color:var(--talk-fg)] shadow-[0_12px_24px_rgba(15,23,42,0.1)] transition-transform hover:-translate-y-0.5 md:inline-flex"
+            className="hidden items-center rounded-full bg-[color:var(--talk-bg)] px-5 py-1.75 text-[12px] font-semibold text-[color:var(--talk-fg)] shadow-[0_12px_24px_rgba(15,23,42,0.1)] transition-transform hover:-translate-y-0.5 md:inline-flex"
           >
             Let&apos;s Talk
           </a>

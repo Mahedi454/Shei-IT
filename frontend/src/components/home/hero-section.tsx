@@ -9,10 +9,10 @@ import {
   Headset,
   Sparkles,
 } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import { homepageBannerDark, homepageBannerLight } from "@/assets";
+import { useTheme } from "@/components/providers/theme-provider";
 import { siteConfig } from "@/config/site";
 
 const avatarColors = [

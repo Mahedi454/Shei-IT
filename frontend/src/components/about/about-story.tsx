@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { Compass, Eye, ShieldCheck } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import { ourStoryBannerDark, ourStoryBannerLight } from "@/assets";
+import { useTheme } from "@/components/providers/theme-provider";
 
 const storyCards = [
   {

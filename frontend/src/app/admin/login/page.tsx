@@ -2,7 +2,7 @@
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 import { firebaseAuth, isFirebaseConfigured } from "@/lib/firebase";
 
@@ -12,6 +12,11 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -45,7 +50,7 @@ export default function AdminLoginPage() {
           This page is unlisted and protected by Firebase plus backend admin checks.
         </p>
 
-        {!isFirebaseConfigured ? (
+        {mounted && !isFirebaseConfigured ? (
           <p className="mt-5 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-[14px] text-red-500">
             Firebase config is missing. Add the required frontend environment variables.
           </p>
@@ -72,7 +77,7 @@ export default function AdminLoginPage() {
 
         <button
           type="submit"
-          disabled={loading || !isFirebaseConfigured}
+          disabled={loading || (mounted && !isFirebaseConfigured)}
           className="mt-6 w-full rounded-xl bg-[color:var(--primary)] px-5 py-3 text-[15px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? "Signing in..." : "Login"}

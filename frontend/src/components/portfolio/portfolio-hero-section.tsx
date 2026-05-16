@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { BadgeCheck } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import portfolioHeroDark from "@/assets/portfolio-hero-dark.png";
 import portfolioHeroLight from "@/assets/portfolio-hero-light.png";
+import { useTheme } from "@/components/providers/theme-provider";
 import { portfolioSection } from "@/config/site";
 
 export function PortfolioHeroSection() {
