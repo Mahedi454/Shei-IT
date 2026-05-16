@@ -1,129 +1,112 @@
+"use client";
+
 import {
   ArrowRight,
   BadgeCheck,
   BookOpenCheck,
-  ChevronDown,
-  Cloud,
-  Code2,
+  CalendarDays,
   Flame,
-  Rocket,
-  Search,
-  Smartphone,
   SquareLibrary,
-  TrendingUp,
 } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
-const featuredPost = {
-  category: "Web Development",
-  title: "How a Fast Website Boosts User Experience and Conversions",
-  description:
-    "Discover why website speed matters and how it directly impacts your business growth.",
-  author: "Shei-It Team",
-  date: "May 15, 2024",
-  readTime: "6 min read",
+import { apiRequest } from "@/lib/api";
+
+type Blog = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  coverImage?: string | null;
+  tags?: string[];
+  publishedAt?: string | null;
 };
 
-const latestArticles = [
-  {
-    title: "A Complete SEO Checklist for 2024",
-    description:
-      "Step-by-step SEO checklist to improve rankings and drive more organic traffic.",
-    date: "May 12, 2024",
-    readTime: "5 min read",
-    icon: Search,
-    accent: "from-[#c7d2fe] via-[#a5b4fc] to-[#8b7cff]",
-  },
-  {
-    title: "Native vs Cross-Platform Apps: What's Best?",
-    description:
-      "Compare native and cross-platform development to choose the right approach for your app.",
-    date: "May 9, 2024",
-    readTime: "6 min read",
-    icon: Smartphone,
-    accent: "from-[#ddd6fe] via-[#a78bfa] to-[#6c63ff]",
-  },
-  {
-    title: "How to Choose the Right Hosting Plan",
-    description:
-      "A simple guide to picking the perfect hosting for performance, security, and scalability.",
-    date: "May 6, 2024",
-    readTime: "4 min read",
-    icon: Cloud,
-    accent: "from-[#dbeafe] via-[#93c5fd] to-[#6c63ff]",
-  },
+const fallbackTopics = [
+  "Web Development",
+  "Mobile Development",
+  "SEO & Marketing",
+  "Hosting & DevOps",
+  "Business Growth",
+  "Tips & Guides",
 ] as const;
 
-const popularPosts = [
-  {
-    title: "10 Essential Features Every Business Website Must Have",
-    date: "May 10, 2024",
-    readTime: "5 min read",
-    icon: Code2,
-  },
-  {
-    title: "SEO Best Practices to Rank Higher in 2024",
-    date: "May 8, 2024",
-    readTime: "7 min read",
-    icon: Search,
-  },
-  {
-    title: "Choosing the Right Hosting for Your Website",
-    date: "May 5, 2024",
-    readTime: "4 min read",
-    icon: Cloud,
-  },
-  {
-    title: "Mobile App Development Trends to Watch in 2024",
-    date: "May 2, 2024",
-    readTime: "6 min read",
-    icon: Smartphone,
-  },
-] as const;
-
-const topicCounts = [
-  ["Web Development", "12"],
-  ["Mobile Development", "9"],
-  ["SEO & Marketing", "11"],
-  ["Hosting & DevOps", "7"],
-  ["Business Growth", "8"],
-  ["Tips & Guides", "10"],
-] as const;
-
-function Thumbnail({
-  icon: Icon,
-  className,
+function BlogThumbnail({
+  image,
+  title,
   compact = false,
 }: {
-  icon: typeof Search;
-  className: string;
   compact?: boolean;
+  image?: string | null;
+  title: string;
 }) {
+  if (image) {
+    return (
+      <div className="overflow-hidden rounded-[0.95rem] border border-[color:var(--stat-border)]">
+        <img
+          src={image}
+          alt={title}
+          className={compact ? "aspect-square h-full w-full object-cover" : "h-[200px] w-full object-cover"}
+          loading="lazy"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
-      className={`relative overflow-hidden rounded-[0.85rem] border border-white/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ${className}`}
-    >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(255,255,255,0.55),transparent_28%),radial-gradient(circle_at_78%_28%,rgba(255,255,255,0.28),transparent_25%)]" />
-      <div className="absolute -bottom-8 -right-8 h-28 w-28 rounded-full bg-white/22 blur-2xl" />
-      <div
-        className={`relative flex h-full items-center justify-center ${
-          compact ? "min-h-0" : "min-h-[150px]"
-        }`}
-      >
-        <span
-          className={`inline-flex items-center justify-center bg-white/26 text-white shadow-[0_20px_42px_rgba(76,29,149,0.22)] backdrop-blur-md ${
-            compact
-              ? "h-11 w-11 rounded-[0.75rem]"
-              : "h-20 w-20 rounded-[1.25rem]"
-          }`}
-        >
-          <Icon className={compact ? "h-6 w-6" : "h-10 w-10"} strokeWidth={2.2} />
-        </span>
-      </div>
-    </div>
+      className={`overflow-hidden rounded-[0.95rem] border border-[color:var(--stat-border)] bg-[linear-gradient(135deg,rgba(108,99,255,0.16),rgba(79,140,255,0.14))] ${
+        compact ? "aspect-square" : "h-[200px]"
+      }`}
+    />
   );
 }
 
 export function BlogPostsSection() {
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadBlogs = async () => {
+      try {
+        const data = await apiRequest<Blog[]>("/blogs");
+        setBlogs(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Blogs could not be loaded.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBlogs();
+  }, []);
+
+  const featuredPost = blogs[0] ?? null;
+  const latestArticles = blogs.slice(1, 4);
+  const popularPosts = blogs.slice(4, 8);
+
+  const topics = useMemo(() => {
+    const counts = new Map<string, number>();
+
+    blogs.forEach((blog) => {
+      (blog.tags ?? []).forEach((tag) => {
+        counts.set(tag, (counts.get(tag) ?? 0) + 1);
+      });
+    });
+
+    const dynamicTopics = [...counts.entries()]
+      .sort((left, right) => right[1] - left[1])
+      .slice(0, 6);
+
+    if (dynamicTopics.length) {
+      return dynamicTopics;
+    }
+
+    return fallbackTopics.map((topic) => [topic, 0] as const);
+  }, [blogs]);
+
   return (
     <section className="pb-16 lg:pb-20">
       <div className="mx-auto grid w-11/12 max-w-[1440px] gap-8 lg:grid-cols-[1fr_0.5fr]">
@@ -133,88 +116,98 @@ export function BlogPostsSection() {
             Featured Post
           </div>
 
-          <article className="mt-5 grid gap-7 border-b border-[color:var(--button-border)] pb-8 lg:grid-cols-[0.88fr_1fr]">
-            <Thumbnail
-              icon={Rocket}
-              className="bg-gradient-to-br from-[#b56cff] via-[#7c5cff] to-[#5347d8]"
-            />
+          {error ? (
+            <p className="mt-5 rounded-xl border border-rose-500/20 bg-rose-500/10 p-4 text-[14px] text-rose-400">
+              {error}
+            </p>
+          ) : null}
 
-            <div className="flex flex-col justify-center">
-              <span className="w-fit rounded-full bg-[color:var(--button-secondary-icon)] px-3 py-1 text-[12px] font-semibold text-[color:var(--primary)]">
-                {featuredPost.category}
-              </span>
-              <h2 className="mt-4 max-w-[24ch] text-[1.65rem] font-semibold leading-tight tracking-[-0.04em] text-[color:var(--foreground)]">
-                {featuredPost.title}
-              </h2>
-              <p className="mt-4 max-w-[34rem] text-[14px] leading-7 text-[color:var(--muted-foreground)]">
-                {featuredPost.description}
-              </p>
+          {loading ? (
+            <p className="mt-5 text-[14px] text-[color:var(--muted-foreground)]">
+              Loading posts...
+            </p>
+          ) : featuredPost ? (
+            <>
+              <article className="mt-5 grid gap-7 border-b border-[color:var(--button-border)] pb-8 lg:grid-cols-[0.88fr_1fr]">
+                <BlogThumbnail image={featuredPost.coverImage} title={featuredPost.title} />
 
-              <div className="mt-6 flex items-center gap-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#111827] to-[#8b7cff] text-[11px] font-semibold text-white">
-                  ST
-                </span>
-                <div className="text-[12px] font-medium text-[color:var(--muted-foreground)]">
-                  <p className="font-semibold text-[color:var(--foreground)]">
-                    {featuredPost.author}
+                <div className="flex flex-col justify-center">
+                  <span className="w-fit rounded-full bg-[color:var(--button-secondary-icon)] px-3 py-1 text-[12px] font-semibold text-[color:var(--primary)]">
+                    {(featuredPost.tags ?? [])[0] ?? "Latest"}
+                  </span>
+                  <h2 className="mt-4 max-w-[24ch] text-[1.65rem] font-semibold leading-tight tracking-[-0.04em] text-[color:var(--foreground)]">
+                    {featuredPost.title}
+                  </h2>
+                  <p className="mt-4 max-w-[34rem] text-[14px] leading-7 text-[color:var(--muted-foreground)]">
+                    {featuredPost.excerpt}
                   </p>
-                  <p>
-                    {featuredPost.date} <span className="px-1.5">•</span>{" "}
-                    {featuredPost.readTime}
-                  </p>
-                </div>
-              </div>
 
-              <a
-                href="#"
-                className="mt-6 inline-flex w-fit items-center gap-2 text-[14px] font-semibold text-[color:var(--primary)]"
-              >
-                Read More
-                <ArrowRight className="h-4 w-4" />
-              </a>
-            </div>
-          </article>
+                  <div className="mt-6 text-[12px] font-medium text-[color:var(--muted-foreground)]">
+                    <p className="font-semibold text-[color:var(--foreground)]">
+                      Shei IT Team
+                    </p>
+                    <p>
+                      {featuredPost.publishedAt
+                        ? new Date(featuredPost.publishedAt).toLocaleDateString()
+                        : "Latest"}
+                    </p>
+                  </div>
 
-          <div className="mt-8 flex items-center gap-2 text-[16px] font-semibold text-[color:var(--foreground)]">
-            <SquareLibrary className="h-5 w-5 text-[color:var(--primary)]" />
-            Latest Articles
-          </div>
-
-          <div className="mt-6 grid gap-6 md:grid-cols-3">
-            {latestArticles.map((article) => {
-              const Icon = article.icon;
-
-              return (
-                <article key={article.title}>
-                  <Thumbnail icon={Icon} className={`bg-gradient-to-br ${article.accent}`} />
-                  <h3 className="mt-4 text-[18px] font-semibold leading-snug tracking-[-0.035em] text-[color:var(--foreground)]">
-                    {article.title}
-                  </h3>
-                  <p className="mt-3 text-[13px] leading-6 text-[color:var(--muted-foreground)]">
-                    {article.description}
-                  </p>
-                  <p className="mt-4 text-[12px] font-medium text-[color:var(--muted-foreground)]">
-                    {article.date} <span className="px-1.5">•</span>{" "}
-                    {article.readTime}
-                  </p>
                   <a
                     href="#"
-                    className="mt-4 inline-flex items-center gap-2 text-[13px] font-semibold text-[color:var(--primary)]"
+                    className="mt-6 inline-flex w-fit items-center gap-2 text-[14px] font-semibold text-[color:var(--primary)]"
                   >
                     Read More
-                    <ArrowRight className="h-3.5 w-3.5" />
+                    <ArrowRight className="h-4 w-4" />
                   </a>
-                </article>
-              );
-            })}
-          </div>
+                </div>
+              </article>
 
-          <div className="mt-8 flex justify-center">
-            <button className="inline-flex h-11 items-center justify-center gap-2 rounded-[0.75rem] border border-[color:var(--button-border)] bg-[color:var(--button-secondary)] px-10 text-[13px] font-semibold text-[color:var(--muted-foreground)] shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
-              Load More Articles
-              <ChevronDown className="h-4 w-4" />
-            </button>
-          </div>
+              <div className="mt-8 flex items-center gap-2 text-[16px] font-semibold text-[color:var(--foreground)]">
+                <SquareLibrary className="h-5 w-5 text-[color:var(--primary)]" />
+                Latest Articles
+              </div>
+
+              {latestArticles.length ? (
+                <div className="mt-6 grid gap-6 md:grid-cols-3">
+                  {latestArticles.map((article) => (
+                    <article key={article.id}>
+                      <BlogThumbnail image={article.coverImage} title={article.title} />
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {(article.tags ?? []).slice(0, 2).map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full bg-[color:var(--button-secondary-icon)] px-2.5 py-1 text-[11px] font-semibold text-[color:var(--primary)]"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <h3 className="mt-4 text-[18px] font-semibold leading-snug tracking-[-0.035em] text-[color:var(--foreground)]">
+                        {article.title}
+                      </h3>
+                      <p className="mt-3 text-[13px] leading-6 text-[color:var(--muted-foreground)]">
+                        {article.excerpt}
+                      </p>
+                      <p className="mt-4 text-[12px] font-medium text-[color:var(--muted-foreground)]">
+                        {article.publishedAt
+                          ? new Date(article.publishedAt).toLocaleDateString()
+                          : "Latest"}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-6 rounded-[1rem] border border-dashed border-[color:var(--stat-border)] px-5 py-10 text-center text-[14px] text-[color:var(--muted-foreground)]">
+                  Publish more blogs to populate this section.
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="mt-6 rounded-[1rem] border border-dashed border-[color:var(--stat-border)] px-5 py-12 text-center text-[14px] text-[color:var(--muted-foreground)]">
+              No blog posts are published yet.
+            </div>
+          )}
         </div>
 
         <aside className="flex h-full flex-col gap-8">
@@ -225,16 +218,10 @@ export function BlogPostsSection() {
             </div>
 
             <div className="mt-6 space-y-5">
-              {popularPosts.map((post, index) => {
-                const Icon = post.icon;
-
-                return (
-                  <article key={post.title} className="grid grid-cols-[4.25rem_1rem_1fr] gap-3">
-                    <Thumbnail
-                      icon={Icon}
-                      compact
-                      className="aspect-square bg-gradient-to-br from-[#eef2ff] via-[#dbeafe] to-[#c4b5fd] dark:from-[#1f1b3d] dark:via-[#23204a] dark:to-[#3b2fb8]"
-                    />
+              {popularPosts.length ? (
+                popularPosts.map((post, index) => (
+                  <article key={post.id} className="grid grid-cols-[4.25rem_1rem_1fr] gap-3">
+                    <BlogThumbnail image={post.coverImage} title={post.title} compact />
                     <span className="pt-1 text-[13px] font-semibold text-[color:var(--muted-foreground)]">
                       {index + 1}
                     </span>
@@ -243,13 +230,18 @@ export function BlogPostsSection() {
                         {post.title}
                       </h3>
                       <p className="mt-2 text-[11px] font-medium text-[color:var(--muted-foreground)]">
-                        {post.date} <span className="px-1">•</span>{" "}
-                        {post.readTime}
+                        {post.publishedAt
+                          ? new Date(post.publishedAt).toLocaleDateString()
+                          : "Latest"}
                       </p>
                     </div>
                   </article>
-                );
-              })}
+                ))
+              ) : (
+                <p className="text-[14px] text-[color:var(--muted-foreground)]">
+                  Popular posts will appear here once more blogs are published.
+                </p>
+              )}
             </div>
           </div>
 
@@ -260,27 +252,23 @@ export function BlogPostsSection() {
             </div>
 
             <div className="mt-6 space-y-4">
-              {topicCounts.map(([topic, count]) => (
-                <a
+              {topics.map(([topic, count]) => (
+                <div
                   key={topic}
-                  href="#"
-                  className="flex items-center justify-between text-[13px] font-medium text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)]"
+                  className="flex items-center justify-between text-[13px] font-medium text-[color:var(--muted-foreground)]"
                 >
                   {topic}
                   <span className="font-semibold text-[color:var(--foreground)]">
                     {count}
                   </span>
-                </a>
+                </div>
               ))}
             </div>
 
-            <a
-              href="#"
-              className="mt-7 inline-flex h-11 w-full items-center justify-center gap-2 rounded-[0.75rem] bg-[color:var(--button-secondary-icon)] text-[13px] font-semibold text-[color:var(--primary)]"
-            >
-              View All Topics
-              <ArrowRight className="h-4 w-4" />
-            </a>
+            <div className="mt-7 inline-flex h-11 w-full items-center justify-center gap-2 rounded-[0.75rem] bg-[color:var(--button-secondary-icon)] text-[13px] font-semibold text-[color:var(--primary)]">
+              <CalendarDays className="h-4 w-4" />
+              {blogs.length} published posts
+            </div>
           </div>
         </aside>
       </div>

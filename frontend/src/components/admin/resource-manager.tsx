@@ -1,28 +1,45 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import Image from "next/image";
+import {
+  CheckCheck,
+  ExternalLink,
+  Eye,
+  FilePenLine,
+  FolderPlus,
+  PencilLine,
+  Plus,
+  Trash2,
+} from "lucide-react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 
+import { AdminModal } from "@/components/admin/admin-modal";
 import { apiRequest } from "@/lib/api";
+import { cn } from "@/lib/utils";
 
 import { useAdminAuth } from "./admin-auth-provider";
+import { useAdminFeedback } from "./admin-feedback-provider";
 
 type ResourceType = "blogs" | "projects";
+type PublishStatus = "draft" | "published";
 
 type ResourceItem = {
-  _id: string;
+  id: string;
   title: string;
   slug: string;
-  excerpt?: string;
-  content?: string;
-  description?: string;
-  coverImage?: string;
-  image?: string;
+  excerpt?: string | null;
+  content?: string | null;
+  description?: string | null;
+  coverImage?: string | null;
+  image?: string | null;
   tags?: string[];
   categories?: string[];
-  metric?: string;
-  metricLabel?: string;
+  metric?: string | null;
+  metricLabel?: string | null;
   featured?: boolean;
-  status: "draft" | "published";
+  status: PublishStatus;
+  publishedAt?: string | null;
+  createdAt: string;
 };
 
 type ResourceManagerProps = {
@@ -30,68 +47,135 @@ type ResourceManagerProps = {
   title: string;
 };
 
-const emptyForm = {
-  title: "",
-  slug: "",
-  excerpt: "",
+const blogTagOptions = [
+  "Web Development",
+  "SEO",
+  "Performance",
+  "Growth",
+  "Product",
+  "Hosting",
+  "Mobile",
+  "Strategy",
+  "Support",
+] as const;
+
+const projectCategoryOptions = [
+  "Website",
+  "SEO",
+  "Hosting",
+  "SaaS",
+  "Booking",
+  "Payment",
+  "Branding",
+  "Dashboard",
+  "Analytics",
+  "Mobile App",
+  "UI/UX",
+  "API",
+] as const;
+
+const initialForm = {
   content: "",
   description: "",
+  excerpt: "",
+  featured: false,
   image: "",
-  labels: "",
   metric: "",
   metricLabel: "",
-  featured: false,
-  status: "draft",
+  selectedLabels: [] as string[],
+  slug: "",
+  status: "draft" as PublishStatus,
+  title: "",
 };
 
 export function ResourceManager({ resource, title }: ResourceManagerProps) {
+  const isBlog = resource === "blogs";
   const { getToken } = useAdminAuth();
+  const { showToast } = useAdminFeedback();
   const [items, setItems] = useState<ResourceItem[]>([]);
   const [editing, setEditing] = useState<ResourceItem | null>(null);
-  const [form, setForm] = useState(emptyForm);
-  const [message, setMessage] = useState("");
+  const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<ResourceItem | null>(null);
 
-  const isBlog = resource === "blogs";
+  const labelOptions = isBlog ? blogTagOptions : projectCategoryOptions;
+
+  const counts = useMemo(() => {
+    const total = items.length;
+    const published = items.filter((item) => item.status === "published").length;
+    return { draft: total - published, published, total };
+  }, [items]);
 
   const loadItems = async () => {
     setLoading(true);
-    const token = await getToken();
-    const data = await apiRequest<ResourceItem[]>(`/${resource}/admin/all`, { token });
-    setItems(data);
-    setLoading(false);
+
+    try {
+      const token = await getToken();
+      const data = await apiRequest<ResourceItem[]>(`/${resource}/admin/all`, { token });
+      setItems(data);
+    } catch (error) {
+      showToast({
+        title: `${title} could not be loaded`,
+        description:
+          error instanceof Error ? error.message : "Something went wrong while loading content.",
+        tone: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    loadItems().catch((error) => setMessage(error.message));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    loadItems();
   }, [resource]);
 
   const resetForm = () => {
     setEditing(null);
-    setForm(emptyForm);
+    setForm(initialForm);
   };
 
-  const startEdit = (item: ResourceItem) => {
+  const openCreateModal = () => {
+    resetForm();
+    setOpenModal(true);
+  };
+
+  const openEditModal = (item: ResourceItem) => {
     setEditing(item);
     setForm({
-      title: item.title ?? "",
-      slug: item.slug ?? "",
-      excerpt: item.excerpt ?? "",
       content: item.content ?? "",
       description: item.description ?? "",
+      excerpt: item.excerpt ?? "",
+      featured: Boolean(item.featured),
       image: item.coverImage ?? item.image ?? "",
-      labels: (item.tags ?? item.categories ?? []).join(", "),
       metric: item.metric ?? "",
       metricLabel: item.metricLabel ?? "",
-      featured: Boolean(item.featured),
+      selectedLabels: [...(item.tags ?? item.categories ?? [])],
+      slug: item.slug ?? "",
       status: item.status ?? "draft",
+      title: item.title ?? "",
     });
+    setOpenModal(true);
+  };
+
+  const closeModal = () => {
+    setOpenModal(false);
+    resetForm();
+  };
+
+  const toggleLabel = (value: string) => {
+    setForm((current) => ({
+      ...current,
+      selectedLabels: current.selectedLabels.includes(value)
+        ? current.selectedLabels.filter((item) => item !== value)
+        : [...current.selectedLabels, value],
+    }));
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setMessage("");
+    setSaving(true);
 
     try {
       const token = await getToken();
@@ -102,7 +186,7 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
             excerpt: form.excerpt,
             content: form.content,
             coverImage: form.image,
-            tags: form.labels.split(",").map((item) => item.trim()).filter(Boolean),
+            tags: form.selectedLabels,
             status: form.status,
           }
         : {
@@ -110,7 +194,7 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
             slug: form.slug || undefined,
             description: form.description,
             image: form.image,
-            categories: form.labels.split(",").map((item) => item.trim()).filter(Boolean),
+            categories: form.selectedLabels,
             metric: form.metric,
             metricLabel: form.metricLabel,
             featured: form.featured,
@@ -118,7 +202,7 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
           };
 
       await apiRequest(
-        editing ? `/${resource}/admin/${editing._id}` : `/${resource}/admin`,
+        editing ? `/${resource}/admin/${editing.id}` : `/${resource}/admin`,
         {
           method: editing ? "PATCH" : "POST",
           token,
@@ -126,100 +210,557 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
         },
       );
 
-      setMessage(`${title} saved successfully.`);
-      resetForm();
+      showToast({
+        title: editing ? `${title.slice(0, -1)} updated` : `${title.slice(0, -1)} created`,
+        description: editing
+          ? "Your content changes were saved successfully."
+          : "The new item has been added successfully.",
+        tone: "success",
+      });
+
+      closeModal();
       await loadItems();
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Save failed.");
+      showToast({
+        title: `${title.slice(0, -1)} save failed`,
+        description: error instanceof Error ? error.message : "Please try again.",
+        tone: "error",
+      });
+    } finally {
+      setSaving(false);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Delete this item?")) {
+  const handleDelete = async () => {
+    if (!deleteTarget) {
       return;
     }
 
     try {
       const token = await getToken();
-      await apiRequest(`/${resource}/admin/${id}`, { method: "DELETE", token });
+      await apiRequest(`/${resource}/admin/${deleteTarget.id}`, {
+        method: "DELETE",
+        token,
+      });
+
+      showToast({
+        title: `${title.slice(0, -1)} deleted`,
+        description: "The item has been removed from the system.",
+        tone: "success",
+      });
+
+      setDeleteTarget(null);
       await loadItems();
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Delete failed.");
+      showToast({
+        title: "Delete failed",
+        description: error instanceof Error ? error.message : "Please try again.",
+        tone: "error",
+      });
     }
   };
 
   return (
     <div>
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-5 border-b border-[color:var(--stat-border)] pb-6 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h1 className="text-[2rem] font-semibold text-[color:var(--foreground)]">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.22em] text-[color:var(--primary)]">
+            Content Manager
+          </p>
+          <h1 className="mt-3 text-[2.45rem] font-semibold tracking-[-0.06em] text-[color:var(--foreground)]">
             {title}
           </h1>
-          <p className="text-[14px] text-[color:var(--muted-foreground)]">
-            Create, update, publish, and delete {title.toLowerCase()}.
+          <p className="mt-3 max-w-3xl text-[15px] leading-8 text-[color:var(--muted-foreground)]">
+            Review existing {title.toLowerCase()}, edit them in place, or add new ones
+            without leaving the page.
           </p>
         </div>
+
         <button
           type="button"
-          onClick={resetForm}
-          className="rounded-xl border border-[color:var(--stat-border)] px-4 py-2 text-[14px] text-[color:var(--foreground)]"
+          onClick={openCreateModal}
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-[color:var(--talk-bg)] px-5 py-3 text-[14px] font-semibold text-[color:var(--talk-fg)]"
         >
-          New
+          <Plus className="h-4 w-4" />
+          Add {title.slice(0, -1)}
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-6 grid gap-4 lg:grid-cols-2">
-        <input className="admin-input" placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
-        <input className="admin-input" placeholder="Slug (optional)" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
-        {isBlog ? (
-          <>
-            <input className="admin-input lg:col-span-2" placeholder="Excerpt" value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} />
-            <textarea className="admin-input min-h-40 lg:col-span-2" placeholder="Content" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} />
-          </>
-        ) : (
-          <textarea className="admin-input min-h-28 lg:col-span-2" placeholder="Project description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
-        )}
-        <input className="admin-input lg:col-span-2" placeholder={isBlog ? "Cover image URL" : "Project image URL"} value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} />
-        <input className="admin-input" placeholder={isBlog ? "Tags: SEO, Web" : "Categories: Website, SEO"} value={form.labels} onChange={(e) => setForm({ ...form, labels: e.target.value })} />
-        <select className="admin-input" value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })}>
-          <option value="draft">Draft</option>
-          <option value="published">Published</option>
-        </select>
-        {!isBlog ? (
-          <>
-            <input className="admin-input" placeholder="Metric" value={form.metric} onChange={(e) => setForm({ ...form, metric: e.target.value })} />
-            <input className="admin-input" placeholder="Metric label" value={form.metricLabel} onChange={(e) => setForm({ ...form, metricLabel: e.target.value })} />
-            <label className="flex items-center gap-2 text-[14px] text-[color:var(--foreground)]">
-              <input type="checkbox" checked={form.featured} onChange={(e) => setForm({ ...form, featured: e.target.checked })} />
-              Featured project
-            </label>
-          </>
-        ) : null}
-        <button className="rounded-xl bg-[color:var(--primary)] px-5 py-3 text-[15px] font-semibold text-white lg:col-span-2">
-          {editing ? "Update" : "Create"} {title.slice(0, -1)}
-        </button>
-      </form>
+      <div className="grid gap-4 border-b border-[color:var(--stat-border)] py-8 sm:grid-cols-3">
+        {[
+          ["Total", counts.total],
+          ["Published", counts.published],
+          ["Draft", counts.draft],
+        ].map(([label, value]) => (
+          <div
+            key={label}
+            className="rounded-[1.15rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-5 py-4"
+          >
+            <p className="text-[13px] text-[color:var(--muted-foreground)]">{label}</p>
+            <p className="mt-2 text-[1.8rem] font-semibold tracking-[-0.05em] text-[color:var(--foreground)]">
+              {loading ? "—" : value}
+            </p>
+          </div>
+        ))}
+      </div>
 
-      {message ? <p className="mt-4 text-[14px] text-[color:var(--muted-foreground)]">{message}</p> : null}
-
-      <div className="mt-8 overflow-hidden rounded-xl border border-[color:var(--stat-border)]">
+      <div className="py-8">
         {loading ? (
-          <p className="p-4 text-[color:var(--muted-foreground)]">Loading...</p>
+          <p className="text-[14px] text-[color:var(--muted-foreground)]">
+            Loading {title.toLowerCase()}...
+          </p>
+        ) : items.length ? (
+          <div className="grid gap-6 xl:grid-cols-2">
+            {items.map((item) => {
+              const labels = item.tags ?? item.categories ?? [];
+              const image = item.coverImage ?? item.image ?? "";
+
+              return (
+                <article
+                  key={item.id}
+                  className="overflow-hidden rounded-[1.35rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)]"
+                >
+                  {image ? (
+                    <div className="relative h-56 overflow-hidden border-b border-[color:var(--stat-border)]">
+                      <img
+                        src={image}
+                        alt={item.title}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex h-56 items-center justify-center border-b border-[color:var(--stat-border)] bg-[color:var(--button-secondary-icon)] text-[14px] text-[color:var(--muted-foreground)]">
+                      No preview image
+                    </div>
+                  )}
+
+                  <div className="space-y-5 p-5">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span
+                            className={cn(
+                              "rounded-full px-3 py-1 text-[12px] font-semibold capitalize",
+                              item.status === "published"
+                                ? "bg-[color:var(--button-secondary-icon)] text-[color:var(--primary)]"
+                                : "bg-[color:var(--stat-bg)] text-[color:var(--muted-foreground)]",
+                            )}
+                          >
+                            {item.status}
+                          </span>
+                          {!isBlog && item.featured ? (
+                            <span className="rounded-full bg-[linear-gradient(180deg,rgba(111,231,200,0.18),rgba(111,231,200,0.08))] px-3 py-1 text-[12px] font-semibold text-[color:var(--mint)]">
+                              Featured
+                            </span>
+                          ) : null}
+                        </div>
+                        <h2 className="mt-3 text-[1.6rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]">
+                          {item.title}
+                        </h2>
+                        <p className="mt-2 text-[13px] text-[color:var(--muted-foreground)]">
+                          /{item.slug}
+                        </p>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => openEditModal(item)}
+                          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--stat-border)] text-[color:var(--foreground)]"
+                        >
+                          <PencilLine className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setDeleteTarget(item)}
+                          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-rose-500/30 text-rose-400"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <p className="text-[14px] leading-7 text-[color:var(--muted-foreground)]">
+                      {isBlog ? item.excerpt : item.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2">
+                      {labels.map((label) => (
+                        <span
+                          key={label}
+                          className="rounded-full border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-3 py-1 text-[12px] font-medium text-[color:var(--primary)]"
+                        >
+                          {label}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[color:var(--stat-border)] pt-4">
+                      <div className="text-[12px] text-[color:var(--muted-foreground)]">
+                        {isBlog ? (
+                          item.publishedAt ? (
+                            <>Published {new Date(item.publishedAt).toLocaleDateString()}</>
+                          ) : (
+                            <>Draft saved {new Date(item.createdAt).toLocaleDateString()}</>
+                          )
+                        ) : item.metric || item.metricLabel ? (
+                          <>
+                            {item.metric || "Metric"} {item.metricLabel ? `/ ${item.metricLabel}` : ""}
+                          </>
+                        ) : (
+                          <>Created {new Date(item.createdAt).toLocaleDateString()}</>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        {item.status === "published" ? (
+                          <a
+                            href={isBlog ? `/blog` : `/portfolio`}
+                            className="inline-flex items-center gap-2 text-[13px] font-semibold text-[color:var(--primary)]"
+                          >
+                            <Eye className="h-4 w-4" />
+                            View live
+                          </a>
+                        ) : null}
+                        <button
+                          type="button"
+                          onClick={() => openEditModal(item)}
+                          className="inline-flex items-center gap-2 text-[13px] font-semibold text-[color:var(--foreground)]"
+                        >
+                          <FilePenLine className="h-4 w-4 text-[color:var(--primary)]" />
+                          Edit
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         ) : (
-          items.map((item) => (
-            <div key={item._id} className="flex flex-col gap-3 border-b border-[color:var(--stat-border)] p-4 last:border-b-0 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="font-semibold text-[color:var(--foreground)]">{item.title}</p>
-                <p className="text-[13px] text-[color:var(--muted-foreground)]">{item.status} / {item.slug}</p>
-              </div>
-              <div className="flex gap-2">
-                <button onClick={() => startEdit(item)} className="rounded-lg border border-[color:var(--stat-border)] px-3 py-2 text-[13px]">Edit</button>
-                <button onClick={() => handleDelete(item._id)} className="rounded-lg border border-red-500/30 px-3 py-2 text-[13px] text-red-500">Delete</button>
-              </div>
-            </div>
-          ))
+          <div className="rounded-[1.3rem] border border-dashed border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 py-12 text-center">
+            <FolderPlus className="mx-auto h-10 w-10 text-[color:var(--primary)]" />
+            <h3 className="mt-4 text-[1.35rem] font-semibold text-[color:var(--foreground)]">
+              No {title.toLowerCase()} yet
+            </h3>
+            <p className="mt-2 text-[14px] text-[color:var(--muted-foreground)]">
+              Add your first {title.slice(0, -1).toLowerCase()} to start populating the
+              live frontend.
+            </p>
+            <button
+              type="button"
+              onClick={openCreateModal}
+              className="mt-5 inline-flex items-center gap-2 rounded-full bg-[color:var(--talk-bg)] px-5 py-3 text-[14px] font-semibold text-[color:var(--talk-fg)]"
+            >
+              <Plus className="h-4 w-4" />
+              Add {title.slice(0, -1)}
+            </button>
+          </div>
         )}
       </div>
+
+      <AdminModal
+        open={openModal}
+        onClose={closeModal}
+        title={editing ? `Edit ${title.slice(0, -1)}` : `Add ${title.slice(0, -1)}`}
+        description={
+          isBlog
+            ? "Fill in the article details and choose the tags and publish status."
+            : "Fill in the project content and portfolio metadata using image URLs for now."
+        }
+      >
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid gap-4 lg:grid-cols-2">
+            <label className="space-y-2">
+              <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                Title
+              </span>
+              <input
+                className="admin-input w-full"
+                value={form.title}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, title: event.target.value }))
+                }
+                placeholder="Enter a strong title"
+              />
+            </label>
+            <label className="space-y-2">
+              <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                Slug
+              </span>
+              <input
+                className="admin-input w-full"
+                value={form.slug}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, slug: event.target.value }))
+                }
+                placeholder="Optional custom slug"
+              />
+            </label>
+          </div>
+
+          <label className="block space-y-2">
+            <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+              {isBlog ? "Cover image URL" : "Project image URL"}
+            </span>
+            <input
+              className="admin-input w-full"
+              value={form.image}
+              onChange={(event) =>
+                setForm((current) => ({ ...current, image: event.target.value }))
+              }
+              placeholder="https://..."
+            />
+          </label>
+
+          {form.image ? (
+            <div className="overflow-hidden rounded-[1rem] border border-[color:var(--stat-border)]">
+              <img
+                src={form.image}
+                alt="Preview"
+                className="h-56 w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          ) : null}
+
+          {isBlog ? (
+            <>
+              <label className="block space-y-2">
+                <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                  Excerpt
+                </span>
+                <textarea
+                  className="admin-input min-h-24 w-full"
+                  value={form.excerpt}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, excerpt: event.target.value }))
+                  }
+                  placeholder="Short summary for cards and previews"
+                />
+              </label>
+              <label className="block space-y-2">
+                <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                  Content
+                </span>
+                <textarea
+                  className="admin-input min-h-56 w-full"
+                  value={form.content}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, content: event.target.value }))
+                  }
+                  placeholder="Write the full blog content"
+                />
+              </label>
+            </>
+          ) : (
+            <>
+              <label className="block space-y-2">
+                <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                  Project description
+                </span>
+                <textarea
+                  className="admin-input min-h-40 w-full"
+                  value={form.description}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, description: event.target.value }))
+                  }
+                  placeholder="Describe the project, value, and scope"
+                />
+              </label>
+
+              <div className="grid gap-4 lg:grid-cols-3">
+                <label className="space-y-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    Metric
+                  </span>
+                  <input
+                    className="admin-input w-full"
+                    value={form.metric}
+                    onChange={(event) =>
+                      setForm((current) => ({ ...current, metric: event.target.value }))
+                    }
+                    placeholder="+42%"
+                  />
+                </label>
+                <label className="space-y-2 lg:col-span-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    Metric label
+                  </span>
+                  <input
+                    className="admin-input w-full"
+                    value={form.metricLabel}
+                    onChange={(event) =>
+                      setForm((current) => ({
+                        ...current,
+                        metricLabel: event.target.value,
+                      }))
+                    }
+                    placeholder="More orders"
+                  />
+                </label>
+              </div>
+            </>
+          )}
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                {isBlog ? "Choose tags" : "Choose categories"}
+              </span>
+              <span className="text-[12px] text-[color:var(--muted-foreground)]">
+                {form.selectedLabels.length} selected
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {labelOptions.map((label) => {
+                const active = form.selectedLabels.includes(label);
+
+                return (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => toggleLabel(label)}
+                    className={cn(
+                      "inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[12px] font-semibold transition",
+                      active
+                        ? "border-transparent bg-[color:var(--button-secondary-icon)] text-[color:var(--primary)]"
+                        : "border-[color:var(--stat-border)] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)]",
+                    )}
+                  >
+                    {active ? <CheckCheck className="h-3.5 w-3.5" /> : null}
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-[1fr_1fr_auto]">
+            <label className="space-y-2">
+              <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                Status
+              </span>
+              <select
+                className="admin-input w-full"
+                value={form.status}
+                onChange={(event) =>
+                  setForm((current) => ({
+                    ...current,
+                    status: event.target.value as PublishStatus,
+                  }))
+                }
+              >
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+            </label>
+
+            {!isBlog ? (
+              <label className="space-y-2">
+                <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                  Featured
+                </span>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setForm((current) => ({ ...current, featured: !current.featured }))
+                  }
+                  className={cn(
+                    "admin-input flex h-[50px] items-center justify-between",
+                    form.featured ? "text-[color:var(--primary)]" : "",
+                  )}
+                >
+                  <span>{form.featured ? "Featured on" : "Feature on homepage"}</span>
+                  <span
+                    className={cn(
+                      "h-6 w-11 rounded-full p-1 transition",
+                      form.featured ? "bg-[color:var(--primary)]" : "bg-white/8",
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "block h-4 w-4 rounded-full bg-white transition",
+                        form.featured ? "translate-x-5" : "translate-x-0",
+                      )}
+                    />
+                  </span>
+                </button>
+              </label>
+            ) : (
+              <div />
+            )}
+
+            <div className="flex items-end">
+              <a
+                href={form.slug ? `/${isBlog ? "blog" : "portfolio"}` : "#"}
+                className="inline-flex h-[50px] w-full items-center justify-center gap-2 rounded-full border border-[color:var(--stat-border)] px-4 text-[13px] font-semibold text-[color:var(--foreground)]"
+              >
+                <ExternalLink className="h-4 w-4 text-[color:var(--primary)]" />
+                Preview route
+              </a>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap justify-end gap-3 border-t border-[color:var(--stat-border)] pt-5">
+            <button
+              type="button"
+              onClick={closeModal}
+              className="rounded-full border border-[color:var(--stat-border)] px-5 py-3 text-[14px] font-semibold text-[color:var(--foreground)]"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={saving}
+              className="rounded-full bg-[color:var(--talk-bg)] px-6 py-3 text-[14px] font-semibold text-[color:var(--talk-fg)] disabled:opacity-60"
+            >
+              {saving
+                ? editing
+                  ? "Updating..."
+                  : "Creating..."
+                : editing
+                  ? `Update ${title.slice(0, -1)}`
+                  : `Create ${title.slice(0, -1)}`}
+            </button>
+          </div>
+        </form>
+      </AdminModal>
+
+      <AdminModal
+        open={Boolean(deleteTarget)}
+        onClose={() => setDeleteTarget(null)}
+        title={`Delete ${title.slice(0, -1)}?`}
+        description="This action cannot be undone."
+        widthClassName="max-w-lg"
+      >
+        <div className="space-y-5">
+          <p className="text-[14px] leading-7 text-[color:var(--muted-foreground)]">
+            You are about to permanently delete{" "}
+            <span className="font-semibold text-[color:var(--foreground)]">
+              {deleteTarget?.title}
+            </span>
+            .
+          </p>
+          <div className="flex justify-end gap-3">
+            <button
+              type="button"
+              onClick={() => setDeleteTarget(null)}
+              className="rounded-full border border-[color:var(--stat-border)] px-5 py-3 text-[14px] font-semibold text-[color:var(--foreground)]"
+            >
+              Keep it
+            </button>
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="rounded-full bg-rose-500 px-5 py-3 text-[14px] font-semibold text-white"
+            >
+              Delete now
+            </button>
+          </div>
+        </div>
+      </AdminModal>
     </div>
   );
 }

@@ -31,7 +31,8 @@ export default function AdminLoginPage() {
       await signInWithEmailAndPassword(firebaseAuth, email, password);
       router.replace("/admin");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Admin login failed.");
+      const message = err instanceof Error ? err.message : "Admin login failed.";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -73,7 +74,11 @@ export default function AdminLoginPage() {
           />
         </div>
 
-        {error ? <p className="mt-4 text-[14px] text-red-500">{error}</p> : null}
+        {error ? (
+          <p className="mt-4 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-[14px] text-red-400">
+            {error}
+          </p>
+        ) : null}
 
         <button
           type="submit"
