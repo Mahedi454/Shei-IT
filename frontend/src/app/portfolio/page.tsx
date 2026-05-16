@@ -1,7 +1,7 @@
 import { portfolioSection } from "@/config/site";
 import { PortfolioHeroSection } from "@/components/portfolio/portfolio-hero-section";
-import { ProjectCard } from "@/components/portfolio/project-card";
 import { PortfolioResultsSection } from "@/components/portfolio/portfolio-results-section";
+import { ProjectsGrid } from "@/components/public/projects-grid";
 import { SiteHeader } from "@/components/layout/site-header";
 
 export default function PortfolioPage() {
@@ -26,11 +26,7 @@ export default function PortfolioPage() {
             </p>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {portfolioSection.projects.map((project) => (
-              <ProjectCard key={project.title} {...project} />
-            ))}
-          </div>
+          <ProjectsGrid />
         </div>
       </section>
 

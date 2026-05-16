@@ -50,6 +50,8 @@ export function AboutStorySection() {
                 src={bannerImage}
                 alt="About story illustration"
                 priority
+                quality={85}
+                sizes="(min-width: 1280px) 680px, (min-width: 1024px) 48vw, 92vw"
                 className="relative z-10 h-[420px] w-full rounded-[2rem] object-cover sm:h-[540px]"
               />
             </div>
