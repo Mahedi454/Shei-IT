@@ -85,7 +85,7 @@ export function ServicesCoreSection() {
                 </div>
 
                 <a
-                  href="/contact"
+                  href={"href" in item ? item.href : "/contact"}
                   className="mt-auto inline-flex items-center gap-2 pt-4 text-[14px] font-semibold text-[color:var(--primary)]"
                 >
                   View details

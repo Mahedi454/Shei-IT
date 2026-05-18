@@ -9,10 +9,10 @@ import {
   Headset,
   Sparkles,
 } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import { homepageBannerDark, homepageBannerLight } from "@/assets";
+import { useTheme } from "@/components/providers/theme-provider";
 import { siteConfig } from "@/config/site";
 
 const avatarColors = [
@@ -116,6 +116,8 @@ export function HeroSection() {
                   src={bannerImage}
                   alt="shei-it service banner"
                   priority
+                  quality={85}
+                  sizes="(min-width: 1280px) 760px, (min-width: 1024px) 52vw, 92vw"
                   className="relative z-10 h-auto w-full"
                 />
               </div>

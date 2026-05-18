@@ -82,7 +82,7 @@ export function ServicesSection() {
                 </p>
 
                 <a
-                  href="#"
+                  href={"href" in item ? item.href : "#"}
                   className="mt-7 inline-flex items-center gap-2 text-[15px] font-semibold text-[color:var(--primary)]"
                 >
                   Learn More

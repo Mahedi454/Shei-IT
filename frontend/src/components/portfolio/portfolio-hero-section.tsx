@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { BadgeCheck } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import portfolioHeroDark from "@/assets/portfolio-hero-dark.png";
 import portfolioHeroLight from "@/assets/portfolio-hero-light.png";
+import { useTheme } from "@/components/providers/theme-provider";
 import { portfolioSection } from "@/config/site";
 
 export function PortfolioHeroSection() {
@@ -45,6 +45,8 @@ export function PortfolioHeroSection() {
           <Image
             src={heroAsset}
             alt="Portfolio showcase hero"
+            quality={85}
+            sizes="(min-width: 1280px) 720px, (min-width: 1024px) 50vw, 92vw"
             className="h-auto w-full object-contain"
             priority
           />

@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { ArrowRight, Star } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import { servicepageBannerDark, servicepageBannerLight } from "@/assets";
+import { useTheme } from "@/components/providers/theme-provider";
 
 const clientAvatars = ["MH", "SA", "PM", "RA", "NJ"] as const;
 const avatarColors = [

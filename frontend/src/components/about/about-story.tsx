@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { Compass, Eye, ShieldCheck } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import { ourStoryBannerDark, ourStoryBannerLight } from "@/assets";
+import { useTheme } from "@/components/providers/theme-provider";
 
 const storyCards = [
   {
@@ -50,6 +50,8 @@ export function AboutStorySection() {
                 src={bannerImage}
                 alt="About story illustration"
                 priority
+                quality={85}
+                sizes="(min-width: 1280px) 680px, (min-width: 1024px) 48vw, 92vw"
                 className="relative z-10 h-[420px] w-full rounded-[2rem] object-cover sm:h-[540px]"
               />
             </div>

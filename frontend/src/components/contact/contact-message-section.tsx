@@ -1,3 +1,6 @@
+"use client";
+
+import { FormEvent, useState } from "react";
 import {
   ArrowRight,
   ChevronDown,
@@ -8,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { servicesSection } from "@/config/site";
+import { apiRequest } from "@/lib/api";
 
 const contactMethods = [
   {
@@ -48,7 +52,45 @@ const contactMethods = [
   },
 ] as const;
 
+const initialForm = {
+  budget: "",
+  company: "",
+  email: "",
+  message: "",
+  name: "",
+  phone: "",
+  service: "",
+};
+
 export function ContactMessageSection() {
+  const [form, setForm] = useState(initialForm);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageTone, setMessageTone] = useState<"success" | "error" | "">("");
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+    setMessage("");
+    setMessageTone("");
+
+    try {
+      await apiRequest("/contacts", {
+        method: "POST",
+        body: JSON.stringify(form),
+      });
+
+      setMessage("Your message has been sent. We will get back to you soon.");
+      setMessageTone("success");
+      setForm(initialForm);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Failed to send message.");
+      setMessageTone("error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="relative pb-10 lg:pb-12">
       <div className="mx-auto w-11/12 max-w-[1440px]">
@@ -62,12 +104,16 @@ export function ContactMessageSection() {
               possible.
             </p>
 
-            <form className="mt-7 space-y-5">
+            <form onSubmit={handleSubmit} className="mt-7 space-y-5">
               <div className="grid gap-5 sm:grid-cols-2">
                 <input
                   type="text"
                   name="name"
                   placeholder="Full Name *"
+                  value={form.name}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, name: event.target.value }))
+                  }
                   className="h-14 rounded-[0.75rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-5 text-[14px] font-medium text-[color:var(--foreground)] outline-none transition focus:border-[color:var(--primary)]"
                   required
                 />
@@ -75,6 +121,10 @@ export function ContactMessageSection() {
                   type="email"
                   name="email"
                   placeholder="Email Address *"
+                  value={form.email}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, email: event.target.value }))
+                  }
                   className="h-14 rounded-[0.75rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-5 text-[14px] font-medium text-[color:var(--foreground)] outline-none transition focus:border-[color:var(--primary)]"
                   required
                 />
@@ -82,41 +132,67 @@ export function ContactMessageSection() {
                   type="tel"
                   name="phone"
                   placeholder="Phone Number"
+                  value={form.phone}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, phone: event.target.value }))
+                  }
                   className="h-14 rounded-[0.75rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-5 text-[14px] font-medium text-[color:var(--foreground)] outline-none transition focus:border-[color:var(--primary)]"
                 />
                 <input
                   type="text"
                   name="company"
                   placeholder="Company (Optional)"
+                  value={form.company}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, company: event.target.value }))
+                  }
                   className="h-14 rounded-[0.75rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-5 text-[14px] font-medium text-[color:var(--foreground)] outline-none transition focus:border-[color:var(--primary)]"
                 />
               </div>
 
-              <label className="relative block">
-                <span className="pointer-events-none absolute left-5 top-3 text-[12px] font-semibold text-[color:var(--muted-foreground)]">
-                  Project Type
-                </span>
-                <select
-                  name="projectType"
-                  defaultValue=""
-                  className="h-16 w-full appearance-none rounded-[0.75rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-5 pb-3 pt-7 text-[14px] font-semibold text-[color:var(--foreground)] outline-none transition focus:border-[color:var(--primary)]"
-                >
-                  <option value="" disabled>
-                    Select a service
-                  </option>
-                  {servicesSection.items.map((service) => (
-                    <option key={service.title}>{service.title}</option>
-                  ))}
-                </select>
-                <ChevronDown className="pointer-events-none absolute right-5 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--muted-foreground)]" />
-              </label>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <label className="relative block">
+                  <span className="pointer-events-none absolute left-5 top-3 text-[12px] font-semibold text-[color:var(--muted-foreground)]">
+                    Project Type
+                  </span>
+                  <select
+                    name="service"
+                    value={form.service}
+                    onChange={(event) =>
+                      setForm((current) => ({ ...current, service: event.target.value }))
+                    }
+                    className="h-16 w-full appearance-none rounded-[0.75rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-5 pb-3 pt-7 text-[14px] font-semibold text-[color:var(--foreground)] outline-none transition focus:border-[color:var(--primary)]"
+                  >
+                    <option value="">Select a service</option>
+                    {servicesSection.items.map((service) => (
+                      <option key={service.title}>{service.title}</option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-5 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--muted-foreground)]" />
+                </label>
+
+                <input
+                  type="text"
+                  name="budget"
+                  placeholder="Budget Range"
+                  value={form.budget}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, budget: event.target.value }))
+                  }
+                  className="h-16 rounded-[0.75rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-5 text-[14px] font-medium text-[color:var(--foreground)] outline-none transition focus:border-[color:var(--primary)]"
+                />
+              </div>
 
               <label className="block rounded-[0.75rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-5 py-4 focus-within:border-[color:var(--primary)]">
                 <span className="block text-[12px] font-semibold text-[color:var(--muted-foreground)]">
                   Project Details *
                 </span>
                 <textarea
-                  name="details"
+                  name="message"
+                  value={form.message}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, message: event.target.value }))
+                  }
                   placeholder="Tell us about your project, goals, and requirements..."
                   className="mt-2 min-h-28 w-full resize-none bg-transparent text-[14px] font-medium leading-7 text-[color:var(--foreground)] outline-none"
                   required
@@ -126,9 +202,10 @@ export function ContactMessageSection() {
               <div className="flex flex-wrap items-center gap-5">
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center gap-3 rounded-[0.75rem] bg-[color:var(--cta-dark)] px-7 py-4 text-[15px] font-semibold text-white shadow-[0_20px_40px_rgba(15,23,42,0.2)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.36)]"
+                  disabled={loading}
+                  className="inline-flex items-center justify-center gap-3 rounded-[0.75rem] bg-[color:var(--cta-dark)] px-7 py-4 text-[15px] font-semibold text-white shadow-[0_20px_40px_rgba(15,23,42,0.2)] disabled:opacity-60 dark:shadow-[0_20px_40px_rgba(0,0,0,0.36)]"
                 >
-                  Send Message
+                  {loading ? "Sending..." : "Send Message"}
                   <ArrowRight className="h-4 w-4" />
                 </button>
                 <span className="inline-flex items-center gap-3 text-[13px] font-semibold text-[color:var(--muted-foreground)]">
@@ -136,6 +213,18 @@ export function ContactMessageSection() {
                   We usually reply within 24 hours
                 </span>
               </div>
+
+              {message ? (
+                <p
+                  className={`rounded-[0.75rem] border px-4 py-3 text-[14px] ${
+                    messageTone === "success"
+                      ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
+                      : "border-rose-500/20 bg-rose-500/10 text-rose-400"
+                  }`}
+                >
+                  {message}
+                </p>
+              ) : null}
             </form>
           </div>
 

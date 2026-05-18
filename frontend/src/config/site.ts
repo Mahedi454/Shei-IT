@@ -9,6 +9,7 @@ export const siteConfig = {
     { label: "Portfolio", href: "/portfolio" },
     { label: "About Us", href: "/about" },
     { label: "Pricing", href: "/pricing" },
+    { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
   ],
   stats: [
@@ -51,6 +52,7 @@ export const servicesSection = {
         "Fast, responsive and SEO-friendly websites that represent your business perfectly.",
       icon: "code",
       accent: "violet",
+      href: "/services/website-development",
     },
     {
       title: "Mobile App Development",
@@ -311,7 +313,7 @@ export const footerConfig = {
     {
       title: "Services",
       links: [
-        { label: "Website Development", href: "#" },
+        { label: "Website Development", href: "/services/website-development" },
         { label: "Mobile App Development", href: "#" },
         { label: "Hosting & Cloud", href: "#" },
         { label: "SEO & Marketing", href: "#" },
@@ -325,7 +327,7 @@ export const footerConfig = {
         { label: "About Us", href: "#" },
         { label: "Portfolio", href: "#" },
         { label: "Pricing", href: "#" },
-        { label: "Blog", href: "#" },
+        { label: "Blog", href: "/blog" },
         { label: "Careers", href: "#" },
       ],
     },

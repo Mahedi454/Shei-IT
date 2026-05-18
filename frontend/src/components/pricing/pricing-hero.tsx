@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { ArrowRight, ShieldCheck } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import { pricingBannerDark, pricingBannerLight } from "@/assets";
+import { useTheme } from "@/components/providers/theme-provider";
 
 export function PricingHero() {
   const { theme } = useTheme();
