@@ -46,11 +46,12 @@ import reactIcon from "@/assets/app dev images/react-svgrepo-com.svg";
 import supabaseIcon from "@/assets/app dev images/supabase.png";
 import swiftIcon from "@/assets/app dev images/swift-svgrepo-com.svg";
 import { SiteHeader } from "@/components/layout/site-header";
+import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
 
 const stats = [
-  { value: "5+", label: "Years Experience", icon: BadgeCheck },
-  { value: "80+", label: "Apps Built", icon: MonitorSmartphone },
-  { value: "98%", label: "Client Satisfaction", icon: Sparkles },
+  { value: "2+", label: "Work Experience", icon: BadgeCheck },
+  { value: "12+", label: "Apps Built", icon: MonitorSmartphone },
+  { value: "97%", label: "Client Satisfaction", icon: Sparkles },
   { value: "24/7", label: "Support", icon: Headphones },
 ] as const;
 
@@ -452,9 +453,7 @@ export default function MobileAppDevelopmentPage() {
               <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
                 What We Offer
               </p>
-              <h2 className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Complete Mobile App Solutions
-              </h2>
+              <ServiceGradientHeading className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">Complete Mobile App Solutions</ServiceGradientHeading>
             </div>
             <p className="max-w-[42rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)] lg:justify-self-end">
               We provide end-to-end mobile app development services to help your
@@ -500,9 +499,7 @@ export default function MobileAppDevelopmentPage() {
             <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
               Why Choose Us
             </p>
-            <h2 className="mt-3 max-w-[26rem] text-[1.8rem] font-semibold leading-[1.12] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.25rem]">
-              Apps That Perform, Engage & Scale
-            </h2>
+            <ServiceGradientHeading className="mt-3 max-w-[26rem] text-[1.8rem] font-semibold leading-[1.12] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.25rem]">Apps That Perform, Engage & Scale</ServiceGradientHeading>
             <p className="mt-4 max-w-[29rem] text-[14px] font-medium leading-7 text-[color:var(--muted-foreground)]">
               We combine design, technology, and strategy to deliver apps that
               feel smooth, solve real problems and support business growth.
@@ -540,9 +537,7 @@ export default function MobileAppDevelopmentPage() {
               <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
                 Our Process
               </p>
-              <h2 className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Our Development Process
-              </h2>
+              <ServiceGradientHeading className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">Our Development Process</ServiceGradientHeading>
             </div>
             <p className="max-w-[40rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
               A clear, transparent process to deliver outstanding apps, on time
@@ -584,9 +579,7 @@ export default function MobileAppDevelopmentPage() {
               <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
                 Technologies We Use
               </p>
-              <h2 className="mt-3 max-w-[34rem] text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Modern Technologies for Powerful Apps
-              </h2>
+              <ServiceGradientHeading className="mt-3 max-w-[34rem] text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">Modern Technologies for Powerful Apps</ServiceGradientHeading>
             </div>
             <p className="max-w-[40rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
               We use industry-leading technologies to build fast, secure, and
@@ -623,9 +616,7 @@ export default function MobileAppDevelopmentPage() {
               <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
                 Pricing Packages
               </p>
-              <h2 className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Transparent Pricing for Every Business Stage
-              </h2>
+              <ServiceGradientHeading className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">Transparent Pricing for Every Business Stage</ServiceGradientHeading>
             </div>
             <p className="max-w-[43rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
               Choose the perfect mobile app package based on your business
@@ -751,9 +742,7 @@ export default function MobileAppDevelopmentPage() {
             <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
               FAQ
             </p>
-            <h2 className="mt-3 text-[1.55rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]">
-              Frequently Asked Questions
-            </h2>
+            <ServiceGradientHeading className="mt-3 text-[1.55rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]">Frequently Asked Questions</ServiceGradientHeading>
 
             <div className="mt-5 space-y-3">
               {faqs.map((faq) => {
@@ -812,9 +801,7 @@ export default function MobileAppDevelopmentPage() {
             <div className="pointer-events-none absolute right-[40%] bottom-[26%] h-6 w-6 rounded-full bg-[#aee7ff]/85 blur-[1px]" />
 
             <div className="relative z-10 max-w-[25rem] pt-8 sm:max-w-[20rem] xl:max-w-[24rem]">
-              <h2 className="text-[2rem] font-semibold tracking-[-0.05em] sm:text-[2.35rem]">
-                Ready to Start Your Project?
-              </h2>
+              <ServiceGradientHeading className="text-[2rem] font-semibold tracking-[-0.05em] sm:text-[2.35rem]">Ready to Start Your Project?</ServiceGradientHeading>
               <p className="mt-3 max-w-[21rem] text-[15px] font-medium leading-7 text-white/86">
                 Let&apos;s turn your idea into a powerful digital solution.
                 We&apos;re excited to help you grow.
