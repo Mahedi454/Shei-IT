@@ -796,7 +796,7 @@ export default function MaintenanceSupportPage() {
             <div className="pointer-events-none absolute right-[40%] bottom-[26%] h-6 w-6 rounded-full bg-[#aee7ff]/85 blur-[1px]" />
 
             <div className="relative z-10 max-w-[25rem] pt-8 sm:max-w-[20rem] xl:max-w-[24rem]">
-              <ServiceGradientHeading className="text-[2rem] font-semibold tracking-[-0.05em] sm:text-[2.35rem]">Ready to Start Your Project?</ServiceGradientHeading>
+              <h2 className="text-[2rem] font-semibold tracking-[-0.05em] text-white sm:text-[2.35rem]">Ready to Start Your Project?</h2>
               <p className="mt-3 max-w-[21rem] text-[15px] font-medium leading-7 text-white/86">
                 Let&apos;s turn your idea into a powerful digital solution.
                 We&apos;re excited to help you grow.
