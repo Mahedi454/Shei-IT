@@ -12,8 +12,6 @@ import {
   ChevronRight,
   Code2,
   Crown,
-  Gauge,
-  Globe2,
   Headphones,
   Lightbulb,
   LockKeyhole,
@@ -32,7 +30,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import dartIcon from "@/assets/app dev images/dart.svg";
 import ctaImage from "@/assets/cta-image.png";
@@ -41,11 +39,14 @@ import firebaseIcon from "@/assets/app dev images/firebase-svgrepo-com.svg";
 import flutterIcon from "@/assets/app dev images/flutter-svgrepo-com.svg";
 import graphqlIcon from "@/assets/app dev images/graphql-svgrepo-com.svg";
 import kotlinIcon from "@/assets/app dev images/kotlin-svgrepo-com.svg";
+import mobileBannerDark from "@/assets/Mobile-Banner-Dark.png";
+import mobileBannerLight from "@/assets/Mobile-Banner-Light.png";
 import nodeIcon from "@/assets/app dev images/node-js-svgrepo-com.svg";
 import reactIcon from "@/assets/app dev images/react-svgrepo-com.svg";
 import supabaseIcon from "@/assets/app dev images/supabase.png";
 import swiftIcon from "@/assets/app dev images/swift-svgrepo-com.svg";
 import { SiteHeader } from "@/components/layout/site-header";
+import { useTheme } from "@/components/providers/theme-provider";
 import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
 
 const stats = [
@@ -290,59 +291,29 @@ const faqs = [
   },
 ] as const;
 
-function MobileAppMockup() {
-  return (
-    <div className="relative mx-auto aspect-[1.18/1] w-full max-w-[660px]">
-      <div className="absolute left-[9%] top-[7%] h-[74%] w-[76%] rounded-full bg-[color:var(--purple-glow)]" />
-      <div className="absolute right-[6%] top-[9%] h-5 w-5 rounded-full bg-[linear-gradient(135deg,#fff,#ff9f5a)] shadow-[0_10px_24px_rgba(255,159,90,0.35)]" />
-      <div className="absolute left-[15%] top-[5%] h-10 w-10 rounded-full bg-[linear-gradient(135deg,#a78bfa,#6c63ff)] shadow-[0_16px_36px_rgba(108,99,255,0.35)]" />
-      <div className="absolute right-[11%] bottom-[19%] h-20 w-20 rounded-[1.6rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] backdrop-blur-xl">
-        <div className="flex h-full items-center justify-center text-[color:var(--primary)]">
-          <Globe2 className="h-9 w-9" strokeWidth={2.1} />
-        </div>
-      </div>
-      <div className="absolute left-[7%] top-[24%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--primary)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
-        <Code2 className="h-8 w-8" strokeWidth={2.2} />
-      </div>
-      <div className="absolute left-[1%] top-[47%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--blue)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
-        <Gauge className="h-8 w-8" strokeWidth={2.2} />
-      </div>
-      <div className="absolute bottom-[7%] right-[2%] z-20 h-20 w-20 rounded-[1.5rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
-        <div className="absolute left-6 top-6 h-8 w-4 rounded-full bg-[color:var(--mint)]" />
-        <div className="absolute bottom-4 left-4 h-9 w-9 rounded-full border-[10px] border-[color:var(--primary-soft)]" />
-      </div>
-      <div className="absolute bottom-[2%] right-[22%] h-16 w-16 rounded-[1.25rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
-        <div className="mx-auto mt-4 h-9 w-3 rounded-full bg-[color:var(--mint)]" />
-        <div className="absolute left-5 top-8 h-4 w-8 -rotate-45 rounded-full bg-[color:var(--orange)]" />
-      </div>
+function MobileAppBanner() {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-      <div className="absolute bottom-[13%] left-[20%] z-10 h-[16%] w-[58%] -skew-x-12 rounded-b-[1rem] bg-[linear-gradient(180deg,#d7dbe7,#9ca3af)] shadow-[0_26px_42px_rgba(15,23,42,0.2)]" />
-      <div className="absolute bottom-[21%] left-[27%] z-20 h-[3%] w-[40%] rounded-full bg-[linear-gradient(90deg,#6b7280,#d1d5db,#4b5563)]" />
-      <div className="absolute left-[22%] top-[13%] z-30 h-[62%] w-[62%] rotate-[5deg] rounded-[1rem] border-[10px] border-[#262b36] bg-[color:var(--card-solid)] shadow-[0_34px_80px_rgba(15,23,42,0.28)] dark:bg-[#151722]">
-        <div className="h-full rounded-[0.45rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(245,247,255,0.88))] p-4 dark:bg-[linear-gradient(180deg,rgba(27,28,40,0.96),rgba(12,12,18,0.94))]">
-          <div className="flex gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#fca5a5]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#fde68a]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#86efac]" />
-          </div>
-          <div className="mt-5 h-8 rounded-md bg-[image:var(--gradient-primary)]" />
-          <div className="mt-5 grid grid-cols-[1.2fr_1fr] gap-4">
-            <div className="h-28 rounded-lg bg-[linear-gradient(135deg,rgba(139,124,255,0.24),rgba(93,174,255,0.12))]">
-              <div className="mx-auto mt-8 h-12 w-16 rounded-t-full bg-[color:var(--primary-soft)] opacity-65" />
-              <div className="mx-auto -mt-2 h-10 w-24 rounded-t-full bg-[color:var(--blue)] opacity-35" />
-            </div>
-            <div className="space-y-3">
-              <div className="h-3 w-20 rounded-full bg-[color:var(--background-secondary)]" />
-              <div className="h-3 w-28 rounded-full bg-[color:var(--background-secondary)]" />
-              <div className="h-9 w-24 rounded-lg bg-[color:var(--background-secondary)]" />
-            </div>
-          </div>
-          <div className="mt-5 grid grid-cols-3 gap-3">
-            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
-            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
-            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
-          </div>
-        </div>
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const bannerImage =
+    mounted && theme === "dark" ? mobileBannerDark : mobileBannerLight;
+
+  return (
+    <div className="relative flex items-center justify-center lg:justify-end">
+      <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--purple-glow)] blur-[120px]" />
+      <div className="relative w-full max-w-[760px]">
+        <Image
+          src={bannerImage}
+          alt="Mobile app development banner"
+          priority
+          quality={90}
+          sizes="(min-width: 1280px) 760px, (min-width: 1024px) 58vw, 92vw"
+          className="relative z-10 h-auto w-full object-contain"
+        />
       </div>
     </div>
   );
@@ -441,7 +412,7 @@ export default function MobileAppDevelopmentPage() {
               </div>
             </div>
 
-            <MobileAppMockup />
+            <MobileAppBanner />
           </div>
         </div>
       </section>
