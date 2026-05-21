@@ -1,4 +1,5 @@
 import { SiteHeader } from "@/components/layout/site-header";
+import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
 import { ServicesCoreSection } from "@/components/services/services-core-section";
 import { ServicesCtaSection } from "@/components/services/services-cta";
 import { ServicesHero } from "@/components/services/services-hero";

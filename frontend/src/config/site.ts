@@ -14,7 +14,7 @@ export const siteConfig = {
   ],
   stats: [
     {
-      value: "150+",
+      value: "25+",
       label: "Projects Completed",
       description: "Successfully delivered for our clients",
       icon: "briefcase",
@@ -26,7 +26,7 @@ export const siteConfig = {
       icon: "badge",
     },
     {
-      value: "5+",
+      value: "3+",
       label: "Years Experience",
       description: "Delivering excellent digital solutions",
       icon: "chart",
@@ -168,18 +168,21 @@ export const selectedWorkSection = {
       tags: ["Website", "SEO", "Hosting"],
       accent: "violet",
       theme: "restaurant",
+      href: "/portfolio",
     },
     {
       title: "Tutor Booking Platform",
       tags: ["SaaS", "Booking", "Payment"],
       accent: "blue",
       theme: "tutor",
+      href: "/portfolio",
     },
     {
       title: "Business Portfolio Website",
       tags: ["Website", "Branding", "SEO"],
       accent: "peach",
       theme: "portfolio",
+      href: "/portfolio",
     },
   ],
 } as const;
@@ -291,7 +294,7 @@ export const portfolioSection = {
   ],
   results: [
     {
-      value: "120+",
+      value: "25+",
       label: "Projects Completed",
       icon: "tools",
     },

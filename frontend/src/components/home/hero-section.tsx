@@ -69,14 +69,14 @@ export function HeroSection() {
 
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <a
-                  href="#"
+                  href="/services"
                   className="inline-flex items-center gap-3 rounded-full bg-[color:var(--cta-dark)] px-7 py-4 text-[15px] font-semibold text-white shadow-[0_20px_40px_rgba(15,23,42,0.2)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.36)]"
                 >
                   Explore Services
                   <ArrowRight className="h-4 w-4" />
                 </a>
                 <a
-                  href="#"
+                  href="/portfolio"
                   className="inline-flex items-center gap-3 rounded-full border border-[color:var(--button-border)] bg-[color:var(--button-secondary)] px-7 py-4 text-[15px] font-semibold text-[color:var(--foreground)] shadow-[0_16px_32px_rgba(15,23,42,0.06)] dark:shadow-none"
                 >
                   View Our Work

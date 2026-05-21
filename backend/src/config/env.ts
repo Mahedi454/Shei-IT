@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ override: true });
 
 const port = Number(process.env.PORT ?? 5000);
 const smtpPort = Number(process.env.SMTP_PORT ?? 587);
@@ -26,7 +26,7 @@ export const env = {
   DATABASE_URL: process.env.DATABASE_URL ?? "",
   ADMIN_EMAILS: parseList(process.env.ADMIN_EMAILS),
   FIREBASE_SERVICE_ACCOUNT:
-    process.env.FIREBASE_SERVICE_ACCOUNT ?? "./adminsdk.json",
+    process.env.FIREBASE_SERVICE_ACCOUNT ?? "./firebasadminsdk.json",
   SMTP_HOST: process.env.SMTP_HOST ?? "",
   SMTP_PORT: smtpPort,
   SMTP_SECURE: process.env.SMTP_SECURE === "true",
