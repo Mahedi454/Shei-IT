@@ -14,7 +14,7 @@ export const siteConfig = {
   ],
   stats: [
     {
-      value: "150+",
+      value: "25+",
       label: "Projects Completed",
       description: "Successfully delivered for our clients",
       icon: "briefcase",
@@ -26,7 +26,7 @@ export const siteConfig = {
       icon: "badge",
     },
     {
-      value: "5+",
+      value: "3+",
       label: "Years Experience",
       description: "Delivering excellent digital solutions",
       icon: "chart",
@@ -60,6 +60,7 @@ export const servicesSection = {
         "Modern mobile apps for Android, iOS and cross-platform products that scale.",
       icon: "smartphone",
       accent: "blue",
+      href: "/services/mobile-app-development",
     },
     {
       title: "Hosting & Cloud",
@@ -67,6 +68,7 @@ export const servicesSection = {
         "Reliable hosting and secure cloud infrastructure for smooth performance and uptime.",
       icon: "cloud",
       accent: "mint",
+      href: "/services/hosting-cloud",
     },
     {
       title: "SEO & Marketing",
@@ -74,6 +76,7 @@ export const servicesSection = {
         "Rank higher, grow traffic and strengthen your brand with practical digital strategies.",
       icon: "chart",
       accent: "orange",
+      href: "/services/seo-marketing",
     },
     {
       title: "Cross Platform Development",
@@ -81,6 +84,7 @@ export const servicesSection = {
         "Build once and run seamlessly across multiple devices and platforms.",
       icon: "layers",
       accent: "pink",
+      href: "/services/cross-platform-development",
     },
     {
       title: "Maintenance & Support",
@@ -88,6 +92,7 @@ export const servicesSection = {
         "We keep your digital products updated, secure and running smoothly over time.",
       icon: "shield",
       accent: "purple",
+      href: "/services/maintenance-support",
     },
     {
       title: "UI/UX Design",
@@ -95,6 +100,7 @@ export const servicesSection = {
         "Clear, modern interfaces designed to create trust and guide users naturally.",
       icon: "palette",
       accent: "sky",
+      href: "/services/ui-ux-design",
     },
     {
       title: "Deployment & DevOps",
@@ -102,6 +108,7 @@ export const servicesSection = {
         "Production-ready delivery pipelines, monitoring and release support you can rely on.",
       icon: "rocket",
       accent: "indigo",
+      href: "/services/deployment-devops",
     },
   ],
 } as const;
@@ -161,18 +168,21 @@ export const selectedWorkSection = {
       tags: ["Website", "SEO", "Hosting"],
       accent: "violet",
       theme: "restaurant",
+      href: "/portfolio",
     },
     {
       title: "Tutor Booking Platform",
       tags: ["SaaS", "Booking", "Payment"],
       accent: "blue",
       theme: "tutor",
+      href: "/portfolio",
     },
     {
       title: "Business Portfolio Website",
       tags: ["Website", "Branding", "SEO"],
       accent: "peach",
       theme: "portfolio",
+      href: "/portfolio",
     },
   ],
 } as const;
@@ -284,7 +294,7 @@ export const portfolioSection = {
   ],
   results: [
     {
-      value: "120+",
+      value: "25+",
       label: "Projects Completed",
       icon: "tools",
     },
@@ -314,11 +324,20 @@ export const footerConfig = {
       title: "Services",
       links: [
         { label: "Website Development", href: "/services/website-development" },
-        { label: "Mobile App Development", href: "#" },
-        { label: "Hosting & Cloud", href: "#" },
-        { label: "SEO & Marketing", href: "#" },
-        { label: "Cross Platform", href: "#" },
-        { label: "Maintenance & Support", href: "#" },
+        {
+          label: "Mobile App Development",
+          href: "/services/mobile-app-development",
+        },
+        { label: "Hosting & Cloud", href: "/services/hosting-cloud" },
+        { label: "SEO & Marketing", href: "/services/seo-marketing" },
+        {
+          label: "Cross Platform",
+          href: "/services/cross-platform-development",
+        },
+        {
+          label: "Maintenance & Support",
+          href: "/services/maintenance-support",
+        },
       ],
     },
     {
@@ -342,7 +361,11 @@ export const footerConfig = {
     },
   ],
   contact: [
-    { label: "sheiitofficial@gmail.com", href: "mailto:sheiitofficial@gmail.com", type: "email" },
+    {
+      label: "sheiitofficial@gmail.com",
+      href: "mailto:sheiitofficial@gmail.com",
+      type: "email",
+    },
     { label: "+880 1768 857058", href: "tel:+8801768857058", type: "phone" },
     { label: "Dhaka, Bangladesh", href: "#", type: "location" },
   ],

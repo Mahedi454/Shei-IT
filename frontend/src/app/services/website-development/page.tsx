@@ -13,7 +13,6 @@ import {
   Code2,
   Crown,
   Gauge,
-  Globe2,
   Headphones,
   Lightbulb,
   LockKeyhole,
@@ -31,24 +30,28 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import cssIcon from "@/assets/css-3-svgrepo-com.svg";
+import cssIcon from "@/assets/web dev images/css-3-svgrepo-com.svg";
 import ctaImage from "@/assets/cta-image.png";
-import htmlIcon from "@/assets/html-5-svgrepo-com.svg";
-import javascriptIcon from "@/assets/javascript-svgrepo-com.svg";
-import laravelIcon from "@/assets/laravel-svgrepo-com.svg";
-import mysqlIcon from "@/assets/mysql-svgrepo-com.svg";
-import nextIcon from "@/assets/next-dot-js-svgrepo-com.svg";
-import phpIcon from "@/assets/php-svgrepo-com.svg";
-import reactIcon from "@/assets/react-svgrepo-com.svg";
-import webflowIcon from "@/assets/webflow-svgrepo-com.svg";
-import wordpressIcon from "@/assets/wordpress-svgrepo-com.svg";
+import fastApiIcon from "@/assets/web dev images/fastapi-svgrepo-com.svg";
+import htmlIcon from "@/assets/web dev images/html-5-svgrepo-com.svg";
+import javascriptIcon from "@/assets/web dev images/javascript-svgrepo-com.svg";
+import laravelIcon from "@/assets/web dev images/laravel-svgrepo-com.svg";
+import mysqlIcon from "@/assets/web dev images/mysql-svgrepo-com.svg";
+import nextIcon from "@/assets/web dev images/next-dot-js-svgrepo-com.svg";
+import phpIcon from "@/assets/web dev images/php-svgrepo-com.svg";
+import reactIcon from "@/assets/web dev images/react-svgrepo-com.svg";
+import wordpressIcon from "@/assets/web dev images/wordpress-svgrepo-com.svg";
+import websiteBannerDark from "@/assets/Website-Banner-Dark.png";
+import websiteBannerLight from "@/assets/Website-Banner-Light.png";
 import { SiteHeader } from "@/components/layout/site-header";
+import { useTheme } from "@/components/providers/theme-provider";
+import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
 
 const stats = [
-  { value: "5+", label: "Years Experience", icon: BadgeCheck },
-  { value: "150+", label: "Websites Built", icon: MonitorSmartphone },
+  { value: "3+", label: "Work Experience", icon: BadgeCheck },
+  { value: "15+", label: "Websites Built", icon: MonitorSmartphone },
   { value: "98%", label: "Client Satisfaction", icon: Sparkles },
   { value: "24/7", label: "Support", icon: Headphones },
 ] as const;
@@ -56,37 +59,36 @@ const stats = [
 const offers = [
   {
     title: "Custom Website Development",
-    description: "Tailored websites built from scratch to match your brand and business needs.",
+    description:
+      "Tailored websites built from scratch to match your brand and business needs.",
     icon: MonitorSmartphone,
     accent: "violet",
   },
   {
     title: "Responsive Design & Mobile-First",
-    description: "Pixel-perfect designs that look and work flawlessly on all devices.",
+    description:
+      "Pixel-perfect designs that look and work flawlessly on all devices.",
     icon: Code2,
     accent: "violet",
   },
   {
     title: "E-Commerce Development",
-    description: "Secure, scalable online stores with smooth shopping experiences and payment integration.",
+    description:
+      "Secure, scalable online stores with smooth shopping experiences and payment integration.",
     icon: ShoppingCart,
     accent: "violet",
   },
   {
     title: "CMS Development",
-    description: "Easy-to-manage websites using WordPress, Webflow or custom CMS solutions.",
+    description:
+      "Easy-to-manage websites using WordPress or custom CMS solutions.",
     icon: ShieldCheck,
     accent: "mint",
   },
   {
-    title: "Web Application Development",
-    description: "Powerful web apps and portals to streamline operations and user experiences.",
-    icon: Box,
-    accent: "violet",
-  },
-  {
     title: "Website Redesign & Revamp",
-    description: "Modernize your existing website for better performance and conversions.",
+    description:
+      "Modernize your existing website for better performance and conversions.",
     icon: RefreshCw,
     accent: "violet",
   },
@@ -95,7 +97,8 @@ const offers = [
 const reasons = [
   {
     title: "SEO-Friendly",
-    description: "Built with clean code and best practices for higher rankings.",
+    description:
+      "Built with clean code and best practices for higher rankings.",
     icon: Search,
   },
   {
@@ -165,7 +168,7 @@ const technologies = [
   { label: "React", icon: reactIcon },
   { label: "Next.js", icon: nextIcon },
   { label: "WordPress", icon: wordpressIcon },
-  { label: "Webflow", icon: webflowIcon },
+  { label: "FastAPI", icon: fastApiIcon },
   { label: "PHP", icon: phpIcon },
   { label: "Laravel", icon: laravelIcon },
   { label: "MySQL", icon: mysqlIcon },
@@ -175,8 +178,8 @@ const pricingPackages = [
   {
     name: "Starter Package",
     description: "Best for personal brands, portfolios and small businesses.",
-    monthly: "$149",
-    yearly: "$1,609",
+    price: "$149",
+    note: "Starter website package",
     timeline: "5 - 7 days",
     action: "Get Started",
     icon: Send,
@@ -196,8 +199,8 @@ const pricingPackages = [
   {
     name: "Business Package",
     description: "Ideal for growing businesses and corporate websites.",
-    monthly: "$349",
-    yearly: "$3,769",
+    price: "$349",
+    note: "Business website package",
     timeline: "10 - 14 days",
     action: "Choose Plan",
     icon: BriefcaseBusiness,
@@ -218,8 +221,8 @@ const pricingPackages = [
   {
     name: "Pro Package",
     description: "Perfect for online stores and conversion-focused businesses.",
-    monthly: "$699",
-    yearly: "$7,549",
+    price: "$699",
+    note: "E-commerce website package",
     timeline: "2 - 4 weeks",
     action: "Launch Store",
     icon: ShoppingCart,
@@ -240,8 +243,8 @@ const pricingPackages = [
   {
     name: "Custom Package",
     description: "For complex platforms and custom web applications.",
-    monthly: "Custom",
-    yearly: "Custom",
+    price: "Custom",
+    note: "Custom project scope",
     timeline: "Depends on scope",
     action: "Book Consultation",
     icon: Box,
@@ -288,70 +291,36 @@ const faqs = [
   },
 ] as const;
 
-function WebsiteMockup() {
-  return (
-    <div className="relative mx-auto aspect-[1.18/1] w-full max-w-[660px]">
-      <div className="absolute left-[9%] top-[7%] h-[74%] w-[76%] rounded-full bg-[color:var(--purple-glow)]" />
-      <div className="absolute right-[6%] top-[9%] h-5 w-5 rounded-full bg-[linear-gradient(135deg,#fff,#ff9f5a)] shadow-[0_10px_24px_rgba(255,159,90,0.35)]" />
-      <div className="absolute left-[15%] top-[5%] h-10 w-10 rounded-full bg-[linear-gradient(135deg,#a78bfa,#6c63ff)] shadow-[0_16px_36px_rgba(108,99,255,0.35)]" />
-      <div className="absolute right-[11%] bottom-[19%] h-20 w-20 rounded-[1.6rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] backdrop-blur-xl">
-        <div className="flex h-full items-center justify-center text-[color:var(--primary)]">
-          <Globe2 className="h-9 w-9" strokeWidth={2.1} />
-        </div>
-      </div>
-      <div className="absolute left-[7%] top-[24%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--primary)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
-        <Code2 className="h-8 w-8" strokeWidth={2.2} />
-      </div>
-      <div className="absolute left-[1%] top-[47%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--blue)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
-        <Gauge className="h-8 w-8" strokeWidth={2.2} />
-      </div>
-      <div className="absolute bottom-[7%] right-[2%] z-20 h-20 w-20 rounded-[1.5rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
-        <div className="absolute left-6 top-6 h-8 w-4 rounded-full bg-[color:var(--mint)]" />
-        <div className="absolute bottom-4 left-4 h-9 w-9 rounded-full border-[10px] border-[color:var(--primary-soft)]" />
-      </div>
-      <div className="absolute bottom-[2%] right-[22%] h-16 w-16 rounded-[1.25rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
-        <div className="mx-auto mt-4 h-9 w-3 rounded-full bg-[color:var(--mint)]" />
-        <div className="absolute left-5 top-8 h-4 w-8 -rotate-45 rounded-full bg-[color:var(--orange)]" />
-      </div>
+function WebsiteBanner() {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-      <div className="absolute bottom-[13%] left-[20%] z-10 h-[16%] w-[58%] -skew-x-12 rounded-b-[1rem] bg-[linear-gradient(180deg,#d7dbe7,#9ca3af)] shadow-[0_26px_42px_rgba(15,23,42,0.2)]" />
-      <div className="absolute bottom-[21%] left-[27%] z-20 h-[3%] w-[40%] rounded-full bg-[linear-gradient(90deg,#6b7280,#d1d5db,#4b5563)]" />
-      <div className="absolute left-[22%] top-[13%] z-30 h-[62%] w-[62%] rotate-[5deg] rounded-[1rem] border-[10px] border-[#262b36] bg-[color:var(--card-solid)] shadow-[0_34px_80px_rgba(15,23,42,0.28)] dark:bg-[#151722]">
-        <div className="h-full rounded-[0.45rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(245,247,255,0.88))] p-4 dark:bg-[linear-gradient(180deg,rgba(27,28,40,0.96),rgba(12,12,18,0.94))]">
-          <div className="flex gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#fca5a5]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#fde68a]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#86efac]" />
-          </div>
-          <div className="mt-5 h-8 rounded-md bg-[image:var(--gradient-primary)]" />
-          <div className="mt-5 grid grid-cols-[1.2fr_1fr] gap-4">
-            <div className="h-28 rounded-lg bg-[linear-gradient(135deg,rgba(139,124,255,0.24),rgba(93,174,255,0.12))]">
-              <div className="mx-auto mt-8 h-12 w-16 rounded-t-full bg-[color:var(--primary-soft)] opacity-65" />
-              <div className="mx-auto -mt-2 h-10 w-24 rounded-t-full bg-[color:var(--blue)] opacity-35" />
-            </div>
-            <div className="space-y-3">
-              <div className="h-3 w-20 rounded-full bg-[color:var(--background-secondary)]" />
-              <div className="h-3 w-28 rounded-full bg-[color:var(--background-secondary)]" />
-              <div className="h-9 w-24 rounded-lg bg-[color:var(--background-secondary)]" />
-            </div>
-          </div>
-          <div className="mt-5 grid grid-cols-3 gap-3">
-            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
-            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
-            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
-          </div>
-        </div>
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const bannerImage =
+    mounted && theme === "dark" ? websiteBannerDark : websiteBannerLight;
+
+  return (
+    <div className="relative flex items-center justify-center lg:justify-end">
+      <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--purple-glow)] blur-[120px]" />
+      <div className="relative w-full max-w-[760px]">
+        <Image
+          src={bannerImage}
+          alt="Website development banner"
+          priority
+          quality={90}
+          sizes="(min-width: 1280px) 760px, (min-width: 1024px) 58vw, 92vw"
+          className="relative z-10 h-auto w-full object-contain"
+        />
       </div>
     </div>
   );
 }
 
 export default function WebsiteDevelopmentPage() {
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
-    "monthly",
-  );
   const [openFaq, setOpenFaq] = useState<string | null>(null);
-  const isYearly = billingCycle === "yearly";
 
   return (
     <main className="min-h-screen bg-[image:var(--hero-surface)] bg-no-repeat">
@@ -364,11 +333,16 @@ export default function WebsiteDevelopmentPage() {
               Home
             </a>
             <ChevronRight className="h-3.5 w-3.5" />
-            <a href="/services" className="hover:text-[color:var(--foreground)]">
+            <a
+              href="/services"
+              className="hover:text-[color:var(--foreground)]"
+            >
               Services
             </a>
             <ChevronRight className="h-3.5 w-3.5" />
-            <span className="text-[color:var(--foreground)]">Website Development</span>
+            <span className="text-[color:var(--foreground)]">
+              Website Development
+            </span>
           </nav>
 
           <div className="mt-10 grid items-center gap-10 lg:grid-cols-[0.86fr_1.14fr]">
@@ -388,9 +362,10 @@ export default function WebsiteDevelopmentPage() {
                 Modern, fast and scalable websites that drive results.
               </p>
               <p className="mt-4 max-w-[40rem] text-[15px] leading-8 text-[color:var(--muted-foreground)]">
-                We build high-performing, SEO-friendly websites that are visually
-                polished, secure and tailored to your business goals. From simple
-                business sites to advanced web applications, we have you covered.
+                We build high-performing, SEO-friendly websites that are
+                visually polished, secure and tailored to your business goals.
+                From simple business sites to advanced web applications, we have
+                you covered.
               </p>
 
               <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -438,7 +413,7 @@ export default function WebsiteDevelopmentPage() {
               </div>
             </div>
 
-            <WebsiteMockup />
+            <WebsiteBanner />
           </div>
         </div>
       </section>
@@ -450,9 +425,7 @@ export default function WebsiteDevelopmentPage() {
               <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
                 What We Offer
               </p>
-              <h2 className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Complete Website Solutions
-              </h2>
+              <ServiceGradientHeading className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">Complete Website Solutions</ServiceGradientHeading>
             </div>
             <p className="max-w-[42rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)] lg:justify-self-end">
               We provide end-to-end web development services to help your
@@ -460,7 +433,7 @@ export default function WebsiteDevelopmentPage() {
             </p>
           </div>
 
-          <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-6">
+          <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
             {offers.map((item) => {
               const Icon = item.icon;
 
@@ -498,9 +471,7 @@ export default function WebsiteDevelopmentPage() {
             <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
               Why Choose Us
             </p>
-            <h2 className="mt-3 max-w-[26rem] text-[1.8rem] font-semibold leading-[1.12] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.25rem]">
-              Websites That Perform, Convert & Scale
-            </h2>
+            <ServiceGradientHeading className="mt-3 max-w-[26rem] text-[1.8rem] font-semibold leading-[1.12] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.25rem]">Websites That Perform, Convert & Scale</ServiceGradientHeading>
             <p className="mt-4 max-w-[29rem] text-[14px] font-medium leading-7 text-[color:var(--muted-foreground)]">
               We combine design, technology, and strategy to deliver websites
               that not only look great but also help you achieve real business
@@ -539,9 +510,7 @@ export default function WebsiteDevelopmentPage() {
               <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
                 Our Process
               </p>
-              <h2 className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Our Development Process
-              </h2>
+              <ServiceGradientHeading className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">Our Development Process</ServiceGradientHeading>
             </div>
             <p className="max-w-[40rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
               A clear, transparent process to deliver outstanding websites, on
@@ -583,9 +552,7 @@ export default function WebsiteDevelopmentPage() {
               <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
                 Technologies We Use
               </p>
-              <h2 className="mt-3 max-w-[34rem] text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Modern Technologies for Powerful Websites
-              </h2>
+              <ServiceGradientHeading className="mt-3 max-w-[34rem] text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">Modern Technologies for Powerful Websites</ServiceGradientHeading>
             </div>
             <p className="max-w-[40rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
               We use industry-leading technologies to build fast, secure, and
@@ -617,51 +584,24 @@ export default function WebsiteDevelopmentPage() {
 
       <section className="relative pb-16 lg:pb-20">
         <div className="mx-auto w-11/12 max-w-[1440px]">
-          <div className="grid gap-6 lg:grid-cols-[1fr_0.88fr_auto] lg:items-end">
+          <div className="grid gap-6 lg:grid-cols-[1fr_0.88fr] lg:items-end">
             <div>
               <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
                 Pricing Packages
               </p>
-              <h2 className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
-                Transparent Pricing for Every Business Stage
-              </h2>
+              <ServiceGradientHeading className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">Transparent Pricing for Every Business Stage</ServiceGradientHeading>
             </div>
             <p className="max-w-[43rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)]">
               Choose the perfect website package based on your business goals.
               From startup landing pages to advanced platforms, we have you
               covered.
             </p>
-            <div className="inline-flex h-12 items-center rounded-[1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-1 shadow-[0_14px_34px_rgba(15,23,42,0.05)] backdrop-blur-xl">
-              <button
-                type="button"
-                onClick={() => setBillingCycle("monthly")}
-                className={`inline-flex h-10 items-center rounded-[0.8rem] px-5 text-[13px] font-bold ${
-                  !isYearly
-                    ? "bg-white text-[color:var(--primary)] shadow-[0_8px_20px_rgba(15,23,42,0.06)] dark:bg-[color:var(--button-secondary-icon)]"
-                    : "text-[color:var(--muted-foreground)]"
-                }`}
-              >
-                Monthly
-              </button>
-              <button
-                type="button"
-                onClick={() => setBillingCycle("yearly")}
-                className={`inline-flex h-10 items-center rounded-[0.8rem] px-5 text-[13px] font-bold ${
-                  isYearly
-                    ? "bg-white text-[color:var(--primary)] shadow-[0_8px_20px_rgba(15,23,42,0.06)] dark:bg-[color:var(--button-secondary-icon)]"
-                    : "text-[color:var(--muted-foreground)]"
-                }`}
-              >
-                Yearly
-              </button>
-            </div>
           </div>
 
           <div className="mt-8 grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
             {pricingPackages.map((pack) => {
               const Icon = pack.icon;
               const isFeatured = pack.accent === "featured";
-              const selectedPrice = isYearly ? pack.yearly : pack.monthly;
               const iconClass =
                 pack.accent === "orange"
                   ? "bg-[linear-gradient(180deg,rgba(255,159,90,0.18),rgba(255,159,90,0.08))] text-[color:var(--orange)]"
@@ -688,14 +628,20 @@ export default function WebsiteDevelopmentPage() {
                   ) : null}
 
                   <div className="flex items-start gap-4">
-                    <span className={`inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-[1rem] ${iconClass}`}>
+                    <span
+                      className={`inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-[1rem] ${iconClass}`}
+                    >
                       <Icon className="h-6 w-6" strokeWidth={2.15} />
                     </span>
                     <div>
-                      <h3 className={`text-[1.18rem] font-semibold tracking-[-0.04em] ${isFeatured ? "text-white" : "text-[color:var(--foreground)]"}`}>
+                      <h3
+                        className={`text-[1.18rem] font-semibold tracking-[-0.04em] ${isFeatured ? "text-white" : "text-[color:var(--foreground)]"}`}
+                      >
                         {pack.name}
                       </h3>
-                      <p className={`mt-2 text-[13px] font-medium leading-6 ${isFeatured ? "text-white/78" : "text-[color:var(--muted-foreground)]"}`}>
+                      <p
+                        className={`mt-2 text-[13px] font-medium leading-6 ${isFeatured ? "text-white/78" : "text-[color:var(--muted-foreground)]"}`}
+                      >
                         {pack.description}
                       </p>
                     </div>
@@ -709,32 +655,16 @@ export default function WebsiteDevelopmentPage() {
                     }`}
                   >
                     <div>
-                      <div className="flex items-center justify-between gap-3">
-                        <p className={`text-[11px] font-bold uppercase tracking-[0.2em] ${isFeatured ? "text-[color:var(--muted-foreground)]" : "text-[color:var(--muted-foreground)]"}`}>
-                          {isYearly ? "Yearly" : "Monthly"}
-                        </p>
-                        {isYearly && selectedPrice !== "Custom" ? (
-                          <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${isFeatured ? "bg-[color:var(--button-secondary-icon)] text-[color:var(--primary)]" : "bg-[color:var(--button-secondary-icon)] text-[color:var(--primary)]"}`}>
-                            Save 10%
-                          </span>
-                        ) : null}
-                      </div>
-                      <p className={`mt-2 text-[2.25rem] font-semibold tracking-[-0.06em] ${isFeatured ? "text-[color:var(--primary)]" : "text-[color:var(--foreground)]"}`}>
-                        {selectedPrice}
-                        {selectedPrice !== "Custom" ? (
-                          <span className="text-[13px] font-bold tracking-normal text-[color:var(--muted-foreground)]">
-                            /{isYearly ? "yr" : "mo"}
-                          </span>
-                        ) : null}
+                      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">
+                        Package Price
+                      </p>
+                      <p
+                        className={`mt-2 text-[2.25rem] font-semibold tracking-[-0.06em] ${isFeatured ? "text-[color:var(--primary)]" : "text-[color:var(--foreground)]"}`}
+                      >
+                        {pack.price}
                       </p>
                       <p className="mt-1 text-[12px] font-semibold text-[color:var(--muted-foreground)]">
-                        {isYearly
-                          ? selectedPrice === "Custom"
-                            ? "Custom yearly contract"
-                            : "Billed yearly with 10% savings"
-                          : selectedPrice === "Custom"
-                            ? "Custom monthly support"
-                            : "Billed monthly"}
+                        {pack.note}
                       </p>
                     </div>
                   </div>
@@ -746,14 +676,18 @@ export default function WebsiteDevelopmentPage() {
                           className={`h-4.5 w-4.5 shrink-0 ${isFeatured ? "text-white" : "text-[color:var(--mint)]"}`}
                           strokeWidth={2.25}
                         />
-                        <span className={`text-[14px] font-medium ${isFeatured ? "text-white/86" : "text-[color:var(--muted-foreground)]"}`}>
+                        <span
+                          className={`text-[14px] font-medium ${isFeatured ? "text-white/86" : "text-[color:var(--muted-foreground)]"}`}
+                        >
                           {feature}
                         </span>
                       </li>
                     ))}
                   </ul>
 
-                  <div className={`mt-7 flex items-center gap-2 text-[13px] font-bold ${isFeatured ? "text-white/78" : "text-[color:var(--muted-foreground)]"}`}>
+                  <div
+                    className={`mt-7 flex items-center gap-2 text-[13px] font-bold ${isFeatured ? "text-white/78" : "text-[color:var(--muted-foreground)]"}`}
+                  >
                     <CalendarClock className="h-4 w-4" strokeWidth={2.1} />
                     Timeline: {pack.timeline}
                   </div>
@@ -782,9 +716,7 @@ export default function WebsiteDevelopmentPage() {
             <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
               FAQ
             </p>
-            <h2 className="mt-3 text-[1.55rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]">
-              Frequently Asked Questions
-            </h2>
+            <ServiceGradientHeading className="mt-3 text-[1.55rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]">Frequently Asked Questions</ServiceGradientHeading>
 
             <div className="mt-5 space-y-3">
               {faqs.map((faq) => {
@@ -843,9 +775,7 @@ export default function WebsiteDevelopmentPage() {
             <div className="pointer-events-none absolute right-[40%] bottom-[26%] h-6 w-6 rounded-full bg-[#aee7ff]/85 blur-[1px]" />
 
             <div className="relative z-10 max-w-[25rem] pt-8 sm:max-w-[20rem] xl:max-w-[24rem]">
-              <h2 className="text-[2rem] font-semibold tracking-[-0.05em] sm:text-[2.35rem]">
-                Ready to Start Your Project?
-              </h2>
+              <h2 className="text-[2rem] font-semibold tracking-[-0.05em] text-white sm:text-[2.35rem]">Ready to Start Your Project?</h2>
               <p className="mt-3 max-w-[21rem] text-[15px] font-medium leading-7 text-white/86">
                 Let&apos;s turn your idea into a powerful digital solution.
                 We&apos;re excited to help you grow.
@@ -870,7 +800,6 @@ export default function WebsiteDevelopmentPage() {
           </div>
         </div>
       </section>
-
     </main>
   );
 }
