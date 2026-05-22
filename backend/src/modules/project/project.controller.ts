@@ -15,6 +15,20 @@ const createSlug = (value: string) =>
 export const getPublishedProjects: RequestHandler = catchAsync(async (_req, res) => {
   const projects = await prisma.project.findMany({
     where: { status: "published" },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      description: true,
+      image: true,
+      categories: true,
+      metric: true,
+      metricLabel: true,
+      featured: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+    },
     orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
   });
 

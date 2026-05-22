@@ -53,6 +53,7 @@ export function ProjectsGrid() {
               categories={project.categories}
               metric={project.metric ?? ""}
               metricLabel={project.metricLabel ?? ""}
+              href={`/portfolio/${project.slug}`}
             />
           ))}
         </div>

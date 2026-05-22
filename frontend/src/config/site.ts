@@ -175,7 +175,7 @@ export const selectedWorkSection = {
       tags: ["SaaS", "Booking", "Payment"],
       accent: "blue",
       theme: "tutor",
-      href: "/portfolio",
+      href: "/portfolio/skillbridge-frontend",
     },
     {
       title: "Business Portfolio Website",

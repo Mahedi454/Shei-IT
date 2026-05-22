@@ -37,6 +37,21 @@ type ResourceItem = {
   metric?: string | null;
   metricLabel?: string | null;
   featured?: boolean;
+  detailEyebrow?: string | null;
+  detailType?: string | null;
+  liveUrl?: string | null;
+  clientRepositoryUrl?: string | null;
+  serverRepositoryUrl?: string | null;
+  overview?: string | null;
+  problem?: string | null;
+  features?: unknown;
+  roles?: unknown;
+  architectureFlow?: unknown;
+  techStack?: unknown;
+  paymentTitle?: string | null;
+  paymentDescription?: string | null;
+  paymentReliabilityTitle?: string | null;
+  paymentReliabilityDescription?: string | null;
   status: PublishStatus;
   publishedAt?: string | null;
   createdAt: string;
@@ -79,6 +94,46 @@ const initialForm = {
   description: "",
   excerpt: "",
   featured: false,
+  detailEyebrow: "",
+  detailType: "",
+  liveUrl: "",
+  clientRepositoryUrl: "",
+  serverRepositoryUrl: "",
+  overview: "",
+  problem: "",
+  featuresJson: `[
+  {
+    "title": "Public Experience",
+    "icon": "public",
+    "items": [
+      "Responsive landing and discovery pages.",
+      "Mobile-friendly project experience."
+    ]
+  }
+]`,
+  rolesJson: `[
+  {
+    "title": "Visitors",
+    "description": "Explore the product and understand the core value."
+  }
+]`,
+  architectureFlowJson: `[
+  {
+    "number": "01",
+    "title": "Discovery",
+    "description": "Users enter through the public experience."
+  }
+]`,
+  techStackJson: `[
+  {
+    "title": "Frontend",
+    "tools": ["Next.js", "React", "TypeScript", "Tailwind CSS"]
+  }
+]`,
+  paymentTitle: "",
+  paymentDescription: "",
+  paymentReliabilityTitle: "",
+  paymentReliabilityDescription: "",
   image: "",
   metric: "",
   metricLabel: "",
@@ -86,6 +141,49 @@ const initialForm = {
   slug: "",
   status: "draft" as PublishStatus,
   title: "",
+};
+
+const formatJson = (value: unknown, fallback: string) => {
+  if (value === null || typeof value === "undefined") {
+    return fallback;
+  }
+
+  try {
+    return JSON.stringify(value, null, 2);
+  } catch {
+    return fallback;
+  }
+};
+
+const parseJsonField = (value: string, fieldLabel: string) => {
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return undefined;
+  }
+
+  try {
+    return JSON.parse(trimmed) as unknown;
+  } catch {
+    throw new Error(`${fieldLabel} must be valid JSON.`);
+  }
+};
+
+const normalizeOptionalText = (value: string) => {
+  const trimmed = value.trim();
+  return trimmed ? trimmed : undefined;
+};
+
+const normalizeOptionalUrl = (value: string) => {
+  const trimmed = value.trim();
+  return trimmed && trimmed !== "https://..." ? trimmed : undefined;
+};
+
+const normalizeOptionalDetailText = (value: string) => {
+  const trimmed = value.trim();
+  return trimmed && !["What the project is...", "Why it was built..."].includes(trimmed)
+    ? trimmed
+    : undefined;
 };
 
 export function ResourceManager({ resource, title }: ResourceManagerProps) {
@@ -148,6 +246,24 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       description: item.description ?? "",
       excerpt: item.excerpt ?? "",
       featured: Boolean(item.featured),
+      detailEyebrow: item.detailEyebrow ?? "",
+      detailType: item.detailType ?? "",
+      liveUrl: item.liveUrl ?? "",
+      clientRepositoryUrl: item.clientRepositoryUrl ?? "",
+      serverRepositoryUrl: item.serverRepositoryUrl ?? "",
+      overview: item.overview ?? "",
+      problem: item.problem ?? "",
+      featuresJson: formatJson(item.features, initialForm.featuresJson),
+      rolesJson: formatJson(item.roles, initialForm.rolesJson),
+      architectureFlowJson: formatJson(
+        item.architectureFlow,
+        initialForm.architectureFlowJson,
+      ),
+      techStackJson: formatJson(item.techStack, initialForm.techStackJson),
+      paymentTitle: item.paymentTitle ?? "",
+      paymentDescription: item.paymentDescription ?? "",
+      paymentReliabilityTitle: item.paymentReliabilityTitle ?? "",
+      paymentReliabilityDescription: item.paymentReliabilityDescription ?? "",
       image: item.coverImage ?? item.image ?? "",
       metric: item.metric ?? "",
       metricLabel: item.metricLabel ?? "",
@@ -195,9 +311,29 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
             description: form.description,
             image: form.image,
             categories: form.selectedLabels,
-            metric: form.metric,
-            metricLabel: form.metricLabel,
+            metric: normalizeOptionalText(form.metric),
+            metricLabel: normalizeOptionalText(form.metricLabel),
             featured: form.featured,
+            detailEyebrow: normalizeOptionalText(form.detailEyebrow),
+            detailType: normalizeOptionalText(form.detailType),
+            liveUrl: normalizeOptionalUrl(form.liveUrl),
+            clientRepositoryUrl: normalizeOptionalUrl(form.clientRepositoryUrl),
+            serverRepositoryUrl: normalizeOptionalUrl(form.serverRepositoryUrl),
+            overview: normalizeOptionalDetailText(form.overview),
+            problem: normalizeOptionalDetailText(form.problem),
+            features: parseJsonField(form.featuresJson, "Features"),
+            roles: parseJsonField(form.rolesJson, "Roles"),
+            architectureFlow: parseJsonField(
+              form.architectureFlowJson,
+              "Architecture flow",
+            ),
+            techStack: parseJsonField(form.techStackJson, "Tech stack"),
+            paymentTitle: normalizeOptionalText(form.paymentTitle),
+            paymentDescription: normalizeOptionalText(form.paymentDescription),
+            paymentReliabilityTitle: normalizeOptionalText(form.paymentReliabilityTitle),
+            paymentReliabilityDescription: normalizeOptionalText(
+              form.paymentReliabilityDescription,
+            ),
             status: form.status,
           };
 
@@ -416,7 +552,7 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                       <div className="flex items-center gap-3">
                         {item.status === "published" ? (
                           <a
-                            href={isBlog ? `/blog` : `/portfolio`}
+                            href={isBlog ? `/blog` : `/portfolio/${item.slug}`}
                             className="inline-flex items-center gap-2 text-[13px] font-semibold text-[color:var(--primary)]"
                           >
                             <Eye className="h-4 w-4" />
@@ -601,6 +737,196 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                   />
                 </label>
               </div>
+
+              <div className="rounded-[1.1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5">
+                <div className="mb-5">
+                  <h3 className="text-[1.1rem] font-semibold text-[color:var(--foreground)]">
+                    Project detail page
+                  </h3>
+                  <p className="mt-1 text-[13px] leading-6 text-[color:var(--muted-foreground)]">
+                    These fields power the dynamic case-study page for this project.
+                  </p>
+                </div>
+
+                <div className="grid gap-4 lg:grid-cols-2">
+                  <label className="space-y-2">
+                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                      Detail eyebrow
+                    </span>
+                    <input
+                      className="admin-input w-full"
+                      value={form.detailEyebrow}
+                      onChange={(event) =>
+                        setForm((current) => ({
+                          ...current,
+                          detailEyebrow: event.target.value,
+                        }))
+                      }
+                      placeholder="Tutoring Marketplace Frontend"
+                    />
+                  </label>
+                  <label className="space-y-2">
+                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                      Project type
+                    </span>
+                    <input
+                      className="admin-input w-full"
+                      value={form.detailType}
+                      onChange={(event) =>
+                        setForm((current) => ({
+                          ...current,
+                          detailType: event.target.value,
+                        }))
+                      }
+                      placeholder="Full-stack marketplace frontend"
+                    />
+                  </label>
+                </div>
+
+                <div className="mt-4 grid gap-4 lg:grid-cols-3">
+                  {[
+                    ["Live URL", "liveUrl", "https://..."],
+                    ["Client repository URL", "clientRepositoryUrl", "https://github.com/..."],
+                    ["Server repository URL", "serverRepositoryUrl", "https://github.com/..."],
+                  ].map(([label, key, placeholder]) => (
+                    <label key={key} className="space-y-2">
+                      <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                        {label}
+                      </span>
+                      <input
+                        className="admin-input w-full"
+                        value={String(form[key as keyof typeof form] ?? "")}
+                        onChange={(event) =>
+                          setForm((current) => ({
+                            ...current,
+                            [key]: event.target.value,
+                          }))
+                        }
+                        placeholder={placeholder}
+                      />
+                    </label>
+                  ))}
+                </div>
+
+                <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                  <label className="space-y-2">
+                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                      Overview
+                    </span>
+                    <textarea
+                      className="admin-input min-h-32 w-full"
+                      value={form.overview}
+                      onChange={(event) =>
+                        setForm((current) => ({ ...current, overview: event.target.value }))
+                      }
+                      placeholder="What the project is..."
+                    />
+                  </label>
+                  <label className="space-y-2">
+                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                      Problem / purpose
+                    </span>
+                    <textarea
+                      className="admin-input min-h-32 w-full"
+                      value={form.problem}
+                      onChange={(event) =>
+                        setForm((current) => ({ ...current, problem: event.target.value }))
+                      }
+                      placeholder="Why it was built..."
+                    />
+                  </label>
+                </div>
+
+                <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                  {[
+                    ["Features JSON", "featuresJson"],
+                    ["Roles JSON", "rolesJson"],
+                    ["Architecture flow JSON", "architectureFlowJson"],
+                    ["Tech stack JSON", "techStackJson"],
+                  ].map(([label, key]) => (
+                    <label key={key} className="space-y-2">
+                      <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                        {label}
+                      </span>
+                      <textarea
+                        className="admin-input min-h-52 w-full font-mono text-[12px]"
+                        value={String(form[key as keyof typeof form] ?? "")}
+                        onChange={(event) =>
+                          setForm((current) => ({
+                            ...current,
+                            [key]: event.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+                  ))}
+                </div>
+
+                <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                  <label className="space-y-2">
+                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                      Integration section title
+                    </span>
+                    <input
+                      className="admin-input w-full"
+                      value={form.paymentTitle}
+                      onChange={(event) =>
+                        setForm((current) => ({
+                          ...current,
+                          paymentTitle: event.target.value,
+                        }))
+                      }
+                      placeholder="Stripe checkout with backend verification"
+                    />
+                  </label>
+                  <label className="space-y-2">
+                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                      Reliability title
+                    </span>
+                    <input
+                      className="admin-input w-full"
+                      value={form.paymentReliabilityTitle}
+                      onChange={(event) =>
+                        setForm((current) => ({
+                          ...current,
+                          paymentReliabilityTitle: event.target.value,
+                        }))
+                      }
+                      placeholder="Why it is reliable"
+                    />
+                  </label>
+                  <label className="space-y-2">
+                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                      Integration description
+                    </span>
+                    <textarea
+                      className="admin-input min-h-32 w-full"
+                      value={form.paymentDescription}
+                      onChange={(event) =>
+                        setForm((current) => ({
+                          ...current,
+                          paymentDescription: event.target.value,
+                        }))
+                      }
+                    />
+                  </label>
+                  <label className="space-y-2">
+                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                      Reliability description
+                    </span>
+                    <textarea
+                      className="admin-input min-h-32 w-full"
+                      value={form.paymentReliabilityDescription}
+                      onChange={(event) =>
+                        setForm((current) => ({
+                          ...current,
+                          paymentReliabilityDescription: event.target.value,
+                        }))
+                      }
+                    />
+                  </label>
+                </div>
+              </div>
             </>
           )}
 
@@ -694,7 +1020,7 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
 
             <div className="flex items-end">
               <a
-                href={form.slug ? `/${isBlog ? "blog" : "portfolio"}` : "#"}
+                href={form.slug ? `/${isBlog ? "blog" : "portfolio"}/${form.slug}` : "#"}
                 className="inline-flex h-[50px] w-full items-center justify-center gap-2 rounded-full border border-[color:var(--stat-border)] px-4 text-[13px] font-semibold text-[color:var(--foreground)]"
               >
                 <ExternalLink className="h-4 w-4 text-[color:var(--primary)]" />
