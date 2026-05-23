@@ -5,6 +5,18 @@ import { SelectedWorkSection } from "@/components/home/selected-work-section";
 import { ServicesSection } from "@/components/home/services-section";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { SiteHeader } from "@/components/layout/site-header";
+import { pageSeoMetadata } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export const generateMetadata = () =>
+  pageSeoMetadata("home", {
+    title: "Shei IT | Digital Product, Web, App, SEO & Cloud Solutions",
+    description:
+      "Build and grow your business with websites, apps, SEO, hosting, and practical digital product support from Shei IT.",
+    path: "/",
+  });
 
 export default function Home() {
   return (

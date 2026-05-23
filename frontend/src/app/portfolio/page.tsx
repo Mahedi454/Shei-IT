@@ -3,6 +3,18 @@ import { PortfolioHeroSection } from "@/components/portfolio/portfolio-hero-sect
 import { PortfolioResultsSection } from "@/components/portfolio/portfolio-results-section";
 import { ProjectsGrid } from "@/components/public/projects-grid";
 import { SiteHeader } from "@/components/layout/site-header";
+import { pageSeoMetadata } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export const generateMetadata = () =>
+  pageSeoMetadata("portfolio", {
+    title: "Portfolio | Shei IT Work",
+    description:
+      "Browse Shei IT portfolio projects across websites, SaaS, dashboards, mobile apps, UI/UX, and business platforms.",
+    path: "/portfolio",
+  });
 
 export default function PortfolioPage() {
   return (

@@ -27,6 +27,7 @@ export const getPublishedProjects: RequestHandler = catchAsync(async (_req, res)
       featured: true,
       eyebrow: true,
       type: true,
+      liveUrl: true,
       overview: true,
       primaryOutcome: true,
       delivery: true,

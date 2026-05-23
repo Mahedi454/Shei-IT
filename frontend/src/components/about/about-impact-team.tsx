@@ -10,7 +10,7 @@ import {
 
 const impactStats = [
   {
-    value: "150+",
+    value: "25+",
     label: "Projects Completed",
     icon: BriefcaseBusiness,
     accent: "text-[color:var(--primary)]",
@@ -26,7 +26,7 @@ const impactStats = [
       "bg-[linear-gradient(180deg,rgba(111,231,200,0.22),rgba(111,231,200,0.08))]",
   },
   {
-    value: "5+",
+    value: "3+",
     label: "Years Experience",
     icon: UserRoundCheck,
     accent: "text-[color:var(--orange)]",
@@ -46,7 +46,7 @@ const impactStats = [
 const teamMembers = [
   {
     name: "Mahedi Hasan",
-    role: "Founder & CEO",
+    role: "Co-Founder & CEO",
     skin: "#f0b27a",
     hair: "#171923",
     shirt: "from-[#202331] to-[#111827]",

@@ -32,6 +32,11 @@ type ResourceItem = {
   description?: string | null;
   coverImage?: string | null;
   image?: string | null;
+  category?: string | null;
+  authorName?: string | null;
+  readTime?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
   tags?: string[];
   categories?: string[];
   metric?: string | null;
@@ -54,6 +59,20 @@ type ResourceItem = {
   status: PublishStatus;
   publishedAt?: string | null;
   createdAt: string;
+  seo?: SeoForm | null;
+};
+
+type SeoForm = {
+  metaTitle: string;
+  metaDescription: string;
+  focusKeyword: string;
+  slug: string;
+  canonicalUrl: string;
+  ogTitle: string;
+  ogDescription: string;
+  ogImage: string;
+  robotsIndex: boolean;
+  robotsFollow: boolean;
 };
 
 type DetailCard = {
@@ -91,6 +110,16 @@ const blogTagOptions = [
   "Mobile",
   "Strategy",
   "Support",
+] as const;
+
+const blogCategoryOptions = [
+  "Web Development",
+  "SEO & Marketing",
+  "Performance",
+  "Product Strategy",
+  "Hosting & DevOps",
+  "Mobile Apps",
+  "Business Growth",
 ] as const;
 
 const projectCategoryOptions = [
@@ -166,6 +195,11 @@ const initialForm = {
   description: "",
   excerpt: "",
   featured: false,
+  category: "Web Development",
+  authorName: "Shei IT Team",
+  readTime: "",
+  seoTitle: "",
+  seoDescription: "",
   eyebrow: "",
   type: "",
   liveUrl: "",
@@ -187,7 +221,32 @@ const initialForm = {
   slug: "",
   status: "draft" as PublishStatus,
   title: "",
+  seo: {
+    metaTitle: "",
+    metaDescription: "",
+    focusKeyword: "",
+    slug: "",
+    canonicalUrl: "",
+    ogTitle: "",
+    ogDescription: "",
+    ogImage: "",
+    robotsIndex: true as boolean,
+    robotsFollow: true as boolean,
+  } satisfies SeoForm,
 };
+
+const createDefaultSeo = (): SeoForm => ({
+  metaTitle: "",
+  metaDescription: "",
+  focusKeyword: "",
+  slug: "",
+  canonicalUrl: "",
+  ogTitle: "",
+  ogDescription: "",
+  ogImage: "",
+  robotsIndex: true,
+  robotsFollow: true,
+});
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -333,6 +392,194 @@ const cleanTechStack = (groups: TechStackGroup[]) =>
     }))
     .filter((group) => group.title && group.tools.length);
 
+function SeoEditor({
+  seo,
+  updateSeo,
+}: {
+  seo: SeoForm;
+  updateSeo: (value: Partial<SeoForm>) => void;
+}) {
+  const slugPreview = seo.slug ? `/${seo.slug.replace(/^\/+/, "")}` : "/your-slug";
+  const previewTitle = seo.metaTitle || "SEO title preview";
+  const previewDescription =
+    seo.metaDescription || "Meta description preview for search results.";
+
+  return (
+    <section className="rounded-[1.1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5">
+      <div className="mb-5">
+        <h3 className="text-[1.1rem] font-semibold text-[color:var(--foreground)]">
+          SEO Settings
+        </h3>
+        <p className="mt-1 text-[13px] leading-6 text-[color:var(--muted-foreground)]">
+          Control search previews, social sharing, canonical URL, and robots rules.
+        </p>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <label className="space-y-2">
+          <span className="flex items-center justify-between gap-3 text-[13px] font-semibold text-[color:var(--foreground)]">
+            SEO Title
+            <span className="text-[11px] text-[color:var(--muted-foreground)]">
+              {seo.metaTitle.length}/60
+            </span>
+          </span>
+          <input
+            className="admin-input w-full"
+            value={seo.metaTitle}
+            onChange={(event) => updateSeo({ metaTitle: event.target.value })}
+            placeholder="Search result title"
+          />
+        </label>
+        <label className="space-y-2">
+          <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+            Focus Keyword
+          </span>
+          <input
+            className="admin-input w-full"
+            value={seo.focusKeyword}
+            onChange={(event) => updateSeo({ focusKeyword: event.target.value })}
+            placeholder="Primary keyword"
+          />
+        </label>
+      </div>
+
+      <label className="mt-4 block space-y-2">
+        <span className="flex items-center justify-between gap-3 text-[13px] font-semibold text-[color:var(--foreground)]">
+          Meta Description
+          <span className="text-[11px] text-[color:var(--muted-foreground)]">
+            {seo.metaDescription.length}/160
+          </span>
+        </span>
+        <textarea
+          className="admin-input min-h-24 w-full"
+          value={seo.metaDescription}
+          onChange={(event) => updateSeo({ metaDescription: event.target.value })}
+          placeholder="Search result description"
+        />
+      </label>
+
+      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+        <label className="space-y-2">
+          <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+            Slug
+          </span>
+          <input
+            className="admin-input w-full"
+            value={seo.slug}
+            onChange={(event) => updateSeo({ slug: event.target.value })}
+            placeholder="page-slug"
+          />
+        </label>
+        <label className="space-y-2">
+          <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+            Canonical URL
+          </span>
+          <input
+            className="admin-input w-full"
+            value={seo.canonicalUrl}
+            onChange={(event) => updateSeo({ canonicalUrl: event.target.value })}
+            placeholder="https://example.com/page"
+          />
+        </label>
+      </div>
+
+      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+        <label className="space-y-2">
+          <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+            OG Title
+          </span>
+          <input
+            className="admin-input w-full"
+            value={seo.ogTitle}
+            onChange={(event) => updateSeo({ ogTitle: event.target.value })}
+            placeholder="Social share title"
+          />
+        </label>
+        <label className="space-y-2">
+          <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+            OG Image
+          </span>
+          <input
+            className="admin-input w-full"
+            value={seo.ogImage}
+            onChange={(event) => updateSeo({ ogImage: event.target.value })}
+            placeholder="https://example.com/og.jpg"
+          />
+        </label>
+      </div>
+
+      <label className="mt-4 block space-y-2">
+        <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+          OG Description
+        </span>
+        <textarea
+          className="admin-input min-h-20 w-full"
+          value={seo.ogDescription}
+          onChange={(event) => updateSeo({ ogDescription: event.target.value })}
+          placeholder="Social share description"
+        />
+      </label>
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <button
+          type="button"
+          onClick={() => updateSeo({ robotsIndex: !seo.robotsIndex })}
+          className={cn(
+            "admin-input flex h-[50px] items-center justify-between",
+            seo.robotsIndex ? "text-[color:var(--primary)]" : "",
+          )}
+        >
+          <span>Robots Index</span>
+          <span
+            className={cn(
+              "h-6 w-11 rounded-full p-1 transition",
+              seo.robotsIndex ? "bg-[color:var(--primary)]" : "bg-white/8",
+            )}
+          >
+            <span
+              className={cn(
+                "block h-4 w-4 rounded-full bg-white transition",
+                seo.robotsIndex ? "translate-x-5" : "translate-x-0",
+              )}
+            />
+          </span>
+        </button>
+        <button
+          type="button"
+          onClick={() => updateSeo({ robotsFollow: !seo.robotsFollow })}
+          className={cn(
+            "admin-input flex h-[50px] items-center justify-between",
+            seo.robotsFollow ? "text-[color:var(--primary)]" : "",
+          )}
+        >
+          <span>Robots Follow</span>
+          <span
+            className={cn(
+              "h-6 w-11 rounded-full p-1 transition",
+              seo.robotsFollow ? "bg-[color:var(--primary)]" : "bg-white/8",
+            )}
+          >
+            <span
+              className={cn(
+                "block h-4 w-4 rounded-full bg-white transition",
+                seo.robotsFollow ? "translate-x-5" : "translate-x-0",
+              )}
+            />
+          </span>
+        </button>
+      </div>
+
+      <div className="mt-5 rounded-[0.95rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] p-4">
+        <p className="text-[12px] text-emerald-500">shei-it.com{slugPreview}</p>
+        <p className="mt-1 text-[18px] font-medium text-[#8ab4f8]">{previewTitle}</p>
+        <p className="mt-1 text-[13px] leading-6 text-[color:var(--muted-foreground)]">
+          {previewDescription}
+        </p>
+      </div>
+    </section>
+  );
+}
+
 export function ResourceManager({ resource, title }: ResourceManagerProps) {
   const isBlog = resource === "blogs";
   const { getToken } = useAdminAuth();
@@ -393,6 +640,11 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       description: item.description ?? "",
       excerpt: item.excerpt ?? "",
       featured: Boolean(item.featured),
+      category: item.category ?? "Web Development",
+      authorName: item.authorName ?? "Shei IT Team",
+      readTime: item.readTime ?? "",
+      seoTitle: item.seoTitle ?? "",
+      seoDescription: item.seoDescription ?? "",
       eyebrow: item.eyebrow ?? "",
       type: item.type ?? "",
       liveUrl: item.liveUrl ?? "",
@@ -414,6 +666,19 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       slug: item.slug ?? "",
       status: item.status ?? "draft",
       title: item.title ?? "",
+      seo: {
+        ...createDefaultSeo(),
+        metaTitle: item.seo?.metaTitle ?? "",
+        metaDescription: item.seo?.metaDescription ?? "",
+        focusKeyword: item.seo?.focusKeyword ?? "",
+        slug: item.seo?.slug ?? item.slug ?? "",
+        canonicalUrl: item.seo?.canonicalUrl ?? "",
+        ogTitle: item.seo?.ogTitle ?? "",
+        ogDescription: item.seo?.ogDescription ?? "",
+        ogImage: item.seo?.ogImage ?? "",
+        robotsIndex: item.seo?.robotsIndex ?? true,
+        robotsFollow: item.seo?.robotsFollow ?? true,
+      },
     });
     setOpenModal(true);
   };
@@ -504,21 +769,78 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
     }));
   };
 
+  const updateSeo = (value: Partial<SeoForm>) => {
+    setForm((current) => ({
+      ...current,
+      seo: { ...current.seo, ...value },
+    }));
+  };
+
+  const validateBlogForm = () => {
+    const titleValue = form.title.trim();
+    const excerptValue = form.excerpt.trim();
+    const contentValue = form.content.trim();
+
+    if (titleValue.length < 2) {
+      return "Title must be at least 2 characters.";
+    }
+
+    if (excerptValue.length < 10) {
+      return "Excerpt must be at least 10 characters.";
+    }
+
+    if (contentValue.length < 20) {
+      return "Content must be at least 20 characters.";
+    }
+
+    return null;
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (isBlog) {
+      const validationError = validateBlogForm();
+
+      if (validationError) {
+        showToast({
+          title: `${title.slice(0, -1)} save failed`,
+          description: validationError,
+          tone: "error",
+        });
+        return;
+      }
+    }
+
     setSaving(true);
 
     try {
       const token = await getToken();
       const payload = isBlog
         ? {
-            title: form.title,
-            slug: form.slug || undefined,
-            excerpt: form.excerpt,
-            content: form.content,
-            coverImage: form.image,
+            title: form.title.trim(),
+            slug: normalizeOptionalText(form.slug),
+            excerpt: form.excerpt.trim(),
+            content: form.content.trim(),
+            coverImage: normalizeOptionalUrl(form.image),
+            category: normalizeOptionalText(form.category) ?? "General",
+            authorName: normalizeOptionalText(form.authorName) ?? "Shei IT Team",
+            readTime: normalizeOptionalText(form.readTime),
+            featured: form.featured,
             tags: form.selectedLabels,
             status: form.status,
+            seo: {
+              metaTitle: normalizeOptionalText(form.seo.metaTitle),
+              metaDescription: normalizeOptionalText(form.seo.metaDescription),
+              focusKeyword: normalizeOptionalText(form.seo.focusKeyword),
+              slug: normalizeOptionalText(form.seo.slug) ?? form.slug,
+              canonicalUrl: normalizeOptionalUrl(form.seo.canonicalUrl),
+              ogTitle: normalizeOptionalText(form.seo.ogTitle),
+              ogDescription: normalizeOptionalText(form.seo.ogDescription),
+              ogImage: normalizeOptionalUrl(form.seo.ogImage),
+              robotsIndex: form.seo.robotsIndex,
+              robotsFollow: form.seo.robotsFollow,
+            },
           }
         : {
             title: form.title,
@@ -694,7 +1016,7 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                           >
                             {item.status}
                           </span>
-                          {!isBlog && item.featured ? (
+                          {item.featured ? (
                             <span className="rounded-full bg-[linear-gradient(180deg,rgba(111,231,200,0.18),rgba(111,231,200,0.08))] px-3 py-1 text-[12px] font-semibold text-[color:var(--mint)]">
                               Featured
                             </span>
@@ -761,7 +1083,7 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                       <div className="flex items-center gap-3">
                         {item.status === "published" ? (
                           <a
-                            href={isBlog ? `/blog` : `/portfolio/${item.slug}`}
+                            href={isBlog ? `/blog/${item.slug}` : `/portfolio/${item.slug}`}
                             className="inline-flex items-center gap-2 text-[13px] font-semibold text-[color:var(--primary)]"
                           >
                             <Eye className="h-4 w-4" />
@@ -872,6 +1194,53 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
 
           {isBlog ? (
             <>
+              <div className="grid gap-4 lg:grid-cols-2">
+                <label className="space-y-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    Category
+                  </span>
+                  <select
+                    className="admin-input w-full"
+                    value={form.category}
+                    onChange={(event) =>
+                      setForm((current) => ({ ...current, category: event.target.value }))
+                    }
+                  >
+                    {blogCategoryOptions.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="space-y-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    Author
+                  </span>
+                  <input
+                    className="admin-input w-full"
+                    value={form.authorName}
+                    onChange={(event) =>
+                      setForm((current) => ({ ...current, authorName: event.target.value }))
+                    }
+                    placeholder="Shei IT Team"
+                  />
+                </label>
+                <label className="space-y-2 lg:col-span-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    Read time
+                  </span>
+                  <input
+                    className="admin-input w-full"
+                    value={form.readTime}
+                    onChange={(event) =>
+                      setForm((current) => ({ ...current, readTime: event.target.value }))
+                    }
+                    placeholder="5 min read"
+                  />
+                </label>
+              </div>
+
               <label className="block space-y-2">
                 <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
                   Excerpt
@@ -898,6 +1267,8 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                   placeholder="Write the full blog content"
                 />
               </label>
+
+              <SeoEditor seo={form.seo} updateSeo={updateSeo} />
             </>
           ) : (
             <>
@@ -992,29 +1363,23 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                   </label>
                 </div>
 
-                <div className="mt-4 grid gap-4 lg:grid-cols-3">
-                  {[
-                    ["Live URL", "liveUrl", "https://..."],
-                    ["Client repository URL", "clientRepositoryUrl", "https://github.com/..."],
-                    ["Server repository URL", "serverRepositoryUrl", "https://github.com/..."],
-                  ].map(([label, key, placeholder]) => (
-                    <label key={key} className="space-y-2">
-                      <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
-                        {label}
-                      </span>
-                      <input
-                        className="admin-input w-full"
-                        value={String(form[key as keyof typeof form] ?? "")}
-                        onChange={(event) =>
-                          setForm((current) => ({
-                            ...current,
-                            [key]: event.target.value,
-                          }))
-                        }
-                        placeholder={placeholder}
-                      />
-                    </label>
-                  ))}
+                <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                  <label className="space-y-2">
+                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                      Live URL
+                    </span>
+                    <input
+                      className="admin-input w-full"
+                      value={form.liveUrl}
+                      onChange={(event) =>
+                        setForm((current) => ({
+                          ...current,
+                          liveUrl: event.target.value,
+                        }))
+                      }
+                      placeholder="https://..."
+                    />
+                  </label>
                 </div>
 
                 <div className="mt-4 grid gap-4 lg:grid-cols-2">
@@ -1503,40 +1868,46 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
               </select>
             </label>
 
-            {!isBlog ? (
-              <label className="space-y-2">
-                <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
-                  Featured
+            <label className="space-y-2">
+              <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                Featured
+              </span>
+              <button
+                type="button"
+                onClick={() =>
+                  setForm((current) => ({ ...current, featured: !current.featured }))
+                }
+                className={cn(
+                  "admin-input flex h-[50px] items-center justify-between",
+                  form.featured ? "text-[color:var(--primary)]" : "",
+                )}
+              >
+                <span>
+                  {form.featured
+                    ? "Featured on"
+                    : isBlog
+                      ? "Feature in blog"
+                      : "Feature on homepage"}
                 </span>
-                <button
-                  type="button"
-                  onClick={() =>
-                    setForm((current) => ({ ...current, featured: !current.featured }))
-                  }
+                <span
                   className={cn(
-                    "admin-input flex h-[50px] items-center justify-between",
-                    form.featured ? "text-[color:var(--primary)]" : "",
+                    "h-6 w-11 rounded-full border p-1 transition",
+                    form.featured
+                      ? "border-[color:var(--primary)] bg-[color:var(--primary)]"
+                      : "border-[color:var(--stat-border)] bg-[color:var(--button-secondary-icon)]",
                   )}
                 >
-                  <span>{form.featured ? "Featured on" : "Feature on homepage"}</span>
                   <span
                     className={cn(
-                      "h-6 w-11 rounded-full p-1 transition",
-                      form.featured ? "bg-[color:var(--primary)]" : "bg-white/8",
+                      "block h-4 w-4 rounded-full transition",
+                      form.featured
+                        ? "translate-x-5 bg-white"
+                        : "translate-x-0 bg-[color:var(--muted-foreground)]",
                     )}
-                  >
-                    <span
-                      className={cn(
-                        "block h-4 w-4 rounded-full bg-white transition",
-                        form.featured ? "translate-x-5" : "translate-x-0",
-                      )}
-                    />
-                  </span>
-                </button>
-              </label>
-            ) : (
-              <div />
-            )}
+                  />
+                </span>
+              </button>
+            </label>
 
             <div className="flex items-end">
               <a

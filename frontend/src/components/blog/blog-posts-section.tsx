@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   ArrowRight,
   BadgeCheck,
@@ -20,6 +21,9 @@ type Blog = {
   content: string;
   coverImage?: string | null;
   tags?: string[];
+  authorName?: string | null;
+  readTime?: string | null;
+  featured?: boolean;
   publishedAt?: string | null;
 };
 
@@ -144,22 +148,23 @@ export function BlogPostsSection() {
 
                   <div className="mt-6 text-[12px] font-medium text-[color:var(--muted-foreground)]">
                     <p className="font-semibold text-[color:var(--foreground)]">
-                      Shei IT Team
+                      {featuredPost.authorName || "Shei IT Team"}
                     </p>
                     <p>
                       {featuredPost.publishedAt
                         ? new Date(featuredPost.publishedAt).toLocaleDateString()
                         : "Latest"}
+                      {featuredPost.readTime ? ` / ${featuredPost.readTime}` : ""}
                     </p>
                   </div>
 
-                  <a
-                    href="#"
+                  <Link
+                    href={`/blog/${featuredPost.slug}`}
                     className="mt-6 inline-flex w-fit items-center gap-2 text-[14px] font-semibold text-[color:var(--primary)]"
                   >
                     Read More
                     <ArrowRight className="h-4 w-4" />
-                  </a>
+                  </Link>
                 </div>
               </article>
 
@@ -193,7 +198,15 @@ export function BlogPostsSection() {
                         {article.publishedAt
                           ? new Date(article.publishedAt).toLocaleDateString()
                           : "Latest"}
+                        {article.readTime ? ` / ${article.readTime}` : ""}
                       </p>
+                      <Link
+                        href={`/blog/${article.slug}`}
+                        className="mt-4 inline-flex items-center gap-2 text-[13px] font-semibold text-[color:var(--primary)]"
+                      >
+                        Read article
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
                     </article>
                   ))}
                 </div>
@@ -226,9 +239,12 @@ export function BlogPostsSection() {
                       {index + 1}
                     </span>
                     <div>
-                      <h3 className="text-[13px] font-semibold leading-5 text-[color:var(--foreground)]">
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="text-[13px] font-semibold leading-5 text-[color:var(--foreground)] transition hover:text-[color:var(--primary)]"
+                      >
                         {post.title}
-                      </h3>
+                      </Link>
                       <p className="mt-2 text-[11px] font-medium text-[color:var(--muted-foreground)]">
                         {post.publishedAt
                           ? new Date(post.publishedAt).toLocaleDateString()

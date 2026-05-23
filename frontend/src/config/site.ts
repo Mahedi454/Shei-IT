@@ -347,7 +347,7 @@ export const footerConfig = {
         { label: "Portfolio", href: "#" },
         { label: "Pricing", href: "#" },
         { label: "Blog", href: "/blog" },
-        { label: "Careers", href: "#" },
+        { label: "Careers", href: "/careers" },
       ],
     },
     {
@@ -355,8 +355,8 @@ export const footerConfig = {
       links: [
         { label: "Contact Us", href: "/contact" },
         { label: "FAQs", href: "#" },
-        { label: "Privacy Policy", href: "#" },
-        { label: "Terms of Service", href: "#" },
+        { label: "Privacy Policy", href: "/privacy-policy" },
+        { label: "Terms of Service", href: "/terms-of-service" },
       ],
     },
   ],

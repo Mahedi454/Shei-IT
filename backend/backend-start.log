@@ -1,0 +1,32 @@
+◇ injected env (13) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+PostgreSQL connected.
+shei-it backend is running on http://localhost:5000 in development mode
+[0mGET /api/health [32m200[0m 4.123 ms - 177[0m
+[0mGET /api/blogs [32m200[0m 1160.529 ms - 5458[0m
+[0mGET /api/seo/page/home [32m200[0m 539.298 ms - 76[0m
+[0mGET /api/health [32m200[0m 0.266 ms - 177[0m
+[0mGET /api/blogs [32m200[0m 802.716 ms - 5458[0m
+[0mGET /api/seo/page/home [32m200[0m 263.334 ms - 76[0m
+[0mGET /api/seo/admin/all [32m200[0m 1445.605 ms - 75[0m
+[0mGET /api/seo/admin/all [36m304[0m 265.423 ms - -[0m
+[0mGET /api/blogs/admin/all [32m200[0m 1063.600 ms - 5464[0m
+[0mGET /api/blogs/admin/all [36m304[0m 537.867 ms - -[0m
+[0mGET /api/blogs/abc [32m200[0m 1059.515 ms - 5455[0m
+[0mGET /api/blogs [32m200[0m 2987.095 ms - 5458[0m
+[0mGET /api/blogs/admin/all [36m304[0m 848.673 ms - -[0m
+[0mGET /api/blogs/admin/all [36m304[0m 573.327 ms - -[0m
+[0mGET /api/seo/page/services [32m200[0m 809.051 ms - 76[0m
+[0mGET /api/blogs/admin/all [36m304[0m 538.673 ms - -[0m
+[0mGET /api/blogs/admin/all [36m304[0m 543.149 ms - -[0m
+[0mGET /api/seo/page/about [32m200[0m 540.902 ms - 76[0m
+[0mGET /api/blogs/admin/all [36m304[0m 539.611 ms - -[0m
+[0mGET /api/blogs/admin/all [36m304[0m 540.437 ms - -[0m
+prisma:error Error in PostgreSQL connection: Error { kind: Closed, cause: None }
+prisma:error Error in PostgreSQL connection: Error { kind: Closed, cause: None }
+[0mGET /api/blogs/admin/all [36m304[0m 4595.441 ms - -[0m
+[0mGET /api/blogs/admin/all [36m304[0m 519.894 ms - -[0m
+[0mGET /api/blogs/admin/all [36m304[0m 776.390 ms - -[0m
+[0mGET /api/blogs/admin/all [36m304[0m 525.961 ms - -[0m
+[0mGET /api/blogs/admin/all [36m304[0m 3104.399 ms - -[0m
+[0mGET /api/blogs/admin/all [36m304[0m 556.084 ms - -[0m
+[0mGET /api/seo/page/contact [32m200[0m 549.497 ms - 76[0m

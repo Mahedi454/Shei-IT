@@ -19,17 +19,44 @@ enum ContactStatus {
 }
 
 model Blog {
-  id          String        @id @default(cuid())
-  title       String
-  slug        String        @unique
-  excerpt     String
-  content     String
-  coverImage  String?
-  tags        String[]
-  status      PublishStatus @default(draft)
-  publishedAt DateTime?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id             String        @id @default(cuid())
+  title          String
+  slug           String        @unique
+  excerpt        String
+  content        String
+  coverImage     String?
+  category       String        @default("General")
+  authorName     String        @default("Shei IT Team")
+  readTime       String?
+  seoTitle       String?
+  seoDescription String?
+  featured       Boolean       @default(false)
+  tags           String[]
+  status         PublishStatus @default(draft)
+  publishedAt    DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model SeoSetting {
+  id              String   @id @default(cuid())
+  seoableType     String   @map("seoable_type")
+  seoableId       String   @map("seoable_id")
+  metaTitle       String?  @map("meta_title")
+  metaDescription String?  @map("meta_description")
+  focusKeyword    String?  @map("focus_keyword")
+  slug            String?
+  canonicalUrl    String?  @map("canonical_url")
+  ogTitle         String?  @map("og_title")
+  ogDescription   String?  @map("og_description")
+  ogImage         String?  @map("og_image")
+  robotsIndex     Boolean  @default(true) @map("robots_index")
+  robotsFollow    Boolean  @default(true) @map("robots_follow")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@unique([seoableType, seoableId])
+  @@map("seo_settings")
 }
 
 model Project {
