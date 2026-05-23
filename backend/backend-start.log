@@ -25,3 +25,8 @@ prisma:error Error in PostgreSQL connection: Error { kind: Closed, cause: None }
 prisma:error Error in PostgreSQL connection: Error { kind: Closed, cause: None }
 [0mGET /api/blogs/admin/all [36m304[0m 4595.441 ms - -[0m
 [0mGET /api/blogs/admin/all [36m304[0m 519.894 ms - -[0m
+[0mGET /api/blogs/admin/all [36m304[0m 776.390 ms - -[0m
+[0mGET /api/blogs/admin/all [36m304[0m 525.961 ms - -[0m
+[0mGET /api/blogs/admin/all [36m304[0m 3104.399 ms - -[0m
+[0mGET /api/blogs/admin/all [36m304[0m 556.084 ms - -[0m
+[0mGET /api/seo/page/contact [32m200[0m 549.497 ms - 76[0m

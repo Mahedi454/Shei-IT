@@ -347,7 +347,7 @@ export const footerConfig = {
         { label: "Portfolio", href: "#" },
         { label: "Pricing", href: "#" },
         { label: "Blog", href: "/blog" },
-        { label: "Careers", href: "#" },
+        { label: "Careers", href: "/careers" },
       ],
     },
     {
