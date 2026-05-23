@@ -19,7 +19,8 @@ import {
 import { SiteHeader } from "@/components/layout/site-header";
 import { API_BASE_URL, type ApiResponse } from "@/lib/api";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 type JsonRecord = Record<string, unknown>;
 
@@ -150,7 +151,7 @@ const iconMap = {
 
 async function getProject(slug: string) {
   const response = await fetch(`${API_BASE_URL}/projects/${slug}`, {
-    next: { revalidate },
+    cache: "no-store",
   });
 
   if (response.status === 404) {
@@ -505,17 +506,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const overviewCards = getProjectOverviewCards(project);
   const integrations = getProjectIntegrations(project);
   const summary = getProjectSummary(project);
-  const links = [
-    project.liveUrl ? { label: "Live Site", href: project.liveUrl, tone: "primary" } : null,
-    project.clientRepositoryUrl
-      ? { label: "Client Repository", href: project.clientRepositoryUrl, tone: "secondary" }
-      : null,
-    project.serverRepositoryUrl
-      ? { label: "Server Repository", href: project.serverRepositoryUrl, tone: "secondary" }
-      : null,
-  ].filter((item): item is { label: string; href: string; tone: "primary" | "secondary" } =>
-    Boolean(item),
-  );
+  const liveUrl = project.liveUrl?.trim();
   const nav = [
     ["overview", "Overview"],
     ["problem", "Problem / Purpose"],
@@ -569,24 +560,17 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               ))}
             </div>
 
-            {links.length ? (
+            {liveUrl ? (
               <div className="mt-8 flex flex-wrap gap-3">
-                {links.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={
-                      link.tone === "primary"
-                        ? "inline-flex items-center gap-2 rounded-full bg-[image:var(--gradient-primary)] px-5 py-3 text-[13px] font-black text-white shadow-[0_16px_36px_rgba(108,99,255,0.18)]"
-                        : "inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] px-5 py-3 text-[13px] font-bold text-[color:var(--foreground)] shadow-[0_10px_24px_rgba(15,23,42,0.04)]"
-                    }
-                  >
-                    {link.label}
-                    <ArrowUpRight className="h-4 w-4" />
-                  </a>
-                ))}
+                <a
+                  href={liveUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-[color:var(--primary)] px-5 py-3 text-[13px] font-black text-white shadow-[0_16px_36px_rgba(108,99,255,0.18)] transition hover:bg-[color:var(--primary-soft)]"
+                >
+                  Live Site
+                  <ArrowUpRight className="h-4 w-4" />
+                </a>
               </div>
             ) : null}
           </div>

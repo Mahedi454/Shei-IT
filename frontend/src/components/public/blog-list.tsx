@@ -1,6 +1,7 @@
 "use client";
 
 import { CalendarDays } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { apiRequest } from "@/lib/api";
@@ -12,6 +13,7 @@ type Blog = {
   excerpt: string;
   coverImage?: string;
   tags?: string[];
+  readTime?: string | null;
   publishedAt?: string;
 };
 
@@ -66,9 +68,12 @@ export function BlogList() {
                     </span>
                   ))}
                 </div>
-                <h3 className="mt-4 text-[1.4rem] font-semibold text-[color:var(--foreground)]">
+                <Link
+                  href={`/blog/${blog.slug}`}
+                  className="mt-4 block text-[1.4rem] font-semibold text-[color:var(--foreground)] transition hover:text-[color:var(--primary)]"
+                >
                   {blog.title}
-                </h3>
+                </Link>
                 <p className="mt-3 text-[15px] leading-8 text-[color:var(--muted-foreground)]">
                   {blog.excerpt}
                 </p>
@@ -77,6 +82,7 @@ export function BlogList() {
                   {blog.publishedAt
                     ? new Date(blog.publishedAt).toLocaleDateString()
                     : "Latest insights"}
+                  {blog.readTime ? ` / ${blog.readTime}` : ""}
                 </p>
               </div>
             </article>

@@ -32,6 +32,11 @@ type ResourceItem = {
   description?: string | null;
   coverImage?: string | null;
   image?: string | null;
+  category?: string | null;
+  authorName?: string | null;
+  readTime?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
   tags?: string[];
   categories?: string[];
   metric?: string | null;
@@ -91,6 +96,16 @@ const blogTagOptions = [
   "Mobile",
   "Strategy",
   "Support",
+] as const;
+
+const blogCategoryOptions = [
+  "Web Development",
+  "SEO & Marketing",
+  "Performance",
+  "Product Strategy",
+  "Hosting & DevOps",
+  "Mobile Apps",
+  "Business Growth",
 ] as const;
 
 const projectCategoryOptions = [
@@ -166,6 +181,11 @@ const initialForm = {
   description: "",
   excerpt: "",
   featured: false,
+  category: "Web Development",
+  authorName: "Shei IT Team",
+  readTime: "",
+  seoTitle: "",
+  seoDescription: "",
   eyebrow: "",
   type: "",
   liveUrl: "",
@@ -393,6 +413,11 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       description: item.description ?? "",
       excerpt: item.excerpt ?? "",
       featured: Boolean(item.featured),
+      category: item.category ?? "Web Development",
+      authorName: item.authorName ?? "Shei IT Team",
+      readTime: item.readTime ?? "",
+      seoTitle: item.seoTitle ?? "",
+      seoDescription: item.seoDescription ?? "",
       eyebrow: item.eyebrow ?? "",
       type: item.type ?? "",
       liveUrl: item.liveUrl ?? "",
@@ -504,19 +529,59 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
     }));
   };
 
+  const validateBlogForm = () => {
+    const titleValue = form.title.trim();
+    const excerptValue = form.excerpt.trim();
+    const contentValue = form.content.trim();
+
+    if (titleValue.length < 2) {
+      return "Title must be at least 2 characters.";
+    }
+
+    if (excerptValue.length < 10) {
+      return "Excerpt must be at least 10 characters.";
+    }
+
+    if (contentValue.length < 20) {
+      return "Content must be at least 20 characters.";
+    }
+
+    return null;
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (isBlog) {
+      const validationError = validateBlogForm();
+
+      if (validationError) {
+        showToast({
+          title: `${title.slice(0, -1)} save failed`,
+          description: validationError,
+          tone: "error",
+        });
+        return;
+      }
+    }
+
     setSaving(true);
 
     try {
       const token = await getToken();
       const payload = isBlog
         ? {
-            title: form.title,
-            slug: form.slug || undefined,
-            excerpt: form.excerpt,
-            content: form.content,
-            coverImage: form.image,
+            title: form.title.trim(),
+            slug: normalizeOptionalText(form.slug),
+            excerpt: form.excerpt.trim(),
+            content: form.content.trim(),
+            coverImage: normalizeOptionalUrl(form.image),
+            category: normalizeOptionalText(form.category) ?? "General",
+            authorName: normalizeOptionalText(form.authorName) ?? "Shei IT Team",
+            readTime: normalizeOptionalText(form.readTime),
+            seoTitle: normalizeOptionalText(form.seoTitle),
+            seoDescription: normalizeOptionalText(form.seoDescription),
+            featured: form.featured,
             tags: form.selectedLabels,
             status: form.status,
           }
@@ -694,7 +759,7 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                           >
                             {item.status}
                           </span>
-                          {!isBlog && item.featured ? (
+                          {item.featured ? (
                             <span className="rounded-full bg-[linear-gradient(180deg,rgba(111,231,200,0.18),rgba(111,231,200,0.08))] px-3 py-1 text-[12px] font-semibold text-[color:var(--mint)]">
                               Featured
                             </span>
@@ -761,7 +826,7 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                       <div className="flex items-center gap-3">
                         {item.status === "published" ? (
                           <a
-                            href={isBlog ? `/blog` : `/portfolio/${item.slug}`}
+                            href={isBlog ? `/blog/${item.slug}` : `/portfolio/${item.slug}`}
                             className="inline-flex items-center gap-2 text-[13px] font-semibold text-[color:var(--primary)]"
                           >
                             <Eye className="h-4 w-4" />
@@ -872,6 +937,53 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
 
           {isBlog ? (
             <>
+              <div className="grid gap-4 lg:grid-cols-2">
+                <label className="space-y-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    Category
+                  </span>
+                  <select
+                    className="admin-input w-full"
+                    value={form.category}
+                    onChange={(event) =>
+                      setForm((current) => ({ ...current, category: event.target.value }))
+                    }
+                  >
+                    {blogCategoryOptions.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="space-y-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    Author
+                  </span>
+                  <input
+                    className="admin-input w-full"
+                    value={form.authorName}
+                    onChange={(event) =>
+                      setForm((current) => ({ ...current, authorName: event.target.value }))
+                    }
+                    placeholder="Shei IT Team"
+                  />
+                </label>
+                <label className="space-y-2 lg:col-span-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    Read time
+                  </span>
+                  <input
+                    className="admin-input w-full"
+                    value={form.readTime}
+                    onChange={(event) =>
+                      setForm((current) => ({ ...current, readTime: event.target.value }))
+                    }
+                    placeholder="5 min read"
+                  />
+                </label>
+              </div>
+
               <label className="block space-y-2">
                 <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
                   Excerpt
@@ -898,6 +1010,35 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                   placeholder="Write the full blog content"
                 />
               </label>
+
+              <div className="grid gap-4 lg:grid-cols-2">
+                <label className="space-y-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    SEO title
+                  </span>
+                  <input
+                    className="admin-input w-full"
+                    value={form.seoTitle}
+                    onChange={(event) =>
+                      setForm((current) => ({ ...current, seoTitle: event.target.value }))
+                    }
+                    placeholder="Optional search title"
+                  />
+                </label>
+                <label className="space-y-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    SEO description
+                  </span>
+                  <input
+                    className="admin-input w-full"
+                    value={form.seoDescription}
+                    onChange={(event) =>
+                      setForm((current) => ({ ...current, seoDescription: event.target.value }))
+                    }
+                    placeholder="Optional search description"
+                  />
+                </label>
+              </div>
             </>
           ) : (
             <>
@@ -992,29 +1133,23 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                   </label>
                 </div>
 
-                <div className="mt-4 grid gap-4 lg:grid-cols-3">
-                  {[
-                    ["Live URL", "liveUrl", "https://..."],
-                    ["Client repository URL", "clientRepositoryUrl", "https://github.com/..."],
-                    ["Server repository URL", "serverRepositoryUrl", "https://github.com/..."],
-                  ].map(([label, key, placeholder]) => (
-                    <label key={key} className="space-y-2">
-                      <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
-                        {label}
-                      </span>
-                      <input
-                        className="admin-input w-full"
-                        value={String(form[key as keyof typeof form] ?? "")}
-                        onChange={(event) =>
-                          setForm((current) => ({
-                            ...current,
-                            [key]: event.target.value,
-                          }))
-                        }
-                        placeholder={placeholder}
-                      />
-                    </label>
-                  ))}
+                <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                  <label className="space-y-2">
+                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                      Live URL
+                    </span>
+                    <input
+                      className="admin-input w-full"
+                      value={form.liveUrl}
+                      onChange={(event) =>
+                        setForm((current) => ({
+                          ...current,
+                          liveUrl: event.target.value,
+                        }))
+                      }
+                      placeholder="https://..."
+                    />
+                  </label>
                 </div>
 
                 <div className="mt-4 grid gap-4 lg:grid-cols-2">
@@ -1503,40 +1638,42 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
               </select>
             </label>
 
-            {!isBlog ? (
-              <label className="space-y-2">
-                <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
-                  Featured
+            <label className="space-y-2">
+              <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                Featured
+              </span>
+              <button
+                type="button"
+                onClick={() =>
+                  setForm((current) => ({ ...current, featured: !current.featured }))
+                }
+                className={cn(
+                  "admin-input flex h-[50px] items-center justify-between",
+                  form.featured ? "text-[color:var(--primary)]" : "",
+                )}
+              >
+                <span>
+                  {form.featured
+                    ? "Featured on"
+                    : isBlog
+                      ? "Feature in blog"
+                      : "Feature on homepage"}
                 </span>
-                <button
-                  type="button"
-                  onClick={() =>
-                    setForm((current) => ({ ...current, featured: !current.featured }))
-                  }
+                <span
                   className={cn(
-                    "admin-input flex h-[50px] items-center justify-between",
-                    form.featured ? "text-[color:var(--primary)]" : "",
+                    "h-6 w-11 rounded-full p-1 transition",
+                    form.featured ? "bg-[color:var(--primary)]" : "bg-white/8",
                   )}
                 >
-                  <span>{form.featured ? "Featured on" : "Feature on homepage"}</span>
                   <span
                     className={cn(
-                      "h-6 w-11 rounded-full p-1 transition",
-                      form.featured ? "bg-[color:var(--primary)]" : "bg-white/8",
+                      "block h-4 w-4 rounded-full bg-white transition",
+                      form.featured ? "translate-x-5" : "translate-x-0",
                     )}
-                  >
-                    <span
-                      className={cn(
-                        "block h-4 w-4 rounded-full bg-white transition",
-                        form.featured ? "translate-x-5" : "translate-x-0",
-                      )}
-                    />
-                  </span>
-                </button>
-              </label>
-            ) : (
-              <div />
-            )}
+                  />
+                </span>
+              </button>
+            </label>
 
             <div className="flex items-end">
               <a

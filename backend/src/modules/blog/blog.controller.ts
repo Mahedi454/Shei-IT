@@ -15,7 +15,7 @@ const createSlug = (value: string) =>
 export const getPublishedBlogs: RequestHandler = catchAsync(async (_req, res) => {
   const blogs = await prisma.blog.findMany({
     where: { status: "published" },
-    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+    orderBy: [{ featured: "desc" }, { publishedAt: "desc" }, { createdAt: "desc" }],
   });
 
   return sendResponse(res, 200, {
@@ -63,6 +63,8 @@ export const createBlog: RequestHandler = catchAsync(async (req, res) => {
     data: {
       ...req.body,
       slug,
+      category: req.body.category || "General",
+      authorName: req.body.authorName || "Shei IT Team",
       publishedAt: req.body.status === "published" ? new Date() : undefined,
     },
   });
@@ -82,16 +84,28 @@ export const updateBlog: RequestHandler = catchAsync(async (req, res) => {
     payload.slug = createSlug(payload.slug);
   }
 
-  if (payload.status === "published") {
-    payload.publishedAt = new Date();
-  }
-
   const existingBlog = await prisma.blog.findUnique({
     where: { id: blogId },
   });
 
   if (!existingBlog) {
     throw new AppError(404, "Blog not found.");
+  }
+
+  if (payload.status === "published") {
+    payload.publishedAt = existingBlog.publishedAt ?? new Date();
+  }
+
+  if (payload.status === "draft") {
+    payload.publishedAt = null;
+  }
+
+  if (payload.authorName === "") {
+    payload.authorName = "Shei IT Team";
+  }
+
+  if (payload.category === "") {
+    payload.category = "General";
   }
 
   const blog = await prisma.blog.update({
