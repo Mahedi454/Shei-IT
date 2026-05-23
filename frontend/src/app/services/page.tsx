@@ -4,6 +4,18 @@ import { ServicesCoreSection } from "@/components/services/services-core-section
 import { ServicesCtaSection } from "@/components/services/services-cta";
 import { ServicesHero } from "@/components/services/services-hero";
 import { ServicesProcessSection } from "@/components/services/services-process-section";
+import { pageSeoMetadata } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export const generateMetadata = () =>
+  pageSeoMetadata("services", {
+    title: "Services | Shei IT",
+    description:
+      "Explore Shei IT services for web development, mobile apps, SEO, hosting, UI/UX, and cloud support.",
+    path: "/services",
+  });
 
 export default function ServicesPage() {
   return (

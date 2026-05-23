@@ -174,7 +174,7 @@ export function ServicesProcessSection() {
                 }}
               />
               <span className="text-[13px] font-semibold text-[color:var(--muted-foreground)]">
-                Founder, shei-it
+                Co-Founder, Shei-IT
               </span>
             </div>
           </div>

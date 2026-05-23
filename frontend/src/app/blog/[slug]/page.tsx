@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, CalendarDays, Clock3, UserRound } from "lucide-r
 
 import { SiteHeader } from "@/components/layout/site-header";
 import { API_BASE_URL, type ApiResponse } from "@/lib/api";
+import { buildSeoMetadata, type SeoSetting } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -25,6 +26,7 @@ type Blog = {
   tags?: string[];
   publishedAt?: string | null;
   createdAt: string;
+  seo?: SeoSetting | null;
 };
 
 type PageProps = {
@@ -141,10 +143,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   try {
     const blog = await getBlog(slug);
 
-    return {
+    return buildSeoMetadata(blog.seo ?? null, {
       title: blog.seoTitle || `${blog.title} | Shei IT Blog`,
       description: blog.seoDescription || blog.excerpt,
-    };
+      path: `/blog/${blog.slug}`,
+      image: blog.coverImage,
+    });
   } catch {
     return {
       title: "Blog | Shei IT",

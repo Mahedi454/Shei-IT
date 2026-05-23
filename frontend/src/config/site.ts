@@ -355,7 +355,7 @@ export const footerConfig = {
       links: [
         { label: "Contact Us", href: "/contact" },
         { label: "FAQs", href: "#" },
-        { label: "Privacy Policy", href: "#" },
+        { label: "Privacy Policy", href: "/privacy-policy" },
         { label: "Terms of Service", href: "#" },
       ],
     },

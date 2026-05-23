@@ -7,6 +7,7 @@ import {
   Menu,
   Newspaper,
   PanelsTopLeft,
+  Search,
   ShieldCheck,
 } from "lucide-react";
 import { signOut } from "firebase/auth";
@@ -25,6 +26,7 @@ const adminLinks = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Blogs", href: "/admin/blogs", icon: Newspaper },
   { label: "Projects", href: "/admin/projects", icon: PanelsTopLeft },
+  { label: "SEO", href: "/admin/seo", icon: Search },
   { label: "Contacts", href: "/admin/contacts", icon: Mail },
 ] as const;
 

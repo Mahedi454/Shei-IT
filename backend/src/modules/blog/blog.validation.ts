@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { optionalSeoSchema } from "../seo/seo.validation";
+
 const statusSchema = z.enum(["draft", "published"]);
 
 export const createBlogSchema = z.object({
@@ -16,6 +18,7 @@ export const createBlogSchema = z.object({
   featured: z.boolean().default(false),
   tags: z.array(z.string()).default([]),
   status: statusSchema.default("draft"),
+  seo: optionalSeoSchema.optional(),
 });
 
 export const updateBlogSchema = createBlogSchema.partial();

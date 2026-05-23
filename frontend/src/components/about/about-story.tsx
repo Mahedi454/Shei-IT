@@ -57,7 +57,7 @@ export function AboutStorySection() {
             </div>
 
             <div className="absolute bottom-0 left-0 z-20 rounded-[1.8rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-7 py-6 text-center shadow-[0_24px_60px_rgba(108,99,255,0.14)] backdrop-blur-2xl dark:shadow-[var(--shadow-soft)]">
-              <p className="text-[2rem] font-semibold text-[color:var(--primary)]">5+</p>
+              <p className="text-[2rem] font-semibold text-[color:var(--primary)]">3+</p>
               <p className="text-[12px] uppercase tracking-[0.26em] text-[color:var(--muted-foreground)]">Years Experience</p>
             </div>
           </div>

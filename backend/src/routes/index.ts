@@ -6,6 +6,7 @@ import blogRoutes from "../modules/blog/blog.routes";
 import contactRoutes from "../modules/contact/contact.routes";
 import dashboardRoutes from "../modules/dashboard/dashboard.routes";
 import projectRoutes from "../modules/project/project.routes";
+import seoRoutes from "../modules/seo/seo.routes";
 
 const router = Router();
 
@@ -24,6 +25,7 @@ router.get("/health", (_req, res) => {
 
 router.use("/blogs", blogRoutes);
 router.use("/projects", projectRoutes);
+router.use("/seo", seoRoutes);
 router.use("/contacts", contactRoutes);
 router.use("/admin", dashboardRoutes);
 
