@@ -1,9 +1,38 @@
+"use client";
+
 import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { ProjectShowcaseCard } from "@/components/shared/project-showcase-card";
 import { selectedWorkSection } from "@/config/site";
+import { apiRequest } from "@/lib/api";
+
+type Project = {
+  id: string;
+  slug: string;
+  title: string;
+  image: string;
+  categories: string[];
+  metric?: string | null;
+  metricLabel?: string | null;
+};
 
 export function SelectedWorkSection() {
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        const data = await apiRequest<Project[]>("/projects");
+        setProjects(data.slice(0, 3));
+      } catch {
+        setProjects([]);
+      }
+    };
+
+    loadProjects();
+  }, []);
+
   return (
     <section className="relative py-24">
       <div className="mx-auto w-11/12 max-w-[1440px]">
@@ -30,14 +59,16 @@ export function SelectedWorkSection() {
         </div>
 
         <div className="mt-10 grid items-stretch gap-6 xl:grid-cols-3">
-          {selectedWorkSection.items.map((item) => (
+          {projects.map((project) => (
             <ProjectShowcaseCard
-              key={item.title}
-              title={item.title}
-              tags={item.tags}
-              previewTheme={item.theme}
-              accent={item.accent}
-              href={item.href}
+              key={project.id}
+              title={project.title}
+              tags={project.categories}
+              image={project.image}
+              metric={project.metric ?? ""}
+              metricLabel={project.metricLabel ?? ""}
+              href={`/portfolio/${project.slug}`}
+              ctaLabel="View Project"
             />
           ))}
         </div>

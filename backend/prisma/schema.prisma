@@ -33,33 +33,32 @@ model Blog {
 }
 
 model Project {
-  id                            String        @id @default(cuid())
-  title                         String
-  slug                          String        @unique
-  description                   String
-  image                         String
-  categories                    String[]
-  metric                        String?
-  metricLabel                   String?
-  featured                      Boolean       @default(false)
-  detailEyebrow                 String?
-  detailType                    String?
-  liveUrl                       String?
-  clientRepositoryUrl           String?
-  serverRepositoryUrl           String?
-  overview                      String?
-  problem                       String?
-  features                      Json?
-  roles                         Json?
-  architectureFlow              Json?
-  techStack                     Json?
-  paymentTitle                  String?
-  paymentDescription            String?
-  paymentReliabilityTitle       String?
-  paymentReliabilityDescription String?
-  status                        PublishStatus @default(draft)
-  createdAt                     DateTime      @default(now())
-  updatedAt                     DateTime      @updatedAt
+  id                  String        @id @default(cuid())
+  title               String
+  slug                String        @unique
+  description         String
+  image               String
+  categories          String[]
+  metric              String?
+  metricLabel         String?
+  featured            Boolean       @default(false)
+  eyebrow             String?
+  type                String?
+  liveUrl             String?
+  clientRepositoryUrl String?
+  serverRepositoryUrl String?
+  overview            String?
+  primaryOutcome      String?
+  delivery            String?
+  purpose             String?
+  features            Json?
+  accessRoles         Json?
+  architectureSteps   Json?
+  integrationCards    Json?
+  techStack           Json?
+  status              PublishStatus @default(draft)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
 }
 
 model Contact {

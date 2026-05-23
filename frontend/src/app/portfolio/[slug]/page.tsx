@@ -45,6 +45,11 @@ type DetailStackGroup = {
   tools: string[];
 };
 
+type DetailCard = {
+  title: string;
+  description: string;
+};
+
 type Project = {
   id: string;
   title: string;
@@ -54,21 +59,20 @@ type Project = {
   categories: string[];
   metric?: string | null;
   metricLabel?: string | null;
-  detailEyebrow?: string | null;
-  detailType?: string | null;
+  eyebrow?: string | null;
+  type?: string | null;
   liveUrl?: string | null;
   clientRepositoryUrl?: string | null;
   serverRepositoryUrl?: string | null;
   overview?: string | null;
-  problem?: string | null;
+  primaryOutcome?: string | null;
+  delivery?: string | null;
+  purpose?: string | null;
   features?: unknown;
-  roles?: unknown;
-  architectureFlow?: unknown;
+  accessRoles?: unknown;
+  architectureSteps?: unknown;
+  integrationCards?: unknown;
   techStack?: unknown;
-  paymentTitle?: string | null;
-  paymentDescription?: string | null;
-  paymentReliabilityTitle?: string | null;
-  paymentReliabilityDescription?: string | null;
 };
 
 type PageProps = {
@@ -193,25 +197,7 @@ function readFeatureList(value: unknown): DetailFeature[] {
 }
 
 function getProjectFeatures(project: Project) {
-  const parsed = readFeatureList(project.features);
-  const scopeItems = getDescriptionBullets(project.description, "Project Scope");
-
-  const hasOnlyGenericDefault =
-    parsed.length === 1 &&
-    parsed[0]?.title === "Public Experience" &&
-    parsed[0]?.items.some((item) => item.includes("Responsive landing"));
-
-  if (scopeItems.length && hasOnlyGenericDefault) {
-    return [
-      {
-        title: "Product Scope",
-        icon: "dashboard",
-        items: scopeItems,
-      },
-    ];
-  }
-
-  return parsed;
+  return readFeatureList(project.features);
 }
 
 function readRoles(value: unknown): DetailRole[] {
@@ -272,6 +258,22 @@ function readStack(value: unknown): DetailStackGroup[] {
   return parsed.length ? parsed : fallbackStack;
 }
 
+function readCards(value: unknown): DetailCard[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item) => {
+      const record = asRecord(item);
+      return {
+        title: typeof record.title === "string" ? record.title : "",
+        description: typeof record.description === "string" ? record.description : "",
+      };
+    })
+    .filter((item) => item.title && item.description);
+}
+
 function cleanProjectText(value: string) {
   return value
     .replace(/```[\s\S]*?```/g, " ")
@@ -324,14 +326,47 @@ function getProjectOverview(project: Project) {
 }
 
 function getProjectProblem(project: Project) {
-  if (!isPlaceholderText(project.problem)) {
-    return cleanProjectText(project.problem ?? "");
+  if (!isPlaceholderText(project.purpose)) {
+    return cleanProjectText(project.purpose ?? "");
   }
 
   const valueSection = getDescriptionSection(project.description, "Project Value");
   return valueSection
     ? cleanProjectText(valueSection)
     : "This project was built to turn scattered user needs into a focused digital experience with clear flows, reusable content, and a maintainable admin-managed foundation.";
+}
+
+function getProjectOverviewCards(project: Project): DetailCard[] {
+  return [
+    { title: "Category", description: project.categories.join(", ") || "Digital product" },
+    {
+      title: "Primary Outcome",
+      description:
+        project.primaryOutcome || project.metricLabel || project.metric || "Published project",
+    },
+    { title: "Delivery", description: project.delivery || project.type || "Responsive experience" },
+  ];
+}
+
+function getProjectIntegrations(project: Project): DetailCard[] {
+  const cards = readCards(project.integrationCards);
+
+  if (cards.length) {
+    return cards;
+  }
+
+  return [
+    {
+      title: "Workflow behavior",
+      description:
+        "The frontend coordinates important user actions with backend-confirmed state and clear success or fallback screens.",
+    },
+    {
+      title: "Why it is reliable",
+      description:
+        "The interface avoids treating client-side state as the final source of truth and keeps important status checks tied to the API.",
+    },
+  ];
 }
 
 function createExcerpt(value: string, maxLength = 260) {
@@ -464,9 +499,11 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const project = await getProject(slug);
   const features = getProjectFeatures(project);
-  const roles = readRoles(project.roles);
-  const flow = readFlow(project.architectureFlow);
+  const roles = readRoles(project.accessRoles);
+  const flow = readFlow(project.architectureSteps);
   const stack = readStack(project.techStack);
+  const overviewCards = getProjectOverviewCards(project);
+  const integrations = getProjectIntegrations(project);
   const summary = getProjectSummary(project);
   const links = [
     project.liveUrl ? { label: "Live Site", href: project.liveUrl, tone: "primary" } : null,
@@ -514,7 +551,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         <section className="grid gap-8 pb-10 lg:grid-cols-[0.92fr_1fr] lg:items-center">
           <div>
             <p className="text-[11px] font-black uppercase tracking-[0.42em] text-[color:var(--primary)]">
-              {project.detailEyebrow || "Project Case Study"}
+              {project.eyebrow || "Project Case Study"}
             </p>
             <h1 className="mt-4 max-w-3xl text-[clamp(2.55rem,5.5vw,4.6rem)] font-semibold leading-[0.98] tracking-[-0.055em] text-[color:var(--foreground)]">
               {project.title}
@@ -524,7 +561,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
-              <Pill>{project.detailType || "Digital product"}</Pill>
+              <Pill>{project.type || "Digital product"}</Pill>
               {project.metric ? <Pill>{project.metric}</Pill> : null}
               {project.metricLabel ? <Pill>{project.metricLabel}</Pill> : null}
               {project.categories.slice(0, 3).map((category) => (
@@ -584,11 +621,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                 {getProjectOverview(project)}
               </p>
               <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                {[
-                  ["Category", project.categories.join(", ") || "Digital product"],
-                  ["Primary Outcome", project.metricLabel || project.metric || "Published project"],
-                  ["Delivery", project.detailType || "Responsive experience"],
-                ].map(([title, description]) => (
+                {overviewCards.map(({ description, title }) => (
                   <DetailPanel key={title}>
                     <p className="text-[13px] font-semibold text-[color:var(--foreground)]">{title}</p>
                     <p className="mt-2 text-[12px] leading-6 text-[color:var(--muted-foreground)]">
@@ -700,29 +733,30 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             <SectionShell
               id="payments"
               label="Integration"
-              title={project.paymentTitle || "Checkout and integration behavior"}
+              title="Checkout and integration behavior"
             >
-              <div className="grid gap-4 md:grid-cols-[0.9fr_1.1fr]">
-                <DetailPanel className="p-5">
-                  <CreditCard className="h-6 w-6 text-[color:var(--primary)]" />
-                  <h3 className="mt-4 text-[15px] font-semibold text-[color:var(--foreground)]">
-                    {project.paymentTitle || "Workflow behavior"}
-                  </h3>
-                  <p className="mt-3 text-[13px] leading-7 text-[color:var(--muted-foreground)]">
-                    {project.paymentDescription ||
-                      "The frontend coordinates important user actions with backend-confirmed state and clear success or fallback screens."}
-                  </p>
-                </DetailPanel>
-                <DetailPanel className="p-5">
-                  <ShieldCheck className="h-6 w-6 text-[color:var(--mint)]" />
-                  <h3 className="mt-4 text-[15px] font-semibold text-[color:var(--foreground)]">
-                    {project.paymentReliabilityTitle || "Why it is reliable"}
-                  </h3>
-                  <p className="mt-3 text-[13px] leading-7 text-[color:var(--muted-foreground)]">
-                    {project.paymentReliabilityDescription ||
-                      "The interface avoids treating client-side state as the final source of truth and keeps important status checks tied to the API."}
-                  </p>
-                </DetailPanel>
+              <div className={responsiveGridClass(integrations.length)}>
+                {integrations.map((integration, index) => {
+                  const Icon = index === 1 ? ShieldCheck : CreditCard;
+
+                  return (
+                    <DetailPanel key={integration.title} className="p-5">
+                      <Icon
+                        className={
+                          index === 1
+                            ? "h-6 w-6 text-[color:var(--mint)]"
+                            : "h-6 w-6 text-[color:var(--primary)]"
+                        }
+                      />
+                      <h3 className="mt-4 text-[15px] font-semibold text-[color:var(--foreground)]">
+                        {integration.title}
+                      </h3>
+                      <p className="mt-3 text-[13px] leading-7 text-[color:var(--muted-foreground)]">
+                        {integration.description}
+                      </p>
+                    </DetailPanel>
+                  );
+                })}
               </div>
             </SectionShell>
 

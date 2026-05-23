@@ -375,8 +375,8 @@ export const footerConfig = {
       href: "https://www.facebook.com/profile.php?id=61589534485196",
       type: "facebook",
     },
-    { label: "Twitter", href: "#", type: "twitter" },
+    { label: "Twitter", href: "https://x.com/sheiitofficial", type: "twitter" },
     { label: "Instagram", href: "#", type: "instagram" },
-    { label: "LinkedIn", href: "#", type: "linkedin" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/shei-it/", type: "linkedin" },
   ],
 } as const;

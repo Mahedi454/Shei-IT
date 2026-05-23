@@ -2,7 +2,28 @@ import { z } from "zod";
 
 const statusSchema = z.enum(["draft", "published"]);
 const optionalUrlSchema = z.string().url().optional().or(z.literal(""));
-const detailJsonSchema = z.unknown().optional();
+
+const namedDescriptionSchema = z.object({
+  title: z.string().min(1),
+  description: z.string().min(1),
+});
+
+const featureGroupSchema = z.object({
+  title: z.string().min(1),
+  icon: z.string().optional().or(z.literal("")),
+  items: z.array(z.string().min(1)).default([]),
+});
+
+const architectureStepSchema = z.object({
+  number: z.string().optional().or(z.literal("")),
+  title: z.string().min(1),
+  description: z.string().min(1),
+});
+
+const techStackGroupSchema = z.object({
+  title: z.string().min(1),
+  tools: z.array(z.string().min(1)).default([]),
+});
 
 export const createProjectSchema = z.object({
   title: z.string().min(2),
@@ -13,21 +34,20 @@ export const createProjectSchema = z.object({
   metric: z.string().optional().or(z.literal("")),
   metricLabel: z.string().optional().or(z.literal("")),
   featured: z.boolean().default(false),
-  detailEyebrow: z.string().optional().or(z.literal("")),
-  detailType: z.string().optional().or(z.literal("")),
+  eyebrow: z.string().optional().or(z.literal("")),
+  type: z.string().optional().or(z.literal("")),
   liveUrl: optionalUrlSchema,
   clientRepositoryUrl: optionalUrlSchema,
   serverRepositoryUrl: optionalUrlSchema,
   overview: z.string().optional().or(z.literal("")),
-  problem: z.string().optional().or(z.literal("")),
-  features: detailJsonSchema,
-  roles: detailJsonSchema,
-  architectureFlow: detailJsonSchema,
-  techStack: detailJsonSchema,
-  paymentTitle: z.string().optional().or(z.literal("")),
-  paymentDescription: z.string().optional().or(z.literal("")),
-  paymentReliabilityTitle: z.string().optional().or(z.literal("")),
-  paymentReliabilityDescription: z.string().optional().or(z.literal("")),
+  primaryOutcome: z.string().optional().or(z.literal("")),
+  delivery: z.string().optional().or(z.literal("")),
+  purpose: z.string().optional().or(z.literal("")),
+  features: z.array(featureGroupSchema).default([]),
+  accessRoles: z.array(namedDescriptionSchema).default([]),
+  architectureSteps: z.array(architectureStepSchema).default([]),
+  integrationCards: z.array(namedDescriptionSchema).default([]),
+  techStack: z.array(techStackGroupSchema).default([]),
   status: statusSchema.default("draft"),
 });
 

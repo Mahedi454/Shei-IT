@@ -37,24 +37,43 @@ type ResourceItem = {
   metric?: string | null;
   metricLabel?: string | null;
   featured?: boolean;
-  detailEyebrow?: string | null;
-  detailType?: string | null;
+  eyebrow?: string | null;
+  type?: string | null;
   liveUrl?: string | null;
   clientRepositoryUrl?: string | null;
   serverRepositoryUrl?: string | null;
   overview?: string | null;
-  problem?: string | null;
+  primaryOutcome?: string | null;
+  delivery?: string | null;
+  purpose?: string | null;
   features?: unknown;
-  roles?: unknown;
-  architectureFlow?: unknown;
+  accessRoles?: unknown;
+  architectureSteps?: unknown;
+  integrationCards?: unknown;
   techStack?: unknown;
-  paymentTitle?: string | null;
-  paymentDescription?: string | null;
-  paymentReliabilityTitle?: string | null;
-  paymentReliabilityDescription?: string | null;
   status: PublishStatus;
   publishedAt?: string | null;
   createdAt: string;
+};
+
+type DetailCard = {
+  title: string;
+  description: string;
+};
+
+type FeatureGroup = {
+  title: string;
+  icon: string;
+  items: string[];
+};
+
+type ArchitectureStep = DetailCard & {
+  number: string;
+};
+
+type TechStackGroup = {
+  title: string;
+  tools: string[];
 };
 
 type ResourceManagerProps = {
@@ -89,51 +108,78 @@ const projectCategoryOptions = [
   "API",
 ] as const;
 
+const defaultFeatures: FeatureGroup[] = [
+  {
+    title: "Product Scope",
+    icon: "dashboard",
+    items: [
+      "Visitor-facing pages for discovery and conversion.",
+      "Admin-managed content and project data.",
+      "Responsive layouts for mobile and desktop.",
+    ],
+  },
+];
+
+const defaultAccessRoles: DetailCard[] = [
+  {
+    title: "Visitors",
+    description: "Explore the product and understand the core value.",
+  },
+];
+
+const defaultArchitectureSteps: ArchitectureStep[] = [
+  {
+    number: "01",
+    title: "Discovery",
+    description: "Users enter through the public experience.",
+  },
+];
+
+const defaultIntegrationCards: DetailCard[] = [
+  {
+    title: "Workflow behavior",
+    description: "Important user actions are coordinated with backend-confirmed state.",
+  },
+  {
+    title: "Why it is reliable",
+    description: "The interface keeps important status checks tied to the API.",
+  },
+];
+
+const defaultTechStack: TechStackGroup[] = [
+  {
+    title: "Frontend",
+    tools: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+  },
+  {
+    title: "Backend",
+    tools: ["Node.js", "Express", "Prisma"],
+  },
+  {
+    title: "Database",
+    tools: ["PostgreSQL"],
+  },
+];
+
 const initialForm = {
   content: "",
   description: "",
   excerpt: "",
   featured: false,
-  detailEyebrow: "",
-  detailType: "",
+  eyebrow: "",
+  type: "",
   liveUrl: "",
   clientRepositoryUrl: "",
   serverRepositoryUrl: "",
   overview: "",
-  problem: "",
-  featuresJson: `[
-  {
-    "title": "Public Experience",
-    "icon": "public",
-    "items": [
-      "Responsive landing and discovery pages.",
-      "Mobile-friendly project experience."
-    ]
-  }
-]`,
-  rolesJson: `[
-  {
-    "title": "Visitors",
-    "description": "Explore the product and understand the core value."
-  }
-]`,
-  architectureFlowJson: `[
-  {
-    "number": "01",
-    "title": "Discovery",
-    "description": "Users enter through the public experience."
-  }
-]`,
-  techStackJson: `[
-  {
-    "title": "Frontend",
-    "tools": ["Next.js", "React", "TypeScript", "Tailwind CSS"]
-  }
-]`,
-  paymentTitle: "",
-  paymentDescription: "",
-  paymentReliabilityTitle: "",
-  paymentReliabilityDescription: "",
+  primaryOutcome: "",
+  delivery: "",
+  purpose: "",
+  features: defaultFeatures,
+  accessRoles: defaultAccessRoles,
+  architectureSteps: defaultArchitectureSteps,
+  integrationCards: defaultIntegrationCards,
+  techStack: defaultTechStack,
   image: "",
   metric: "",
   metricLabel: "",
@@ -143,30 +189,97 @@ const initialForm = {
   title: "",
 };
 
-const formatJson = (value: unknown, fallback: string) => {
-  if (value === null || typeof value === "undefined") {
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  Boolean(value) && typeof value === "object" && !Array.isArray(value);
+
+const readDetailCards = (value: unknown, fallback: DetailCard[]): DetailCard[] => {
+  if (!Array.isArray(value)) {
     return fallback;
   }
 
-  try {
-    return JSON.stringify(value, null, 2);
-  } catch {
-    return fallback;
-  }
+  const parsed = value
+    .map((item) => {
+      if (!isRecord(item)) {
+        return null;
+      }
+
+      return {
+        title: typeof item.title === "string" ? item.title : "",
+        description: typeof item.description === "string" ? item.description : "",
+      };
+    })
+    .filter((item): item is DetailCard => Boolean(item?.title || item?.description));
+
+  return parsed.length ? parsed : fallback;
 };
 
-const parseJsonField = (value: string, fieldLabel: string) => {
-  const trimmed = value.trim();
-
-  if (!trimmed) {
-    return undefined;
+const readFeatures = (value: unknown): FeatureGroup[] => {
+  if (!Array.isArray(value)) {
+    return defaultFeatures;
   }
 
-  try {
-    return JSON.parse(trimmed) as unknown;
-  } catch {
-    throw new Error(`${fieldLabel} must be valid JSON.`);
+  const parsed = value
+    .map((item) => {
+      if (!isRecord(item)) {
+        return null;
+      }
+
+      return {
+        title: typeof item.title === "string" ? item.title : "",
+        icon: typeof item.icon === "string" ? item.icon : "",
+        items: Array.isArray(item.items)
+          ? item.items.filter((entry): entry is string => typeof entry === "string")
+          : [],
+      };
+    })
+    .filter((item): item is FeatureGroup => Boolean(item?.title || item?.items.length));
+
+  return parsed.length ? parsed : defaultFeatures;
+};
+
+const readArchitectureSteps = (value: unknown): ArchitectureStep[] => {
+  if (!Array.isArray(value)) {
+    return defaultArchitectureSteps;
   }
+
+  const parsed = value
+    .map((item, index) => {
+      if (!isRecord(item)) {
+        return null;
+      }
+
+      return {
+        number: typeof item.number === "string" ? item.number : String(index + 1).padStart(2, "0"),
+        title: typeof item.title === "string" ? item.title : "",
+        description: typeof item.description === "string" ? item.description : "",
+      };
+    })
+    .filter((item): item is ArchitectureStep => Boolean(item?.title || item?.description));
+
+  return parsed.length ? parsed : defaultArchitectureSteps;
+};
+
+const readTechStack = (value: unknown): TechStackGroup[] => {
+  if (!Array.isArray(value)) {
+    return defaultTechStack;
+  }
+
+  const parsed = value
+    .map((item) => {
+      if (!isRecord(item)) {
+        return null;
+      }
+
+      return {
+        title: typeof item.title === "string" ? item.title : "",
+        tools: Array.isArray(item.tools)
+          ? item.tools.filter((entry): entry is string => typeof entry === "string")
+          : [],
+      };
+    })
+    .filter((item): item is TechStackGroup => Boolean(item?.title || item?.tools.length));
+
+  return parsed.length ? parsed : defaultTechStack;
 };
 
 const normalizeOptionalText = (value: string) => {
@@ -185,6 +298,40 @@ const normalizeOptionalDetailText = (value: string) => {
     ? trimmed
     : undefined;
 };
+
+const cleanFeatures = (features: FeatureGroup[]) =>
+  features
+    .map((feature) => ({
+      title: feature.title.trim(),
+      icon: feature.icon.trim(),
+      items: feature.items.map((item) => item.trim()).filter(Boolean),
+    }))
+    .filter((feature) => feature.title && feature.items.length);
+
+const cleanDetailCards = (cards: DetailCard[]) =>
+  cards
+    .map((card) => ({
+      title: card.title.trim(),
+      description: card.description.trim(),
+    }))
+    .filter((card) => card.title && card.description);
+
+const cleanArchitectureSteps = (steps: ArchitectureStep[]) =>
+  steps
+    .map((step, index) => ({
+      number: step.number.trim() || String(index + 1).padStart(2, "0"),
+      title: step.title.trim(),
+      description: step.description.trim(),
+    }))
+    .filter((step) => step.title && step.description);
+
+const cleanTechStack = (groups: TechStackGroup[]) =>
+  groups
+    .map((group) => ({
+      title: group.title.trim(),
+      tools: group.tools.map((tool) => tool.trim()).filter(Boolean),
+    }))
+    .filter((group) => group.title && group.tools.length);
 
 export function ResourceManager({ resource, title }: ResourceManagerProps) {
   const isBlog = resource === "blogs";
@@ -246,24 +393,20 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       description: item.description ?? "",
       excerpt: item.excerpt ?? "",
       featured: Boolean(item.featured),
-      detailEyebrow: item.detailEyebrow ?? "",
-      detailType: item.detailType ?? "",
+      eyebrow: item.eyebrow ?? "",
+      type: item.type ?? "",
       liveUrl: item.liveUrl ?? "",
       clientRepositoryUrl: item.clientRepositoryUrl ?? "",
       serverRepositoryUrl: item.serverRepositoryUrl ?? "",
       overview: item.overview ?? "",
-      problem: item.problem ?? "",
-      featuresJson: formatJson(item.features, initialForm.featuresJson),
-      rolesJson: formatJson(item.roles, initialForm.rolesJson),
-      architectureFlowJson: formatJson(
-        item.architectureFlow,
-        initialForm.architectureFlowJson,
-      ),
-      techStackJson: formatJson(item.techStack, initialForm.techStackJson),
-      paymentTitle: item.paymentTitle ?? "",
-      paymentDescription: item.paymentDescription ?? "",
-      paymentReliabilityTitle: item.paymentReliabilityTitle ?? "",
-      paymentReliabilityDescription: item.paymentReliabilityDescription ?? "",
+      primaryOutcome: item.primaryOutcome ?? "",
+      delivery: item.delivery ?? "",
+      purpose: item.purpose ?? "",
+      features: readFeatures(item.features),
+      accessRoles: readDetailCards(item.accessRoles, defaultAccessRoles),
+      architectureSteps: readArchitectureSteps(item.architectureSteps),
+      integrationCards: readDetailCards(item.integrationCards, defaultIntegrationCards),
+      techStack: readTechStack(item.techStack),
       image: item.coverImage ?? item.image ?? "",
       metric: item.metric ?? "",
       metricLabel: item.metricLabel ?? "",
@@ -286,6 +429,78 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       selectedLabels: current.selectedLabels.includes(value)
         ? current.selectedLabels.filter((item) => item !== value)
         : [...current.selectedLabels, value],
+    }));
+  };
+
+  const updateFeature = (index: number, value: Partial<FeatureGroup>) => {
+    setForm((current) => ({
+      ...current,
+      features: current.features.map((item, itemIndex) =>
+        itemIndex === index ? { ...item, ...value } : item,
+      ),
+    }));
+  };
+
+  const updateFeatureItem = (groupIndex: number, itemIndex: number, value: string) => {
+    setForm((current) => ({
+      ...current,
+      features: current.features.map((group, currentGroupIndex) =>
+        currentGroupIndex === groupIndex
+          ? {
+              ...group,
+              items: group.items.map((item, currentItemIndex) =>
+                currentItemIndex === itemIndex ? value : item,
+              ),
+            }
+          : group,
+      ),
+    }));
+  };
+
+  const updateDetailCard = (
+    key: "accessRoles" | "integrationCards",
+    index: number,
+    value: Partial<DetailCard>,
+  ) => {
+    setForm((current) => ({
+      ...current,
+      [key]: current[key].map((item, itemIndex) =>
+        itemIndex === index ? { ...item, ...value } : item,
+      ),
+    }));
+  };
+
+  const updateArchitectureStep = (index: number, value: Partial<ArchitectureStep>) => {
+    setForm((current) => ({
+      ...current,
+      architectureSteps: current.architectureSteps.map((item, itemIndex) =>
+        itemIndex === index ? { ...item, ...value } : item,
+      ),
+    }));
+  };
+
+  const updateTechStack = (index: number, value: Partial<TechStackGroup>) => {
+    setForm((current) => ({
+      ...current,
+      techStack: current.techStack.map((item, itemIndex) =>
+        itemIndex === index ? { ...item, ...value } : item,
+      ),
+    }));
+  };
+
+  const updateTechTool = (groupIndex: number, toolIndex: number, value: string) => {
+    setForm((current) => ({
+      ...current,
+      techStack: current.techStack.map((group, currentGroupIndex) =>
+        currentGroupIndex === groupIndex
+          ? {
+              ...group,
+              tools: group.tools.map((tool, currentToolIndex) =>
+                currentToolIndex === toolIndex ? value : tool,
+              ),
+            }
+          : group,
+      ),
     }));
   };
 
@@ -314,26 +529,20 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
             metric: normalizeOptionalText(form.metric),
             metricLabel: normalizeOptionalText(form.metricLabel),
             featured: form.featured,
-            detailEyebrow: normalizeOptionalText(form.detailEyebrow),
-            detailType: normalizeOptionalText(form.detailType),
+            eyebrow: normalizeOptionalText(form.eyebrow),
+            type: normalizeOptionalText(form.type),
             liveUrl: normalizeOptionalUrl(form.liveUrl),
             clientRepositoryUrl: normalizeOptionalUrl(form.clientRepositoryUrl),
             serverRepositoryUrl: normalizeOptionalUrl(form.serverRepositoryUrl),
             overview: normalizeOptionalDetailText(form.overview),
-            problem: normalizeOptionalDetailText(form.problem),
-            features: parseJsonField(form.featuresJson, "Features"),
-            roles: parseJsonField(form.rolesJson, "Roles"),
-            architectureFlow: parseJsonField(
-              form.architectureFlowJson,
-              "Architecture flow",
-            ),
-            techStack: parseJsonField(form.techStackJson, "Tech stack"),
-            paymentTitle: normalizeOptionalText(form.paymentTitle),
-            paymentDescription: normalizeOptionalText(form.paymentDescription),
-            paymentReliabilityTitle: normalizeOptionalText(form.paymentReliabilityTitle),
-            paymentReliabilityDescription: normalizeOptionalText(
-              form.paymentReliabilityDescription,
-            ),
+            primaryOutcome: normalizeOptionalText(form.primaryOutcome),
+            delivery: normalizeOptionalText(form.delivery),
+            purpose: normalizeOptionalDetailText(form.purpose),
+            features: cleanFeatures(form.features),
+            accessRoles: cleanDetailCards(form.accessRoles),
+            architectureSteps: cleanArchitectureSteps(form.architectureSteps),
+            integrationCards: cleanDetailCards(form.integrationCards),
+            techStack: cleanTechStack(form.techStack),
             status: form.status,
           };
 
@@ -741,10 +950,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
               <div className="rounded-[1.1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5">
                 <div className="mb-5">
                   <h3 className="text-[1.1rem] font-semibold text-[color:var(--foreground)]">
-                    Project detail page
+                    Project record
                   </h3>
                   <p className="mt-1 text-[13px] leading-6 text-[color:var(--muted-foreground)]">
-                    These fields power the dynamic case-study page for this project.
+                    One project record powers cards, the portfolio page, and the full case-study page.
                   </p>
                 </div>
 
@@ -755,11 +964,11 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                     </span>
                     <input
                       className="admin-input w-full"
-                      value={form.detailEyebrow}
+                      value={form.eyebrow}
                       onChange={(event) =>
                         setForm((current) => ({
                           ...current,
-                          detailEyebrow: event.target.value,
+                          eyebrow: event.target.value,
                         }))
                       }
                       placeholder="Tutoring Marketplace Frontend"
@@ -771,11 +980,11 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                     </span>
                     <input
                       className="admin-input w-full"
-                      value={form.detailType}
+                      value={form.type}
                       onChange={(event) =>
                         setForm((current) => ({
                           ...current,
-                          detailType: event.target.value,
+                          type: event.target.value,
                         }))
                       }
                       placeholder="Full-stack marketplace frontend"
@@ -824,13 +1033,13 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                   </label>
                   <label className="space-y-2">
                     <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
-                      Problem / purpose
+                      Purpose
                     </span>
                     <textarea
                       className="admin-input min-h-32 w-full"
-                      value={form.problem}
+                      value={form.purpose}
                       onChange={(event) =>
-                        setForm((current) => ({ ...current, problem: event.target.value }))
+                        setForm((current) => ({ ...current, purpose: event.target.value }))
                       }
                       placeholder="Why it was built..."
                     />
@@ -838,93 +1047,404 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                 </div>
 
                 <div className="mt-4 grid gap-4 lg:grid-cols-2">
-                  {[
-                    ["Features JSON", "featuresJson"],
-                    ["Roles JSON", "rolesJson"],
-                    ["Architecture flow JSON", "architectureFlowJson"],
-                    ["Tech stack JSON", "techStackJson"],
-                  ].map(([label, key]) => (
-                    <label key={key} className="space-y-2">
-                      <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
-                        {label}
-                      </span>
-                      <textarea
-                        className="admin-input min-h-52 w-full font-mono text-[12px]"
-                        value={String(form[key as keyof typeof form] ?? "")}
-                        onChange={(event) =>
-                          setForm((current) => ({
-                            ...current,
-                            [key]: event.target.value,
-                          }))
-                        }
-                      />
-                    </label>
-                  ))}
+                  <label className="space-y-2">
+                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                      Primary outcome
+                    </span>
+                    <input
+                      className="admin-input w-full"
+                      value={form.primaryOutcome}
+                      onChange={(event) =>
+                        setForm((current) => ({
+                          ...current,
+                          primaryOutcome: event.target.value,
+                        }))
+                      }
+                      placeholder="Faster bookings, more qualified leads, cleaner operations"
+                    />
+                  </label>
+                  <label className="space-y-2">
+                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                      Delivery
+                    </span>
+                    <input
+                      className="admin-input w-full"
+                      value={form.delivery}
+                      onChange={(event) =>
+                        setForm((current) => ({ ...current, delivery: event.target.value }))
+                      }
+                      placeholder="Responsive product experience"
+                    />
+                  </label>
                 </div>
 
-                <div className="mt-4 grid gap-4 lg:grid-cols-2">
-                  <label className="space-y-2">
-                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
-                      Integration section title
-                    </span>
-                    <input
-                      className="admin-input w-full"
-                      value={form.paymentTitle}
-                      onChange={(event) =>
-                        setForm((current) => ({
-                          ...current,
-                          paymentTitle: event.target.value,
-                        }))
-                      }
-                      placeholder="Stripe checkout with backend verification"
-                    />
-                  </label>
-                  <label className="space-y-2">
-                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
-                      Reliability title
-                    </span>
-                    <input
-                      className="admin-input w-full"
-                      value={form.paymentReliabilityTitle}
-                      onChange={(event) =>
-                        setForm((current) => ({
-                          ...current,
-                          paymentReliabilityTitle: event.target.value,
-                        }))
-                      }
-                      placeholder="Why it is reliable"
-                    />
-                  </label>
-                  <label className="space-y-2">
-                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
-                      Integration description
-                    </span>
-                    <textarea
-                      className="admin-input min-h-32 w-full"
-                      value={form.paymentDescription}
-                      onChange={(event) =>
-                        setForm((current) => ({
-                          ...current,
-                          paymentDescription: event.target.value,
-                        }))
-                      }
-                    />
-                  </label>
-                  <label className="space-y-2">
-                    <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
-                      Reliability description
-                    </span>
-                    <textarea
-                      className="admin-input min-h-32 w-full"
-                      value={form.paymentReliabilityDescription}
-                      onChange={(event) =>
-                        setForm((current) => ({
-                          ...current,
-                          paymentReliabilityDescription: event.target.value,
-                        }))
-                      }
-                    />
-                  </label>
+                <div className="mt-6 space-y-5">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <h4 className="text-[14px] font-semibold text-[color:var(--foreground)]">
+                        Key features
+                      </h4>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setForm((current) => ({
+                            ...current,
+                            features: [
+                              ...current.features,
+                              { title: "", icon: "dashboard", items: [""] },
+                            ],
+                          }))
+                        }
+                        className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] px-3 py-2 text-[12px] font-semibold text-[color:var(--foreground)]"
+                      >
+                        <Plus className="h-3.5 w-3.5" />
+                        Add group
+                      </button>
+                    </div>
+                    {form.features.map((feature, featureIndex) => (
+                      <div
+                        key={`feature-${featureIndex}`}
+                        className="space-y-3 rounded-[0.9rem] border border-[color:var(--stat-border)] p-4"
+                      >
+                        <div className="grid gap-3 lg:grid-cols-[1fr_160px_auto]">
+                          <input
+                            className="admin-input w-full"
+                            value={feature.title}
+                            onChange={(event) =>
+                              updateFeature(featureIndex, { title: event.target.value })
+                            }
+                            placeholder="Product Scope"
+                          />
+                          <select
+                            className="admin-input w-full"
+                            value={feature.icon}
+                            onChange={(event) =>
+                              updateFeature(featureIndex, { icon: event.target.value })
+                            }
+                          >
+                            <option value="dashboard">Dashboard</option>
+                            <option value="public">Public</option>
+                            <option value="users">Users</option>
+                            <option value="auth">Auth</option>
+                            <option value="payment">Payment</option>
+                            <option value="notification">Notification</option>
+                          </select>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setForm((current) => ({
+                                ...current,
+                                features: current.features.filter(
+                                  (_item, index) => index !== featureIndex,
+                                ),
+                              }))
+                            }
+                            className="inline-flex h-[50px] items-center justify-center rounded-full border border-rose-500/30 px-4 text-rose-400"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                        <div className="space-y-2">
+                          {feature.items.map((item, itemIndex) => (
+                            <div
+                              key={`feature-item-${featureIndex}-${itemIndex}`}
+                              className="grid gap-2 lg:grid-cols-[1fr_auto]"
+                            >
+                              <input
+                                className="admin-input w-full"
+                                value={item}
+                                onChange={(event) =>
+                                  updateFeatureItem(featureIndex, itemIndex, event.target.value)
+                                }
+                                placeholder="Important product capability"
+                              />
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  updateFeature(featureIndex, {
+                                    items: feature.items.filter(
+                                      (_entry, index) => index !== itemIndex,
+                                    ),
+                                  })
+                                }
+                                className="rounded-full border border-[color:var(--stat-border)] px-4 text-[12px] font-semibold text-[color:var(--muted-foreground)]"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          ))}
+                          <button
+                            type="button"
+                            onClick={() =>
+                              updateFeature(featureIndex, {
+                                items: [...feature.items, ""],
+                              })
+                            }
+                            className="text-[12px] font-semibold text-[color:var(--primary)]"
+                          >
+                            Add checklist item
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {[
+                    {
+                      title: "Access model",
+                      items: form.accessRoles,
+                      key: "accessRoles" as const,
+                      addLabel: "Add role",
+                      placeholder: "Visitors",
+                    },
+                    {
+                      title: "Integration behavior",
+                      items: form.integrationCards,
+                      key: "integrationCards" as const,
+                      addLabel: "Add integration",
+                      placeholder: "Workflow behavior",
+                    },
+                  ].map((section) => (
+                    <div key={section.key} className="space-y-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <h4 className="text-[14px] font-semibold text-[color:var(--foreground)]">
+                          {section.title}
+                        </h4>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setForm((current) => ({
+                              ...current,
+                              [section.key]: [
+                                ...current[section.key],
+                                { title: "", description: "" },
+                              ],
+                            }))
+                          }
+                          className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] px-3 py-2 text-[12px] font-semibold text-[color:var(--foreground)]"
+                        >
+                          <Plus className="h-3.5 w-3.5" />
+                          {section.addLabel}
+                        </button>
+                      </div>
+                      {section.items.map((item, itemIndex) => (
+                        <div
+                          key={`${section.key}-${itemIndex}`}
+                          className="grid gap-3 rounded-[0.9rem] border border-[color:var(--stat-border)] p-4 lg:grid-cols-[220px_1fr_auto]"
+                        >
+                          <input
+                            className="admin-input w-full"
+                            value={item.title}
+                            onChange={(event) =>
+                              updateDetailCard(section.key, itemIndex, {
+                                title: event.target.value,
+                              })
+                            }
+                            placeholder={section.placeholder}
+                          />
+                          <textarea
+                            className="admin-input min-h-24 w-full"
+                            value={item.description}
+                            onChange={(event) =>
+                              updateDetailCard(section.key, itemIndex, {
+                                description: event.target.value,
+                              })
+                            }
+                            placeholder="Describe this card"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setForm((current) => ({
+                                ...current,
+                                [section.key]: current[section.key].filter(
+                                  (_entry, index) => index !== itemIndex,
+                                ),
+                              }))
+                            }
+                            className="inline-flex h-[50px] items-center justify-center rounded-full border border-rose-500/30 px-4 text-rose-400"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <h4 className="text-[14px] font-semibold text-[color:var(--foreground)]">
+                        Architecture flow
+                      </h4>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setForm((current) => ({
+                            ...current,
+                            architectureSteps: [
+                              ...current.architectureSteps,
+                              {
+                                number: String(current.architectureSteps.length + 1).padStart(
+                                  2,
+                                  "0",
+                                ),
+                                title: "",
+                                description: "",
+                              },
+                            ],
+                          }))
+                        }
+                        className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] px-3 py-2 text-[12px] font-semibold text-[color:var(--foreground)]"
+                      >
+                        <Plus className="h-3.5 w-3.5" />
+                        Add step
+                      </button>
+                    </div>
+                    {form.architectureSteps.map((step, stepIndex) => (
+                      <div
+                        key={`step-${stepIndex}`}
+                        className="grid gap-3 rounded-[0.9rem] border border-[color:var(--stat-border)] p-4 lg:grid-cols-[90px_210px_1fr_auto]"
+                      >
+                        <input
+                          className="admin-input w-full"
+                          value={step.number}
+                          onChange={(event) =>
+                            updateArchitectureStep(stepIndex, {
+                              number: event.target.value,
+                            })
+                          }
+                          placeholder="01"
+                        />
+                        <input
+                          className="admin-input w-full"
+                          value={step.title}
+                          onChange={(event) =>
+                            updateArchitectureStep(stepIndex, {
+                              title: event.target.value,
+                            })
+                          }
+                          placeholder="Discovery"
+                        />
+                        <textarea
+                          className="admin-input min-h-24 w-full"
+                          value={step.description}
+                          onChange={(event) =>
+                            updateArchitectureStep(stepIndex, {
+                              description: event.target.value,
+                            })
+                          }
+                          placeholder="Describe the system step"
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setForm((current) => ({
+                              ...current,
+                              architectureSteps: current.architectureSteps.filter(
+                                (_item, index) => index !== stepIndex,
+                              ),
+                            }))
+                          }
+                          className="inline-flex h-[50px] items-center justify-center rounded-full border border-rose-500/30 px-4 text-rose-400"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <h4 className="text-[14px] font-semibold text-[color:var(--foreground)]">
+                        Tech stack
+                      </h4>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setForm((current) => ({
+                            ...current,
+                            techStack: [...current.techStack, { title: "", tools: [""] }],
+                          }))
+                        }
+                        className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] px-3 py-2 text-[12px] font-semibold text-[color:var(--foreground)]"
+                      >
+                        <Plus className="h-3.5 w-3.5" />
+                        Add group
+                      </button>
+                    </div>
+                    {form.techStack.map((group, groupIndex) => (
+                      <div
+                        key={`stack-${groupIndex}`}
+                        className="space-y-3 rounded-[0.9rem] border border-[color:var(--stat-border)] p-4"
+                      >
+                        <div className="grid gap-3 lg:grid-cols-[1fr_auto]">
+                          <input
+                            className="admin-input w-full"
+                            value={group.title}
+                            onChange={(event) =>
+                              updateTechStack(groupIndex, { title: event.target.value })
+                            }
+                            placeholder="Frontend"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setForm((current) => ({
+                                ...current,
+                                techStack: current.techStack.filter(
+                                  (_item, index) => index !== groupIndex,
+                                ),
+                              }))
+                            }
+                            className="inline-flex h-[50px] items-center justify-center rounded-full border border-rose-500/30 px-4 text-rose-400"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                        <div className="space-y-2">
+                          {group.tools.map((tool, toolIndex) => (
+                            <div
+                              key={`tool-${groupIndex}-${toolIndex}`}
+                              className="grid gap-2 lg:grid-cols-[1fr_auto]"
+                            >
+                              <input
+                                className="admin-input w-full"
+                                value={tool}
+                                onChange={(event) =>
+                                  updateTechTool(groupIndex, toolIndex, event.target.value)
+                                }
+                                placeholder="Next.js"
+                              />
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  updateTechStack(groupIndex, {
+                                    tools: group.tools.filter(
+                                      (_entry, index) => index !== toolIndex,
+                                    ),
+                                  })
+                                }
+                                className="rounded-full border border-[color:var(--stat-border)] px-4 text-[12px] font-semibold text-[color:var(--muted-foreground)]"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          ))}
+                          <button
+                            type="button"
+                            onClick={() =>
+                              updateTechStack(groupIndex, {
+                                tools: [...group.tools, ""],
+                              })
+                            }
+                            className="text-[12px] font-semibold text-[color:var(--primary)]"
+                          >
+                            Add technology
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </>
