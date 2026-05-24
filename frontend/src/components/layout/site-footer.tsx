@@ -74,7 +74,7 @@ export function SiteFooter() {
                         : undefined
                     }
                     aria-label={item.label}
-                    className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[color:var(--stat-border)] text-[color:var(--muted-foreground)] transition-colors hover:text-[color:var(--primary)]"
+                    className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] text-[color:var(--muted-foreground)] shadow-[0_10px_24px_rgba(15,23,42,0.04)] transition duration-200 ease-out hover:-translate-y-1 hover:border-[color:var(--primary)] hover:bg-[color:var(--primary)] hover:text-white hover:shadow-[0_18px_36px_rgba(108,99,255,0.22)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-[color:var(--primary)] active:translate-y-0 active:scale-95 dark:shadow-none"
                   >
                     <SocialIcon type={item.type} />
                   </a>
@@ -131,9 +131,9 @@ export function SiteFooter() {
               <a
                 href="#top"
                 aria-label="Back to top"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[color:var(--cta-dark)] text-white"
+                className="group inline-flex h-12 w-12 items-center justify-center rounded-full bg-[color:var(--cta-dark)] text-white shadow-[0_16px_34px_rgba(15,23,42,0.16)] transition duration-200 ease-out hover:-translate-y-1 hover:bg-[color:var(--primary)] hover:shadow-[0_22px_42px_rgba(108,99,255,0.24)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-[color:var(--primary)] active:translate-y-0 active:scale-95"
               >
-                <ArrowUp className="h-5 w-5" strokeWidth={2.2} />
+                <ArrowUp className="h-5 w-5 transition-transform duration-200 ease-out group-hover:-translate-y-0.5" strokeWidth={2.2} />
               </a>
             </div>
           </div>
