@@ -79,7 +79,7 @@ export default function TermsOfServicePage() {
             <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
               Terms of Service
             </p>
-            <h1 className="mt-5 max-w-4xl text-[clamp(2.7rem,6vw,5.4rem)] font-semibold leading-[0.98] tracking-[-0.055em]">
+            <h1 className="page-main-heading mt-5 max-w-4xl">
               Clear terms for using our website and services
             </h1>
             <p className="mt-6 max-w-3xl text-[16px] leading-8 text-[color:var(--muted-foreground)]">

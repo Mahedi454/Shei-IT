@@ -54,10 +54,10 @@ export function HeroSection() {
               </div>
 
               <div className="mt-7 space-y-6">
-                <h1 className="text-[3rem] font-semibold leading-[0.95] tracking-[-0.08em] text-[color:var(--foreground)] sm:text-[4.35rem] lg:text-[5.4rem]">
+                <h1 className="page-main-heading">
                   <span className="block">We Build Digital</span>
                   <span className="block">Solutions That</span>
-                  <span className="block bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
+                  <span className="page-main-heading-accent block">
                     Drive Real Growth
                   </span>
                 </h1>

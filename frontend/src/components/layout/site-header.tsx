@@ -44,7 +44,7 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2.5">
           <a
-            href="/contact"
+            href="/contact#contact-form"
             className="hidden items-center rounded-full bg-[color:var(--talk-bg)] px-5 py-1.75 text-[12px] font-semibold text-[color:var(--talk-fg)] shadow-[0_12px_24px_rgba(15,23,42,0.1)] transition-transform hover:-translate-y-0.5 md:inline-flex"
           >
             Let&apos;s Talk

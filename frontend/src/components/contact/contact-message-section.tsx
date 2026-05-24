@@ -92,7 +92,7 @@ export function ContactMessageSection() {
   };
 
   return (
-    <section className="relative pb-10 lg:pb-12">
+    <section id="contact-form" className="relative scroll-mt-28 pb-10 lg:pb-12">
       <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="grid overflow-hidden rounded-[1.6rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_20px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:shadow-none lg:grid-cols-[1.08fr_0.92fr]">
           <div className="p-6 sm:p-8 lg:p-10">

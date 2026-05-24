@@ -544,7 +544,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             <p className="text-[11px] font-black uppercase tracking-[0.42em] text-[color:var(--primary)]">
               {project.eyebrow || "Project Case Study"}
             </p>
-            <h1 className="mt-4 max-w-3xl text-[clamp(2.55rem,5.5vw,4.6rem)] font-semibold leading-[0.98] tracking-[-0.055em] text-[color:var(--foreground)]">
+            <h1 className="page-main-heading mt-4 max-w-3xl">
               {project.title}
             </h1>
             <p className="mt-5 max-w-2xl text-[15px] leading-7 text-[color:var(--muted-foreground)]">

@@ -233,7 +233,7 @@ export function PricingPlansSection() {
                 </div>
 
                 <a
-                  href="/contact"
+                  href="/contact#contact-form"
                   className={`mt-5 inline-flex h-13 w-full items-center justify-center gap-3 rounded-[0.85rem] border text-[14px] font-bold shadow-[0_14px_30px_rgba(15,23,42,0.06)] ${
                     isFeatured
                       ? "border-white/20 bg-white text-[color:var(--primary)]"

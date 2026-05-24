@@ -13,6 +13,8 @@
   --border: rgba(124, 132, 255, 0.1);
   --primary: #6c63ff;
   --primary-soft: #8b7cff;
+  --heading-foreground: #0b1020;
+  --heading-accent: #756bff;
   --blue: #4f8cff;
   --sky: #9fdcff;
   --orange: #ff9f5a;
@@ -82,6 +84,8 @@
   --border: rgba(139, 124, 255, 0.12);
   --primary: #8b7cff;
   --primary-soft: #a78bfa;
+  --heading-foreground: #f8fafc;
+  --heading-accent: #8b7cff;
   --blue: #5daeff;
   --sky: #93c5fd;
   --orange: #ff9f5a;
@@ -160,6 +164,25 @@ button {
 
 ::selection {
   background: rgba(108, 99, 255, 0.18);
+}
+
+.page-main-heading {
+  color: var(--heading-foreground);
+  font-size: clamp(2.25rem, 4.65vw, 4.25rem);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.04;
+}
+
+.page-main-heading-accent {
+  color: var(--heading-accent);
+}
+
+@media (max-width: 640px) {
+  .page-main-heading {
+    font-size: clamp(2.05rem, 9.5vw, 3rem);
+    line-height: 1.08;
+  }
 }
 
 .admin-input {

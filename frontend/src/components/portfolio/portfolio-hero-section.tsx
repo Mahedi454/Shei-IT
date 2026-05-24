@@ -29,9 +29,9 @@ export function PortfolioHeroSection() {
             {portfolioSection.badge}
           </span>
 
-          <h1 className="mt-5 max-w-[13ch] text-[3.25rem] font-semibold leading-[1.02] tracking-[-0.055em] text-[color:var(--foreground)] sm:text-[4.2rem]">
+          <h1 className="page-main-heading mt-5 max-w-[13ch]">
             Digital Products Designed to{" "}
-            <span className="bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
+            <span className="page-main-heading-accent">
               {portfolioSection.highlight}
             </span>
           </h1>
