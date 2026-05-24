@@ -158,21 +158,21 @@ export function ProjectShowcaseCard({
   ctaLabel = "View Details",
 }: ProjectShowcaseCardProps) {
   return (
-    <article className="flex min-h-[500px] flex-col rounded-[2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5 shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
+    <article className="flex min-h-[500px] flex-col rounded-[2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-4 shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none sm:p-5">
       {image ? (
         <ProjectImage image={image} title={title} />
       ) : (
         <ProjectPreview theme={previewTheme ?? "portfolio"} />
       )}
 
-      <div className="mt-6 flex flex-1 flex-col">
-        <div className="flex items-start justify-between gap-4">
-          <h3 className="text-[1.65rem] font-semibold tracking-[-0.05em] text-[color:var(--foreground)]">
+      <div className="mt-5 flex flex-1 flex-col sm:mt-6">
+        <div className="flex flex-col items-start gap-3 sm:flex-row sm:justify-between sm:gap-4">
+          <h3 className="max-w-full text-[1.45rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[1.65rem]">
             {title}
           </h3>
 
           {metric || metricLabel ? (
-            <div className="shrink-0 text-right">
+            <div className="shrink-0 text-left sm:text-right">
               {metric ? (
                 <p className="text-[15px] font-semibold text-[color:var(--primary)]">
                   {metric}

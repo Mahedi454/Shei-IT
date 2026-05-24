@@ -52,17 +52,17 @@ export function FaqsDetails() {
               Find clear answers about Shei IT services, pricing, project timelines, SEO,
               security, support, and what happens before and after launch.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-nowrap gap-2 sm:flex-wrap sm:gap-3">
               <Link
                 href="/contact#contact-form"
-                className="inline-flex items-center gap-2 rounded-full bg-[color:var(--primary)] px-5 py-3 text-[13px] font-bold text-white shadow-[0_16px_36px_rgba(108,99,255,0.18)]"
+                className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-[color:var(--primary)] px-3 py-3 text-[11px] font-bold text-white shadow-[0_16px_36px_rgba(108,99,255,0.18)] sm:px-5 sm:text-[13px]"
               >
                 Ask a Question
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <a
                 href="mailto:sheiitofficial@gmail.com?subject=Question%20for%20Shei%20IT"
-                className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] px-5 py-3 text-[13px] font-bold text-[color:var(--foreground)]"
+                className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] px-3 py-3 text-[11px] font-bold text-[color:var(--foreground)] sm:px-5 sm:text-[13px]"
               >
                 <Mail className="h-4 w-4 text-[color:var(--primary)]" />
                 Email Support
