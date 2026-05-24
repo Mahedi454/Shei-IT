@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ChartNoAxesCombined,
   LayoutDashboard,
   LogOut,
   Mail,
@@ -27,6 +28,11 @@ const adminLinks = [
   { label: "Blogs", href: "/admin/blogs", icon: Newspaper },
   { label: "Projects", href: "/admin/projects", icon: PanelsTopLeft },
   { label: "SEO", href: "/admin/seo", icon: Search },
+  {
+    label: "Analytics Settings",
+    href: "/admin/analytics-settings",
+    icon: ChartNoAxesCombined,
+  },
   { label: "Contacts", href: "/admin/contacts", icon: Mail },
 ] as const;
 

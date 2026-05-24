@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { env } from "../config/env";
 import { sendResponse } from "../utils/sendResponse";
+import analyticsRoutes from "../modules/analytics/analytics.routes";
 import blogRoutes from "../modules/blog/blog.routes";
 import contactRoutes from "../modules/contact/contact.routes";
 import dashboardRoutes from "../modules/dashboard/dashboard.routes";
@@ -28,6 +29,7 @@ router.use("/blogs", blogRoutes);
 router.use("/projects", projectRoutes);
 router.use("/services", serviceRoutes);
 router.use("/seo", seoRoutes);
+router.use("/analytics-settings", analyticsRoutes);
 router.use("/contacts", contactRoutes);
 router.use("/admin", dashboardRoutes);
 

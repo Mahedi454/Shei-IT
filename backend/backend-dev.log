@@ -1,0 +1,31 @@
+
+> backend@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/server.ts
+
+[INFO] 15:43:35 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 6.0.3)
+◇ injected env (13) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+PostgreSQL connected.
+shei-it backend is running on http://localhost:5000 in development mode
+[0mGET /api/health [32m200[0m 6.848 ms - 177[0m
+[0mGET /api/analytics-settings [32m200[0m 806.838 ms - 295[0m
+[0mGET /api/analytics-settings [32m200[0m 269.435 ms - 295[0m
+[0mGET /api/analytics-settings/admin [33m401[0m 3.802 ms - 1200[0m
+[0mGET /api/analytics-settings [32m200[0m 530.392 ms - 295[0m
+[0mGET /api/seo/admin/all [36m304[0m 1490.081 ms - -[0m
+[0mGET /api/seo/admin/all [36m304[0m 265.205 ms - -[0m
+[0mGET /api/analytics-settings/admin [32m200[0m 265.570 ms - 295[0m
+[0mGET /api/analytics-settings/admin [36m304[0m 272.295 ms - -[0m
+[0mGET /api/admin/summary [32m200[0m 5179.269 ms - 538[0m
+[0mGET /api/admin/summary [36m304[0m 805.140 ms - -[0m
+[0mGET /api/contacts/admin/all [36m304[0m 535.293 ms - -[0m
+[0mGET /api/contacts/admin/all [36m304[0m 273.580 ms - -[0m
+[0mDELETE /api/contacts/admin/cmpjj62h50000tfe0o7k0k2gm [32m200[0m 1137.467 ms - 401[0m
+[0mGET /api/contacts/admin/all [32m200[0m 268.572 ms - 71[0m
+[0mGET /api/admin/summary [32m200[0m 805.417 ms - 203[0m
+[0mGET /api/admin/summary [36m304[0m 537.283 ms - -[0m
+[0mGET /api/seo/admin/all [36m304[0m 543.224 ms - -[0m
+[0mGET /api/seo/admin/all [36m304[0m 270.224 ms - -[0m
+[0mPUT /api/seo/admin [32m200[0m 908.846 ms - 439[0m
+[0mPUT /api/seo/admin [33m400[0m 8.224 ms - 666[0m
+[0mGET /api/projects/admin/all [36m304[0m 801.226 ms - -[0m
+[0mGET /api/projects/admin/all [36m304[0m 269.073 ms - -[0m
