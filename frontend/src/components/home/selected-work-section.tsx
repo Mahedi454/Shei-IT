@@ -34,7 +34,7 @@ export function SelectedWorkSection() {
   }, []);
 
   return (
-    <section className="relative py-24">
+    <section className="relative py-12 md:py-24">
       <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
@@ -51,10 +51,10 @@ export function SelectedWorkSection() {
 
           <a
             href="/portfolio"
-            className="inline-flex items-center gap-2 self-start rounded-full border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 py-3 text-[15px] font-semibold text-[color:var(--foreground)] shadow-[0_16px_30px_rgba(15,23,42,0.05)] dark:shadow-none"
+            className="group inline-flex items-center gap-2 self-start rounded-full border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 py-3 text-[15px] font-semibold text-[color:var(--foreground)] shadow-[0_16px_30px_rgba(15,23,42,0.05)] transition duration-200 ease-out hover:-translate-y-0.5 hover:border-[color:var(--primary)] hover:bg-[color:var(--primary)] hover:text-white hover:shadow-[0_18px_36px_rgba(108,99,255,0.2)] dark:shadow-none"
           >
             View All Projects
-            <ArrowRight className="h-4 w-4 text-[color:var(--primary)]" />
+            <ArrowRight className="h-4 w-4 text-[color:var(--primary)] transition duration-200 group-hover:translate-x-0.5 group-hover:text-white" />
           </a>
         </div>
 
