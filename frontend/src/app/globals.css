@@ -162,6 +162,49 @@ button {
     transform 180ms ease;
 }
 
+main a[class*="bg-[color:var(--cta-dark)]"],
+main a[class*="bg-[color:var(--primary)]"],
+main a[class*="bg-white"],
+main a[class*='bg-[linear-gradient'],
+main button[class*="bg-[color:var(--cta-dark)]"],
+main button[class*="bg-[color:var(--primary)]"],
+main button[class*="bg-white"],
+main button[class*='bg-[linear-gradient'] {
+  will-change: transform, box-shadow;
+}
+
+main a[class*="bg-[color:var(--cta-dark)]"]:hover,
+main a[class*="bg-[color:var(--primary)]"]:hover,
+main a[class*="bg-white"]:hover,
+main a[class*='bg-[linear-gradient']:hover,
+main button[class*="bg-[color:var(--cta-dark)]"]:not(:disabled):hover,
+main button[class*="bg-[color:var(--primary)]"]:not(:disabled):hover,
+main button[class*="bg-white"]:not(:disabled):hover,
+main button[class*='bg-[linear-gradient']:not(:disabled):hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 22px 44px rgba(108, 99, 255, 0.2),
+    0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+main a[class*="bg-[color:var(--button-secondary)]"]:hover,
+main button[class*="bg-[color:var(--button-secondary)]"]:not(:disabled):hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--primary) 38%, var(--stat-border));
+  box-shadow: 0 18px 34px rgba(15, 23, 42, 0.08);
+}
+
+main a[class*="rounded"]:active,
+main button[class*="rounded"]:not(:disabled):active {
+  transform: translateY(0) scale(0.98);
+}
+
+main a[class*="rounded"]:focus-visible,
+main button[class*="rounded"]:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--primary) 34%, transparent);
+  outline-offset: 3px;
+}
+
 ::selection {
   background: rgba(108, 99, 255, 0.18);
 }
