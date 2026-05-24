@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { apiRequest } from "@/lib/api";
+import { PublicErrorState } from "@/components/public/public-error-state";
 
 type Blog = {
   id: string;
@@ -20,26 +21,37 @@ type Blog = {
 export function BlogList() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
+
+  const loadBlogs = async () => {
+    setLoading(true);
+    setError(false);
+
+    try {
+      const data = await apiRequest<Blog[]>("/blogs");
+      setBlogs(data);
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadBlogs = async () => {
-      try {
-        const data = await apiRequest<Blog[]>("/blogs");
-        setBlogs(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Blogs could not be loaded.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     loadBlogs();
   }, []);
 
   return (
     <>
-      {error ? <p className="mb-5 text-[14px] text-rose-400">{error}</p> : null}
+      {error ? (
+        <div className="mb-5">
+          <PublicErrorState
+            title="Blog posts are temporarily unavailable"
+            description="We could not load the latest articles right now. Please refresh or try again in a moment."
+            onRetry={loadBlogs}
+          />
+        </div>
+      ) : null}
       {loading ? (
         <p className="text-[14px] text-[color:var(--muted-foreground)]">Loading blogs...</p>
       ) : blogs.length ? (

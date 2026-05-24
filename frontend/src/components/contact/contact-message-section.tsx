@@ -83,8 +83,8 @@ export function ContactMessageSection() {
       setMessage("Your message has been sent. We will get back to you soon.");
       setMessageTone("success");
       setForm(initialForm);
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Failed to send message.");
+    } catch {
+      setMessage("We could not send your message right now. Please try again in a moment.");
       setMessageTone("error");
     } finally {
       setLoading(false);

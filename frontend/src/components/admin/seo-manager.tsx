@@ -131,10 +131,10 @@ export function SeoManager() {
             data.map((item) => [`${item.seoableType}:${item.seoableId}`, item]),
           ),
         );
-      } catch (error) {
+      } catch {
         showToast({
-          title: "SEO settings could not be loaded",
-          description: error instanceof Error ? error.message : "Please try again.",
+          title: "SEO settings unavailable",
+          description: "We could not load the SEO workspace right now. Refresh or try again in a moment.",
           tone: "error",
         });
       }
@@ -178,7 +178,7 @@ export function SeoManager() {
     } catch (error) {
       showToast({
         title: "SEO save failed",
-        description: error instanceof Error ? error.message : "Please try again.",
+        description: "We could not save these SEO changes right now. Please review them and try again.",
         tone: "error",
       });
     } finally {
@@ -271,26 +271,27 @@ export function SeoManager() {
                 Route: {activeItem.path}
               </p>
             </div>
-            <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={resetSeo}
-                disabled={saving}
-                className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-5 py-3 text-[13px] font-bold text-[color:var(--foreground)] disabled:opacity-60"
-              >
-                <RefreshCcw className="h-4 w-4" />
-                {saving ? "Resetting..." : "Reset"}
-              </button>
-              <button
-                type="button"
-                onClick={() => setConfirmSaveOpen(true)}
-                disabled={saving}
-                className="inline-flex items-center gap-2 rounded-full bg-[color:var(--primary)] px-5 py-3 text-[13px] font-bold text-white disabled:opacity-60"
-              >
-                <Save className="h-4 w-4" />
-                {saving ? "Saving..." : "Save SEO"}
-              </button>
-            </div>
+<div className="flex flex-wrap gap-3">
+  <button
+    type="button"
+    onClick={resetSeo}
+    disabled={saving}
+    className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-5 py-3 text-[13px] font-bold text-[color:var(--foreground)] disabled:opacity-60"
+  >
+    <RefreshCcw className="h-4 w-4" />
+    {saving ? "Resetting..." : "Reset"}
+  </button>
+
+  <button
+    type="button"
+    onClick={() => setConfirmSaveOpen(true)}
+    disabled={saving}
+    className="inline-flex items-center gap-2 rounded-full bg-[color:var(--primary)] px-5 py-3 text-[13px] font-bold text-white disabled:opacity-60"
+  >
+    <Save className="h-4 w-4" />
+    {saving ? "Saving..." : "Save SEO"}
+  </button>
+</div>
           </div>
 
           <div className="grid gap-4 lg:grid-cols-2">

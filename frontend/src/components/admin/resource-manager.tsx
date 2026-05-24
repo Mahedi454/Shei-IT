@@ -14,6 +14,7 @@ import {
 import { FormEvent, useEffect, useMemo, useState } from "react";
 
 import { AdminModal } from "@/components/admin/admin-modal";
+import { ActionConfirmModal } from "@/components/admin/action-confirm-modal";
 import { apiRequest } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
@@ -590,6 +591,7 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [confirmSaveOpen, setConfirmSaveOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<ResourceItem | null>(null);
 
   const labelOptions = isBlog ? blogTagOptions : projectCategoryOptions;
@@ -609,9 +611,8 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       setItems(data);
     } catch (error) {
       showToast({
-        title: `${title} could not be loaded`,
-        description:
-          error instanceof Error ? error.message : "Something went wrong while loading content.",
+        title: `${title} unavailable`,
+        description: `We could not load ${title.toLowerCase()} right now. Refresh or try again in a moment.`,
         tone: "error",
       });
     } finally {
@@ -685,6 +686,7 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
 
   const closeModal = () => {
     setOpenModal(false);
+    setConfirmSaveOpen(false);
     resetForm();
   };
 
@@ -804,7 +806,7 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
 
       if (validationError) {
         showToast({
-          title: `${title.slice(0, -1)} save failed`,
+          title: `${title.slice(0, -1)} needs attention`,
           description: validationError,
           tone: "error",
         });
@@ -812,6 +814,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       }
     }
 
+    setConfirmSaveOpen(true);
+  };
+
+  const performSubmit = async () => {
     setSaving(true);
 
     try {
@@ -880,17 +886,17 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       showToast({
         title: editing ? `${title.slice(0, -1)} updated` : `${title.slice(0, -1)} created`,
         description: editing
-          ? "Your content changes were saved successfully."
-          : "The new item has been added successfully.",
+          ? "Your changes are now saved successfully."
+          : "The new item has been created successfully.",
         tone: "success",
       });
 
       closeModal();
       await loadItems();
-    } catch (error) {
+    } catch {
       showToast({
-        title: `${title.slice(0, -1)} save failed`,
-        description: error instanceof Error ? error.message : "Please try again.",
+        title: `${title.slice(0, -1)} not saved`,
+        description: "We could not save these changes right now. Please review the form and try again.",
         tone: "error",
       });
     } finally {
@@ -918,10 +924,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
 
       setDeleteTarget(null);
       await loadItems();
-    } catch (error) {
+    } catch {
       showToast({
         title: "Delete failed",
-        description: error instanceof Error ? error.message : "Please try again.",
+        description: "We could not remove this item right now. Please try again in a moment.",
         tone: "error",
       });
     }
@@ -1973,11 +1979,25 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
               onClick={handleDelete}
               className="rounded-full bg-rose-500 px-5 py-3 text-[14px] font-semibold text-white"
             >
-              Delete now
+              Yes, delete it
             </button>
           </div>
         </div>
       </AdminModal>
+
+      <ActionConfirmModal
+        open={confirmSaveOpen}
+        onClose={() => setConfirmSaveOpen(false)}
+        onConfirm={performSubmit}
+        isLoading={saving}
+        title={editing ? `Review ${title.slice(0, -1)} update` : `Review new ${title.slice(0, -1).toLowerCase()}`}
+        description={
+          editing
+            ? "Please confirm that you want to save these changes before we update this item."
+            : "Please confirm that you want to create this item before it is added to the system."
+        }
+        confirmLabel={editing ? `Save ${title.slice(0, -1)} changes` : `Create ${title.slice(0, -1)}`}
+      />
     </div>
   );
 }

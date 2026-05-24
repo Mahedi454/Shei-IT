@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { apiRequest } from "@/lib/api";
 import { ProjectCard } from "@/components/portfolio/project-card";
+import { PublicErrorState } from "@/components/public/public-error-state";
 
 type Project = {
   id: string;
@@ -18,27 +19,36 @@ type Project = {
 export function ProjectsGrid() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
+
+  const loadProjects = async () => {
+    setLoading(true);
+    setError(false);
+
+    try {
+      const data = await apiRequest<Project[]>("/projects");
+      setProjects(data);
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadProjects = async () => {
-      try {
-        const data = await apiRequest<Project[]>("/projects");
-        setProjects(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Projects could not be loaded.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     loadProjects();
   }, []);
 
   return (
     <>
       {error ? (
-        <p className="mb-5 text-[14px] text-rose-400">{error}</p>
+        <div className="mb-5">
+          <PublicErrorState
+            title="Projects are temporarily unavailable"
+            description="We could not load the portfolio right now. Please refresh or try again in a moment."
+            onRetry={loadProjects}
+          />
+        </div>
       ) : null}
 
       {loading ? (
