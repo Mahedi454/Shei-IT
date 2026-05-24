@@ -11,6 +11,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 
 import { AdminModal } from "@/components/admin/admin-modal";
+import { ActionConfirmModal } from "@/components/admin/action-confirm-modal";
 import { apiRequest } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
@@ -40,6 +41,10 @@ export function ContactsManager() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<"all" | Contact["status"]>("all");
   const [deleteTarget, setDeleteTarget] = useState<Contact | null>(null);
+  const [statusTarget, setStatusTarget] = useState<{
+    contact: Contact;
+    status: Contact["status"];
+  } | null>(null);
 
   const loadContacts = async () => {
     setLoading(true);
@@ -49,11 +54,10 @@ export function ContactsManager() {
       const data = await apiRequest<Contact[]>("/contacts/admin/all", { token });
       setContacts(data);
       setSelectedId((current) => current ?? data[0]?.id ?? null);
-    } catch (error) {
+    } catch {
       showToast({
-        title: "Contacts could not be loaded",
-        description:
-          error instanceof Error ? error.message : "Please try again in a moment.",
+        title: "Contacts unavailable",
+        description: "We could not load the inbox right now. Refresh or try again in a moment.",
         tone: "error",
       });
     } finally {
@@ -99,15 +103,16 @@ export function ContactsManager() {
 
       showToast({
         title: "Contact updated",
-        description: `The contact status is now marked as ${status}.`,
+        description: `The contact is now marked as ${status}.`,
         tone: "success",
       });
 
+      setStatusTarget(null);
       await loadContacts();
-    } catch (error) {
+    } catch {
       showToast({
         title: "Status update failed",
-        description: error instanceof Error ? error.message : "Please try again.",
+        description: "We could not update this status right now. Please try again in a moment.",
         tone: "error",
       });
     }
@@ -133,10 +138,10 @@ export function ContactsManager() {
 
       setDeleteTarget(null);
       await loadContacts();
-    } catch (error) {
+    } catch {
       showToast({
         title: "Delete failed",
-        description: error instanceof Error ? error.message : "Please try again.",
+        description: "We could not remove this inquiry right now. Please try again in a moment.",
         tone: "error",
       });
     }
@@ -311,7 +316,7 @@ export function ContactsManager() {
                     <button
                       key={status}
                       type="button"
-                      onClick={() => updateStatus(selectedContact.id, status)}
+                      onClick={() => setStatusTarget({ contact: selectedContact, status })}
                       className={cn(
                         "rounded-full border px-4 py-2 text-[13px] font-semibold capitalize transition",
                         selectedContact.status === status
@@ -361,11 +366,26 @@ export function ContactsManager() {
               onClick={deleteContact}
               className="rounded-full bg-rose-500 px-5 py-3 text-[14px] font-semibold text-white"
             >
-              Delete
+              Yes, delete it
             </button>
           </div>
         </div>
       </AdminModal>
+
+      <ActionConfirmModal
+        open={Boolean(statusTarget)}
+        onClose={() => setStatusTarget(null)}
+        onConfirm={() =>
+          statusTarget ? updateStatus(statusTarget.contact.id, statusTarget.status) : undefined
+        }
+        title="Confirm status update"
+        description={
+          statusTarget
+            ? `Please confirm that you want to mark ${statusTarget.contact.name} as ${statusTarget.status}.`
+            : "Please confirm this status update."
+        }
+        confirmLabel={statusTarget ? `Mark as ${statusTarget.status}` : "Update status"}
+      />
     </div>
   );
 }

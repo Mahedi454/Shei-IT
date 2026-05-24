@@ -7,6 +7,7 @@ import { apiRequest } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 import { useAdminAuth } from "./admin-auth-provider";
+import { ActionConfirmModal } from "./action-confirm-modal";
 import { useAdminFeedback } from "./admin-feedback-provider";
 
 type SeoableType = "page" | "service";
@@ -111,6 +112,7 @@ export function SeoManager() {
   const [settings, setSettings] = useState<Record<string, SeoSetting>>({});
   const [activeKey, setActiveKey] = useState(`${seoItems[0].type}:${seoItems[0].id}`);
   const [saving, setSaving] = useState(false);
+  const [confirmSaveOpen, setConfirmSaveOpen] = useState(false);
 
   const activeItem = useMemo(
     () => seoItems.find((item) => `${item.type}:${item.id}` === activeKey) ?? seoItems[0],
@@ -129,10 +131,10 @@ export function SeoManager() {
             data.map((item) => [`${item.seoableType}:${item.seoableId}`, item]),
           ),
         );
-      } catch (error) {
+      } catch {
         showToast({
-          title: "SEO settings could not be loaded",
-          description: error instanceof Error ? error.message : "Please try again.",
+          title: "SEO settings unavailable",
+          description: "We could not load the SEO workspace right now. Refresh or try again in a moment.",
           tone: "error",
         });
       }
@@ -172,10 +174,11 @@ export function SeoManager() {
         description: `${activeItem.label} SEO has been updated.`,
         tone: "success",
       });
-    } catch (error) {
+      setConfirmSaveOpen(false);
+    } catch {
       showToast({
         title: "SEO save failed",
-        description: error instanceof Error ? error.message : "Please try again.",
+        description: "We could not save these SEO changes right now. Please review them and try again.",
         tone: "error",
       });
     } finally {
@@ -234,7 +237,7 @@ export function SeoManager() {
             </div>
             <button
               type="button"
-              onClick={saveSeo}
+              onClick={() => setConfirmSaveOpen(true)}
               disabled={saving}
               className="inline-flex items-center gap-2 rounded-full bg-[color:var(--primary)] px-5 py-3 text-[13px] font-bold text-white disabled:opacity-60"
             >
@@ -389,6 +392,16 @@ export function SeoManager() {
           </div>
         </section>
       </div>
+
+      <ActionConfirmModal
+        open={confirmSaveOpen}
+        onClose={() => setConfirmSaveOpen(false)}
+        onConfirm={saveSeo}
+        isLoading={saving}
+        title="Review SEO changes"
+        description={`Please confirm that you want to save the SEO settings for ${activeItem.label}.`}
+        confirmLabel="Save SEO changes"
+      />
     </div>
   );
 }

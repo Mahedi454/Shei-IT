@@ -23,10 +23,21 @@ export const apiRequest = async <T>(path: string, options: ApiOptions = {}) => {
     },
   });
 
-  const payload = (await response.json()) as ApiResponse<T>;
+  const contentType = response.headers.get("content-type") ?? "";
+  const payload = contentType.includes("application/json")
+    ? ((await response.json()) as ApiResponse<T>)
+    : null;
 
   if (!response.ok) {
-    throw new Error(payload.message || "Request failed.");
+    if (response.status >= 500) {
+      throw new Error("Something went wrong on our side. Please try again later.");
+    }
+
+    throw new Error(payload?.message || "Request failed.");
+  }
+
+  if (!payload) {
+    throw new Error("Unexpected server response.");
   }
 
   return payload.data;

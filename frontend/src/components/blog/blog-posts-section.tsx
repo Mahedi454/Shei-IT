@@ -13,6 +13,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 
 import { apiRequest } from "@/lib/api";
+import { PublicErrorState } from "@/components/public/public-error-state";
 
 type Blog = {
   id: string;
@@ -72,20 +73,23 @@ export function BlogPostsSection() {
   const searchParams = useSearchParams();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
+
+  const loadBlogs = async () => {
+    setLoading(true);
+    setError(false);
+
+    try {
+      const data = await apiRequest<Blog[]>("/blogs");
+      setBlogs(data);
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadBlogs = async () => {
-      try {
-        const data = await apiRequest<Blog[]>("/blogs");
-        setBlogs(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Blogs could not be loaded.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     loadBlogs();
   }, []);
 
@@ -150,9 +154,13 @@ export function BlogPostsSection() {
           </div>
 
           {error ? (
-            <p className="mt-5 rounded-xl border border-rose-500/20 bg-rose-500/10 p-4 text-[14px] text-rose-400">
-              {error}
-            </p>
+            <div className="mt-5">
+              <PublicErrorState
+                title="We could not load the blog feed"
+                description="The articles are still safe, but this section is temporarily unavailable. Please try again in a moment."
+                onRetry={loadBlogs}
+              />
+            </div>
           ) : null}
 
           {loading ? (

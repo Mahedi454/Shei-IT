@@ -66,11 +66,10 @@ export function DashboardOverview() {
         const token = await getToken();
         const data = await apiRequest<DashboardSummary>("/admin/summary", { token });
         setSummary(data);
-      } catch (error) {
+      } catch {
         showToast({
           title: "Dashboard load failed",
-          description:
-            error instanceof Error ? error.message : "Could not load admin summary.",
+          description: "We could not load the latest admin summary right now. Refresh or try again in a moment.",
           tone: "error",
         });
       } finally {

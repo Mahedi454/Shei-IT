@@ -18,11 +18,13 @@ export function ContactForm() {
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [messageTone, setMessageTone] = useState<"success" | "error" | "">("");
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     setMessage("");
+    setMessageTone("");
 
     try {
       await apiRequest("/contacts", {
@@ -31,9 +33,11 @@ export function ContactForm() {
       });
 
       setMessage("Your message has been sent. We will get back to you soon.");
+      setMessageTone("success");
       setForm(initialForm);
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Failed to send message.");
+    } catch {
+      setMessage("We could not send your message right now. Please try again in a moment.");
+      setMessageTone("error");
     } finally {
       setLoading(false);
     }
@@ -56,7 +60,15 @@ export function ContactForm() {
         {loading ? "Sending..." : "Send Message"}
       </button>
       {message ? (
-        <p className="text-[14px] text-[color:var(--muted-foreground)] md:col-span-2">{message}</p>
+        <p
+          className={`rounded-[0.9rem] border px-4 py-3 text-[14px] md:col-span-2 ${
+            messageTone === "success"
+              ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
+              : "border-rose-500/20 bg-rose-500/10 text-rose-400"
+          }`}
+        >
+          {message}
+        </p>
       ) : null}
     </form>
   );

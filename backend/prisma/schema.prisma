@@ -88,6 +88,42 @@ model Project {
   updatedAt           DateTime      @updatedAt
 }
 
+model Service {
+  id                    String        @id @default(cuid())
+  title                 String
+  slug                  String        @unique
+  cardDescription       String
+  heroSummary           String
+  heroDescription       String
+  heroImageUrl          String?
+  icon                  String
+  accent                String
+  offersTitle           String
+  offersDescription     String
+  reasonsTitle          String
+  reasonsDescription    String
+  processTitle          String
+  processDescription    String
+  technologyTitle       String
+  technologyDescription String
+  pricingTitle          String
+  pricingDescription    String
+  faqTitle              String
+  ctaTitle              String
+  ctaDescription        String
+  stats                 Json
+  offers                Json
+  reasons               Json
+  processSteps          Json
+  technologies          Json
+  pricingPackages       Json
+  faqs                  Json
+  sortOrder             Int           @default(0)
+  status                PublishStatus @default(draft)
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+}
+
 model Contact {
   id        String        @id @default(cuid())
   name      String
