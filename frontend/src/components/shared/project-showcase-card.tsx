@@ -158,7 +158,7 @@ export function ProjectShowcaseCard({
   ctaLabel = "View Details",
 }: ProjectShowcaseCardProps) {
   return (
-    <article className="flex min-h-[520px] flex-col rounded-[1.5rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5 shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl transition duration-200 ease-out hover:-translate-y-1 hover:border-[color:var(--primary)] hover:shadow-[0_24px_54px_rgba(108,99,255,0.12)] dark:shadow-none">
+    <article className="flex min-h-[430px] flex-col rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-4 shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl transition duration-200 ease-out hover:-translate-y-1 hover:border-[color:var(--primary)] hover:shadow-[0_24px_54px_rgba(108,99,255,0.12)] dark:shadow-none sm:min-h-[500px] sm:p-5 xl:min-h-[520px] xl:rounded-[1.5rem]">
       {image ? (
         <ProjectImage image={image} title={title} />
       ) : (
@@ -180,7 +180,7 @@ export function ProjectShowcaseCard({
         ) : null}
 
         {metric || metricLabel ? (
-          <div className="mt-2 flex w-full items-center justify-between gap-3 rounded-[0.9rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-4 py-3 shadow-[0_8px_18px_rgba(15,23,42,0.04)] dark:shadow-none">
+          <div className="mt-2 flex w-full items-center justify-between gap-3 rounded-[0.9rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-3 py-2.5 shadow-[0_8px_18px_rgba(15,23,42,0.04)] dark:shadow-none sm:px-4 sm:py-3">
             {metricLabel ? (
               <span className="min-w-0 text-[12px] font-semibold leading-5 text-[color:var(--muted-foreground)]">
                 {metricLabel}
@@ -194,7 +194,7 @@ export function ProjectShowcaseCard({
           </div>
         ) : null}
 
-        <h3 className="mt-3 text-[1.45rem] font-semibold leading-tight text-[color:var(--foreground)] xl:text-[1.55rem]">
+        <h3 className="mt-3 text-[1.3rem] font-semibold leading-tight text-[color:var(--foreground)] sm:text-[1.45rem] xl:text-[1.55rem]">
           {title}
         </h3>
 

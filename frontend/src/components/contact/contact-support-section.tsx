@@ -72,14 +72,14 @@ export function ContactSupportSection() {
   const [openFaq, setOpenFaq] = useState<string | null>(null);
 
   return (
-    <section className="relative pb-24 lg:pb-28">
+    <section className="relative pb-14 md:pb-20 lg:pb-28">
       <div className="mx-auto w-11/12 max-w-[1440px]">
-        <div className="rounded-[1.4rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 py-7 shadow-[0_18px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none lg:px-9">
+        <div className="rounded-[1.2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-5 py-6 shadow-[0_18px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none md:rounded-[1.4rem] lg:px-9">
           <h2 className="text-center text-[1.45rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]">
             Why Work With Shei-it?
           </h2>
 
-          <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4 xl:gap-5">
             {benefits.map((benefit) => {
               const Icon = benefit.icon;
 
@@ -104,7 +104,7 @@ export function ContactSupportSection() {
           </div>
         </div>
 
-        <div className="mt-7 grid gap-7 lg:grid-cols-[0.92fr_1.08fr]">
+        <div className="mt-7 grid gap-7 xl:grid-cols-[0.92fr_1.08fr]">
           <div className="rounded-[1.35rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-6 shadow-[0_18px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
             <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
               FAQ
@@ -163,13 +163,13 @@ export function ContactSupportSection() {
             </div>
           </div>
 
-          <div className="relative min-h-[300px] overflow-hidden rounded-[1.35rem] bg-[linear-gradient(100deg,#6c63ff_0%,#735dff_42%,#4f8cff_100%)] p-8 text-white shadow-[0_28px_80px_rgba(108,99,255,0.24)] sm:p-10">
+          <div className="relative min-h-[260px] overflow-hidden rounded-[1.25rem] bg-[linear-gradient(100deg,#6c63ff_0%,#735dff_42%,#4f8cff_100%)] p-6 text-white shadow-[0_28px_80px_rgba(108,99,255,0.24)] sm:p-10 md:rounded-[1.35rem]">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_28%,rgba(255,255,255,0.26),transparent_25%),radial-gradient(circle_at_18%_82%,rgba(255,255,255,0.12),transparent_28%)]" />
             <div className="pointer-events-none absolute right-[14%] top-[20%] h-4 w-4 rounded-full bg-[#bfe7ff]/85 blur-[1px]" />
             <div className="pointer-events-none absolute right-[7%] bottom-[34%] h-5 w-5 rounded-full bg-[#d3ccff]/90" />
             <div className="pointer-events-none absolute right-[40%] bottom-[26%] h-6 w-6 rounded-full bg-[#aee7ff]/85 blur-[1px]" />
 
-            <div className="relative z-10 max-w-[25rem] pt-8 sm:max-w-[20rem] xl:max-w-[24rem]">
+            <div className="relative z-10 max-w-[25rem] pt-2 sm:max-w-[20rem] sm:pt-8 xl:max-w-[24rem]">
               <h2 className="text-[2rem] font-semibold tracking-[-0.05em] sm:text-[2.35rem]">
                 Ready to Start Your Project?
               </h2>
@@ -186,7 +186,7 @@ export function ContactSupportSection() {
               </a>
             </div>
 
-            <div className="pointer-events-none absolute right-0 top-1/2 hidden w-[52%] max-w-[430px] -translate-y-1/2 sm:block xl:w-[56%]">
+            <div className="pointer-events-none absolute right-0 top-1/2 hidden w-[52%] max-w-[430px] -translate-y-1/2 xl:block xl:w-[56%]">
               <Image
                 src={ctaImage}
                 alt="Launch CTA illustration"

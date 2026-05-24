@@ -22,7 +22,7 @@ export function PortfolioHeroSection() {
 
   return (
     <section className="relative pb-16 pt-8 lg:pb-20">
-      <div className="mx-auto grid w-11/12 max-w-[1440px] items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+      <div className="mx-auto grid w-11/12 max-w-[1440px] items-center gap-10 md:grid-cols-[0.95fr_1.05fr]">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-3 py-1.5 text-[12px] font-medium text-[color:var(--muted-foreground)]">
             <BadgeCheck className="h-3.5 w-3.5 text-[color:var(--primary)]" />
@@ -41,7 +41,7 @@ export function PortfolioHeroSection() {
           </p>
         </div>
 
-        <div className="relative">
+        <div className="relative hidden md:block">
           <Image
             src={heroAsset}
             alt="Portfolio showcase hero"

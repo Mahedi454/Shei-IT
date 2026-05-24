@@ -129,6 +129,7 @@
 html,
 body {
   min-height: 100%;
+  overflow-x: clip;
 }
 
 html {
@@ -192,6 +193,16 @@ main button[class*="bg-[color:var(--button-secondary)]"]:not(:disabled):hover {
   transform: translateY(-2px);
   border-color: color-mix(in srgb, var(--primary) 38%, var(--stat-border));
   box-shadow: 0 18px 34px rgba(15, 23, 42, 0.08);
+}
+
+img,
+video,
+canvas {
+  max-width: 100%;
+}
+
+svg {
+  flex-shrink: 0;
 }
 
 main a.inline-flex[class*="rounded"][class*="bg-[color:var(--button-secondary)]"]:hover,

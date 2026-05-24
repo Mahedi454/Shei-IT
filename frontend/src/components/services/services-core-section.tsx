@@ -50,7 +50,7 @@ export function ServicesCoreSection() {
           <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
             What We Can Build For You
           </p>
-          <h2 className="mt-3 text-[2.35rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[3rem]">
+          <h2 className="mt-3 text-[2rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.5rem] xl:text-[3rem]">
             Our Core Services
           </h2>
           <p className="mt-3 text-[15px] leading-8 text-[color:var(--muted-foreground)]">
@@ -58,14 +58,14 @@ export function ServicesCoreSection() {
           </p>
         </div>
 
-        <div className="mt-9 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:mt-9 xl:grid-cols-4 xl:gap-5">
           {servicesSection.items.map((item) => {
             const Icon = iconMap[item.icon];
 
             return (
               <article
                 key={item.title}
-                className="flex min-h-[198px] flex-col rounded-[1.45rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5 shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none"
+                className="flex min-h-[178px] flex-col rounded-[1.2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5 shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none xl:min-h-[198px] xl:rounded-[1.45rem]"
               >
                 <div className="flex items-start gap-5">
                   <span

@@ -43,10 +43,10 @@ export function HeroSection() {
     : homepageBannerLight;
 
   return (
-    <section className="relative pb-18 pt-2">
+    <section className="relative pb-12 pt-2 md:pb-16 xl:pb-18">
       <div className="w-full">
         <div className="relative overflow-hidden pb-7 pt-8 lg:pb-10 lg:pt-10">
-          <div className="relative mx-auto grid w-11/12 max-w-[1440px] items-center gap-10 lg:grid-cols-[minmax(0,0.98fr)_minmax(620px,1.02fr)]">
+          <div className="relative mx-auto grid w-11/12 max-w-[1440px] items-center gap-8 md:grid-cols-[minmax(0,0.92fr)_minmax(0,0.88fr)] xl:grid-cols-[minmax(0,0.98fr)_minmax(620px,1.02fr)] xl:gap-10">
             <div className="max-w-[38rem] pt-2 lg:pt-6">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-[color:var(--hero-pill)] px-4 py-2 text-[12px] font-medium text-[color:var(--muted-foreground)] shadow-[0_8px_24px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:border-white/8">
                 <Sparkles className="h-3.5 w-3.5 text-[color:var(--orange)]" />
@@ -109,7 +109,7 @@ export function HeroSection() {
               </div>
             </div>
 
-            <div className="relative flex min-h-[560px] items-center justify-center lg:min-h-[700px] lg:justify-end">
+            <div className="relative hidden min-h-[360px] items-center justify-center md:flex xl:min-h-[700px] xl:justify-end">
               <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--purple-glow)] blur-[96px]" />
               <div className="relative w-full max-w-[760px]">
                 <Image
@@ -124,14 +124,14 @@ export function HeroSection() {
             </div>
           </div>
 
-          <div className="relative mx-auto mt-8 grid w-11/12 max-w-[1440px] gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div className="relative mx-auto mt-6 grid w-11/12 max-w-[1440px] gap-4 md:mt-8 md:grid-cols-2 xl:grid-cols-4">
             {siteConfig.stats.map((stat) => {
               const Icon = statIcons[stat.icon];
 
               return (
                 <div
                   key={stat.label}
-                  className="rounded-[1.9rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-6 py-6 shadow-[0_18px_40px_rgba(15,23,42,0.05)] dark:shadow-none"
+                  className="rounded-[1.4rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-5 py-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)] dark:shadow-none md:rounded-[1.9rem] md:px-6 md:py-6"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1.5">

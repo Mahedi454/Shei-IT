@@ -298,7 +298,7 @@ function MaintenanceSupportBanner() {
     mounted && theme === "dark" ? maintainceBannerDark : maintainceBannerLight;
 
   return (
-    <div className="relative flex items-center justify-center lg:justify-end">
+    <div className="relative hidden items-center justify-center md:flex md:justify-end">
       <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--purple-glow)] blur-[120px]" />
       <div className="relative w-full max-w-[760px]">
         <Image
@@ -340,7 +340,7 @@ export default function MaintenanceSupportPage() {
             </span>
           </nav>
 
-          <div className="mt-10 grid items-center gap-12 lg:grid-cols-[0.78fr_1.22fr]">
+          <div className="mt-10 grid items-center gap-10 md:grid-cols-[0.78fr_1.22fr] xl:gap-12">
             <div className="max-w-[39rem]">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-[color:var(--hero-pill)] px-4 py-2 text-[12px] font-semibold text-[color:var(--primary)] shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/10">
                 <Sparkles className="h-3.5 w-3.5 fill-[color:var(--primary)]" />
@@ -782,7 +782,7 @@ export default function MaintenanceSupportPage() {
               </a>
             </div>
 
-            <div className="pointer-events-none absolute right-0 top-1/2 hidden w-[52%] max-w-[430px] -translate-y-1/2 sm:block xl:w-[56%]">
+            <div className="pointer-events-none absolute right-0 top-1/2 hidden w-[52%] max-w-[430px] -translate-y-1/2 xl:block xl:w-[56%]">
               <Image
                 src={ctaImage}
                 alt="Launch CTA illustration"

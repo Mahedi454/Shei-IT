@@ -87,7 +87,7 @@ export function BlogHero() {
   return (
     <section className="relative overflow-hidden pb-14 pt-14 lg:pb-16 lg:pt-16">
       <div className="relative mx-auto w-11/12 max-w-[1440px]">
-        <div className="grid items-center gap-10 lg:grid-cols-[0.86fr_1.14fr]">
+        <div className="grid items-center gap-10 md:grid-cols-[0.86fr_1.14fr]">
           <div className="max-w-[45rem]">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-[color:var(--hero-pill)] px-4 py-2 text-[12px] font-semibold text-[color:var(--primary)] shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/10">
               <Sparkles className="h-3.5 w-3.5" />
@@ -134,7 +134,7 @@ export function BlogHero() {
             </form>
           </div>
 
-          <div className="relative flex items-center justify-center lg:justify-end">
+          <div className="relative hidden items-center justify-center md:flex md:justify-end">
             <div className="absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--purple-glow)] blur-[120px]" />
             <div className="relative w-full max-w-[830px]">
               <Image

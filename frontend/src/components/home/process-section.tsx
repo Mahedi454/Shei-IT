@@ -63,14 +63,14 @@ export function ProcessSection() {
                   </div>
                 ) : null}
 
-                <article className="relative flex h-full flex-col rounded-[2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-7 pb-8 pt-14 text-center shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
+                <article className="relative flex h-full flex-col rounded-[1.4rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-5 pb-7 pt-12 text-center shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none md:rounded-[2rem] md:px-7 md:pb-8 md:pt-14">
                   <span
                     className={`absolute left-1/2 top-0 inline-flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 shadow-[0_18px_40px_rgba(15,23,42,0.08)] ${iconShellMap[step.accent]}`}
                   >
                     <Icon className="h-8 w-8" strokeWidth={2.1} />
                   </span>
 
-                  <h3 className="text-[2rem] font-semibold tracking-[-0.05em] text-[color:var(--foreground)]">
+                  <h3 className="text-[1.55rem] font-semibold tracking-[-0.05em] text-[color:var(--foreground)] md:text-[2rem]">
                     {step.title}
                   </h3>
                   <p className="mt-4 text-[15px] leading-8 text-[color:var(--muted-foreground)]">

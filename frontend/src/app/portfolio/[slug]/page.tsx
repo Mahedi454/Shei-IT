@@ -464,7 +464,7 @@ function responsiveGridClass(itemCount: number) {
 
 function HeroMockup({ project, summary }: { project: Project; summary: string }) {
   return (
-    <div className="rounded-[1.35rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-4 shadow-[var(--shadow-soft)]">
+    <div className="hidden rounded-[1.35rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-4 shadow-[var(--shadow-soft)] md:block">
       <div className="overflow-hidden rounded-[1rem] bg-[color:var(--card-solid)]">
         <div className="relative aspect-[16/9]">
           <img
@@ -539,7 +539,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           </Link>
         </div>
 
-        <section className="grid gap-8 pb-10 lg:grid-cols-[0.92fr_1fr] lg:items-center">
+        <section className="grid gap-8 pb-10 md:grid-cols-[0.92fr_1fr] md:items-center">
           <div>
             <p className="text-[11px] font-black uppercase tracking-[0.42em] text-[color:var(--primary)]">
               {project.eyebrow || "Project Case Study"}

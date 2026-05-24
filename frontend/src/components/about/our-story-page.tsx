@@ -95,7 +95,7 @@ export function OurStoryPage() {
       <SiteHeader />
 
       <section className="relative overflow-hidden pb-16 pt-20 lg:pb-20 lg:pt-24">
-        <div className="mx-auto grid w-11/12 max-w-[1440px] items-center gap-12 lg:grid-cols-[0.92fr_1.08fr]">
+        <div className="mx-auto grid w-11/12 max-w-[1440px] items-center gap-10 md:grid-cols-[0.92fr_1.08fr] xl:gap-12">
           <div className="max-w-[40rem]">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-[color:var(--hero-pill)] px-4 py-2 text-[12px] font-medium uppercase tracking-[0.25em] text-[color:var(--muted-foreground)] shadow-[0_10px_30px_rgba(15,23,42,0.08)] dark:border-white/10">
               <BriefcaseBusiness className="h-4 w-4 text-[color:var(--orange)]" />
@@ -144,7 +144,7 @@ export function OurStoryPage() {
             </div>
           </div>
 
-          <div className="relative">
+          <div className="relative hidden md:block">
             <div className="overflow-hidden rounded-[2rem] border border-white/50 bg-[color:var(--card)] shadow-[0_28px_80px_rgba(15,23,42,0.1)] dark:border-white/10">
               <Image
                 src={bannerImage}

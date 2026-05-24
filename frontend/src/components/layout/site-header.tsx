@@ -25,7 +25,7 @@ export function SiteHeader() {
             />
           </a>
 
-          <nav className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/40 p-0.5 shadow-[0_10px_24px_rgba(15,23,42,0.04)] backdrop-blur-[50px] dark:border-white/8 dark:bg-white/[0.03] md:flex">
+          <nav className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/40 p-0.5 shadow-[0_10px_24px_rgba(15,23,42,0.04)] backdrop-blur-[50px] dark:border-white/8 dark:bg-white/[0.03] xl:flex">
             {siteConfig.navLinks.map((link) => {
               const isActive = link.href === pathname;
 
@@ -49,7 +49,7 @@ export function SiteHeader() {
           <div className="flex items-center gap-2.5">
             <a
               href="/contact#contact-form"
-              className="hidden items-center rounded-full bg-[color:var(--talk-bg)] px-5 py-1.75 text-[12px] font-semibold text-[color:var(--talk-fg)] shadow-[0_12px_24px_rgba(15,23,42,0.1)] transition-transform hover:-translate-y-0.5 md:inline-flex"
+              className="hidden items-center rounded-full bg-[color:var(--talk-bg)] px-5 py-1.75 text-[12px] font-semibold text-[color:var(--talk-fg)] shadow-[0_12px_24px_rgba(15,23,42,0.1)] transition-transform hover:-translate-y-0.5 xl:inline-flex"
             >
               Let&apos;s Talk
             </a>
@@ -59,7 +59,7 @@ export function SiteHeader() {
               onClick={() => setMobileOpen((open) => !open)}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] text-[color:var(--foreground)] shadow-[0_10px_24px_rgba(15,23,42,0.06)] md:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] text-[color:var(--foreground)] shadow-[0_10px_24px_rgba(15,23,42,0.06)] xl:hidden"
             >
               {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -67,7 +67,7 @@ export function SiteHeader() {
         </div>
 
         {mobileOpen ? (
-          <nav className="mt-3 grid gap-2 rounded-[1.1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-3 shadow-[var(--shadow-soft)] backdrop-blur-xl md:hidden">
+          <nav className="mt-3 grid gap-2 rounded-[1.1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-3 shadow-[var(--shadow-soft)] backdrop-blur-xl xl:hidden">
             {siteConfig.navLinks.map((link) => {
               const isActive = link.href === pathname;
 
