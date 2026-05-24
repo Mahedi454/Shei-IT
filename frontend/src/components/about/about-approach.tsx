@@ -37,7 +37,10 @@ export function AboutApproachSection() {
               Our Approach
             </p>
             <h2 className="mt-4 text-[2.6rem] font-semibold tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[3.4rem]">
-              How We Work
+              How{" "}
+              <span className="bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
+                We Work
+              </span>
             </h2>
             <p className="mt-5 text-[15px] leading-8 text-[color:var(--muted-foreground)]">
               A clear and simple approach to turn your ideas into real products.
