@@ -523,17 +523,17 @@ export default async function ProjectDetailPage({ params }: PageProps) {
       <SiteHeader />
 
       <div className="relative mx-auto w-11/12 max-w-[1440px] pb-20 pt-8">
-        <div className="mb-8 flex flex-nowrap gap-2 sm:flex-wrap sm:gap-3">
+        <div className="mb-8 flex flex-wrap gap-3">
           <Link
             href="/portfolio"
-            className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] px-4 py-2 text-[12px] font-bold text-[color:var(--foreground)] shadow-[0_10px_24px_rgba(15,23,42,0.04)]"
+            className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] px-4 py-2 text-[12px] font-bold text-[color:var(--foreground)] shadow-[0_10px_24px_rgba(15,23,42,0.04)]"
           >
             <ArrowLeft className="h-4 w-4" />
             Back
           </Link>
           <Link
             href="/portfolio"
-            className="inline-flex items-center whitespace-nowrap rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] px-4 py-2 text-[12px] font-bold text-[color:var(--foreground)] shadow-[0_10px_24px_rgba(15,23,42,0.04)]"
+            className="inline-flex items-center rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] px-4 py-2 text-[12px] font-bold text-[color:var(--foreground)] shadow-[0_10px_24px_rgba(15,23,42,0.04)]"
           >
             All Projects
           </Link>

@@ -144,17 +144,17 @@ export default function CareersPage() {
               communication, strong execution, and helping businesses grow through better digital
               products.
             </p>
-            <div className="mt-8 flex flex-nowrap gap-2 sm:flex-wrap sm:gap-3">
+            <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href="mailto:sheiitofficial@gmail.com?subject=Career%20Application%20-%20Shei%20IT"
-                className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-[color:var(--primary)] px-3 py-3 text-[11px] font-bold text-white shadow-[0_16px_36px_rgba(108,99,255,0.18)] sm:px-5 sm:text-[13px]"
+                className="inline-flex items-center gap-2 rounded-full bg-[color:var(--primary)] px-5 py-3 text-[13px] font-bold text-white shadow-[0_16px_36px_rgba(108,99,255,0.18)]"
               >
                 Apply Now
                 <ArrowRight className="h-4 w-4" />
               </a>
               <Link
                 href="/contact#contact-form"
-                className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] px-3 py-3 text-[11px] font-bold text-[color:var(--foreground)] sm:px-5 sm:text-[13px]"
+                className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] px-5 py-3 text-[13px] font-bold text-[color:var(--foreground)]"
               >
                 Contact Team
               </Link>

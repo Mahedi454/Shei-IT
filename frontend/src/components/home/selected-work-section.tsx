@@ -34,7 +34,7 @@ export function SelectedWorkSection() {
   }, []);
 
   return (
-    <section className="relative py-12 md:py-24">
+    <section className="relative py-24">
       <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">

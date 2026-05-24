@@ -111,17 +111,17 @@ export function OurStoryPage() {
               Shei IT was created for businesses that want dependable digital work without confusion, inflated scope, or short-term thinking. We build websites, apps, SEO systems, and support workflows around what a business actually needs to move forward.
             </p>
 
-            <div className="mt-9 flex flex-nowrap items-center gap-2 sm:flex-wrap sm:gap-4">
+            <div className="mt-9 flex flex-wrap items-center gap-4">
               <a
                 href="/contact#contact-form"
-                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[color:var(--cta-dark)] px-3 py-3 text-[11px] font-semibold text-white shadow-[0_18px_40px_rgba(15,23,42,0.18)] sm:gap-3 sm:px-7 sm:py-4 sm:text-[15px]"
+                className="inline-flex items-center justify-center gap-3 rounded-full bg-[color:var(--cta-dark)] px-7 py-4 text-[15px] font-semibold text-white shadow-[0_18px_40px_rgba(15,23,42,0.18)]"
               >
                 Start A Project
                 <ArrowRight className="h-4 w-4" />
               </a>
               <a
                 href="/about"
-                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--button-border)] bg-[color:var(--button-secondary)] px-3 py-3 text-[11px] font-semibold text-[color:var(--foreground)] shadow-[0_16px_32px_rgba(15,23,42,0.06)] sm:gap-3 sm:px-7 sm:py-4 sm:text-[15px]"
+                className="inline-flex items-center justify-center gap-3 rounded-full border border-[color:var(--button-border)] bg-[color:var(--button-secondary)] px-7 py-4 text-[15px] font-semibold text-[color:var(--foreground)] shadow-[0_16px_32px_rgba(15,23,42,0.06)]"
               >
                 Back To About
               </a>

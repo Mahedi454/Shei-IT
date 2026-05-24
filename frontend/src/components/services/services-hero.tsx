@@ -38,10 +38,10 @@ export function ServicesHero() {
           </div>
 
           <div className="mt-8 space-y-6">
-            <h1 className="page-main-heading max-w-[22rem] sm:max-w-none">
-              <span className="block sm:whitespace-nowrap">Digital Services Built</span>
-              <span className="block sm:whitespace-nowrap">Around Your</span>
-              <span className="page-main-heading-accent block sm:whitespace-nowrap">
+            <h1 className="page-main-heading">
+              <span className="block whitespace-nowrap">Digital Services Built</span>
+              <span className="block whitespace-nowrap">Around Your</span>
+              <span className="page-main-heading-accent block whitespace-nowrap">
                 Business Needs
               </span>
             </h1>
@@ -51,17 +51,17 @@ export function ServicesHero() {
             </p>
           </div>
 
-          <div className="mt-10 flex flex-nowrap items-center gap-2 sm:flex-wrap sm:gap-5">
+          <div className="mt-10 flex flex-wrap items-center gap-5">
             <a
               href="/contact#contact-form"
-              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[0.9rem] bg-[color:var(--cta-dark)] px-3 py-3 text-[11px] font-semibold text-white shadow-[0_20px_40px_rgba(15,23,42,0.2)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.36)] sm:gap-3 sm:px-7 sm:py-4 sm:text-[15px]"
+              className="inline-flex items-center justify-center gap-3 rounded-[0.9rem] bg-[color:var(--cta-dark)] px-7 py-4 text-[15px] font-semibold text-white shadow-[0_20px_40px_rgba(15,23,42,0.2)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.36)]"
             >
               Discuss Your Project
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
               href="#services"
-              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[0.9rem] border border-[color:var(--button-border)] bg-[color:var(--button-secondary)] px-3 py-3 text-[11px] font-semibold text-[color:var(--foreground)] shadow-[0_16px_32px_rgba(15,23,42,0.06)] dark:shadow-none sm:gap-3 sm:px-7 sm:py-4 sm:text-[15px]"
+              className="inline-flex items-center justify-center gap-3 rounded-[0.9rem] border border-[color:var(--button-border)] bg-[color:var(--button-secondary)] px-7 py-4 text-[15px] font-semibold text-[color:var(--foreground)] shadow-[0_16px_32px_rgba(15,23,42,0.06)] dark:shadow-none"
             >
               View Services
               <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[color:var(--button-secondary-icon)] text-[color:var(--primary)]">

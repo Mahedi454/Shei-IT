@@ -74,39 +74,39 @@ export function ContactHero() {
             </p>
           </div>
 
-          <div className="mt-9 flex flex-nowrap items-center gap-2 sm:flex-wrap sm:gap-5">
+          <div className="mt-9 flex flex-wrap items-center gap-5">
             <a
               href="mailto:sheiitofficial@gmail.com"
-              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[0.75rem] bg-[color:var(--cta-dark)] px-4 py-3 text-[12px] font-semibold text-white shadow-[0_20px_40px_rgba(15,23,42,0.2)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.36)] sm:gap-3 sm:px-7 sm:py-4 sm:text-[15px]"
+              className="inline-flex items-center justify-center gap-3 rounded-[0.75rem] bg-[color:var(--cta-dark)] px-7 py-4 text-[15px] font-semibold text-white shadow-[0_20px_40px_rgba(15,23,42,0.2)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.36)]"
             >
               Start a Project
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
               href="tel:+8801768857058"
-              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[0.75rem] border border-[color:var(--button-border)] bg-[color:var(--button-secondary)] px-4 py-3 text-[12px] font-semibold text-[color:var(--foreground)] shadow-[0_16px_32px_rgba(15,23,42,0.06)] dark:shadow-none sm:gap-3 sm:px-7 sm:py-4 sm:text-[15px]"
+              className="inline-flex items-center justify-center gap-3 rounded-[0.75rem] border border-[color:var(--button-border)] bg-[color:var(--button-secondary)] px-7 py-4 text-[15px] font-semibold text-[color:var(--foreground)] shadow-[0_16px_32px_rgba(15,23,42,0.06)] dark:shadow-none"
             >
               Book a Call
               <CalendarDays className="h-4 w-4 text-[color:var(--primary)]" />
             </a>
           </div>
 
-          <div className="mt-8 grid max-w-[42rem] grid-cols-3 gap-2 sm:mt-12 sm:gap-4">
+          <div className="mt-12 grid max-w-[42rem] gap-4 sm:grid-cols-3">
             {trustItems.map((item) => {
               const Icon = item.icon;
 
               return (
-                <div key={item.title} className="flex flex-col items-center gap-2 text-center sm:flex-row sm:text-left sm:gap-3">
+                <div key={item.title} className="flex items-center gap-3">
                   <span
-                    className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full sm:h-10 sm:w-10 ${item.accent}`}
+                    className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${item.accent}`}
                   >
-                    <Icon className="h-4 w-4 sm:h-4.5 sm:w-4.5" strokeWidth={2.2} />
+                    <Icon className="h-4.5 w-4.5" strokeWidth={2.2} />
                   </span>
-                  <span className="min-w-0">
-                    <span className="block text-[10px] font-semibold leading-tight text-[color:var(--foreground)] sm:text-[12px]">
+                  <span>
+                    <span className="block text-[12px] font-semibold text-[color:var(--foreground)]">
                       {item.title}
                     </span>
-                    <span className="mt-0.5 block text-[9px] font-medium leading-tight text-[color:var(--muted-foreground)] sm:text-[11px]">
+                    <span className="mt-0.5 block text-[11px] font-medium text-[color:var(--muted-foreground)]">
                       {item.description}
                     </span>
                   </span>
