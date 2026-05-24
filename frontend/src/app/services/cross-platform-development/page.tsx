@@ -12,8 +12,6 @@ import {
   ChevronRight,
   Code2,
   Crown,
-  Gauge,
-  Globe2,
   Headphones,
   Lightbulb,
   LockKeyhole,
@@ -32,9 +30,11 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import capacitorIcon from "@/assets/cross platform dev images/capacitor-svgrepo-com.svg";
+import crossBannerDark from "@/assets/Cross-banner-dark.png";
+import crossBannerLight from "@/assets/Cross-banner-light.png";
 import ctaImage from "@/assets/cta-image.png";
 import dartIcon from "@/assets/cross platform dev images/dart.svg";
 import dockerIcon from "@/assets/cross platform dev images/docker2-svgrepo-com.svg";
@@ -46,6 +46,7 @@ import javascriptIcon from "@/assets/cross platform dev images/javascript-svgrep
 import reactIcon from "@/assets/cross platform dev images/react-svgrepo-com.svg";
 import typescriptIcon from "@/assets/cross platform dev images/typescript-official-svgrepo-com.svg";
 import { SiteHeader } from "@/components/layout/site-header";
+import { useTheme } from "@/components/providers/theme-provider";
 import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
 
 const stats = [
@@ -291,59 +292,28 @@ const faqs = [
   },
 ] as const;
 
-function CrossPlatformMockup() {
-  return (
-    <div className="relative mx-auto aspect-[1.18/1] w-full max-w-[660px]">
-      <div className="absolute left-[9%] top-[7%] h-[74%] w-[76%] rounded-full bg-[color:var(--purple-glow)]" />
-      <div className="absolute right-[6%] top-[9%] h-5 w-5 rounded-full bg-[linear-gradient(135deg,#fff,#ff9f5a)] shadow-[0_10px_24px_rgba(255,159,90,0.35)]" />
-      <div className="absolute left-[15%] top-[5%] h-10 w-10 rounded-full bg-[linear-gradient(135deg,#a78bfa,#6c63ff)] shadow-[0_16px_36px_rgba(108,99,255,0.35)]" />
-      <div className="absolute right-[11%] bottom-[19%] h-20 w-20 rounded-[1.6rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] backdrop-blur-xl">
-        <div className="flex h-full items-center justify-center text-[color:var(--primary)]">
-          <Globe2 className="h-9 w-9" strokeWidth={2.1} />
-        </div>
-      </div>
-      <div className="absolute left-[7%] top-[24%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--primary)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
-        <Code2 className="h-8 w-8" strokeWidth={2.2} />
-      </div>
-      <div className="absolute left-[1%] top-[47%] z-20 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] text-[color:var(--blue)] shadow-[0_24px_60px_rgba(15,23,42,0.1)] backdrop-blur-xl">
-        <Gauge className="h-8 w-8" strokeWidth={2.2} />
-      </div>
-      <div className="absolute bottom-[7%] right-[2%] z-20 h-20 w-20 rounded-[1.5rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
-        <div className="absolute left-6 top-6 h-8 w-4 rounded-full bg-[color:var(--mint)]" />
-        <div className="absolute bottom-4 left-4 h-9 w-9 rounded-full border-[10px] border-[color:var(--primary-soft)]" />
-      </div>
-      <div className="absolute bottom-[2%] right-[22%] h-16 w-16 rounded-[1.25rem] bg-[color:var(--card-solid)] shadow-[0_24px_60px_rgba(15,23,42,0.12)] dark:bg-[color:var(--card)]">
-        <div className="mx-auto mt-4 h-9 w-3 rounded-full bg-[color:var(--mint)]" />
-        <div className="absolute left-5 top-8 h-4 w-8 -rotate-45 rounded-full bg-[color:var(--orange)]" />
-      </div>
+function CrossPlatformBanner() {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-      <div className="absolute bottom-[13%] left-[20%] z-10 h-[16%] w-[58%] -skew-x-12 rounded-b-[1rem] bg-[linear-gradient(180deg,#d7dbe7,#9ca3af)] shadow-[0_26px_42px_rgba(15,23,42,0.2)]" />
-      <div className="absolute bottom-[21%] left-[27%] z-20 h-[3%] w-[40%] rounded-full bg-[linear-gradient(90deg,#6b7280,#d1d5db,#4b5563)]" />
-      <div className="absolute left-[22%] top-[13%] z-30 h-[62%] w-[62%] rotate-[5deg] rounded-[1rem] border-[10px] border-[#262b36] bg-[color:var(--card-solid)] shadow-[0_34px_80px_rgba(15,23,42,0.28)] dark:bg-[#151722]">
-        <div className="h-full rounded-[0.45rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(245,247,255,0.88))] p-4 dark:bg-[linear-gradient(180deg,rgba(27,28,40,0.96),rgba(12,12,18,0.94))]">
-          <div className="flex gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#fca5a5]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#fde68a]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#86efac]" />
-          </div>
-          <div className="mt-5 h-8 rounded-md bg-[image:var(--gradient-primary)]" />
-          <div className="mt-5 grid grid-cols-[1.2fr_1fr] gap-4">
-            <div className="h-28 rounded-lg bg-[linear-gradient(135deg,rgba(139,124,255,0.24),rgba(93,174,255,0.12))]">
-              <div className="mx-auto mt-8 h-12 w-16 rounded-t-full bg-[color:var(--primary-soft)] opacity-65" />
-              <div className="mx-auto -mt-2 h-10 w-24 rounded-t-full bg-[color:var(--blue)] opacity-35" />
-            </div>
-            <div className="space-y-3">
-              <div className="h-3 w-20 rounded-full bg-[color:var(--background-secondary)]" />
-              <div className="h-3 w-28 rounded-full bg-[color:var(--background-secondary)]" />
-              <div className="h-9 w-24 rounded-lg bg-[color:var(--background-secondary)]" />
-            </div>
-          </div>
-          <div className="mt-5 grid grid-cols-3 gap-3">
-            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
-            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
-            <div className="h-10 rounded-lg bg-[color:var(--background-secondary)]" />
-          </div>
-        </div>
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const bannerImage = mounted && theme === "dark" ? crossBannerDark : crossBannerLight;
+
+  return (
+    <div className="relative flex items-center justify-center lg:justify-end">
+      <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--purple-glow)] blur-[120px]" />
+      <div className="relative w-full max-w-[760px]">
+        <Image
+          src={bannerImage}
+          alt="Cross-platform development service banner"
+          priority
+          quality={90}
+          sizes="(min-width: 1280px) 760px, (min-width: 1024px) 58vw, 92vw"
+          className="relative z-10 h-auto w-full object-contain"
+        />
       </div>
     </div>
   );
@@ -375,16 +345,16 @@ export default function CrossPlatformDevelopmentPage() {
             </span>
           </nav>
 
-          <div className="mt-10 grid items-center gap-10 lg:grid-cols-[0.86fr_1.14fr]">
-            <div className="max-w-[44rem]">
+          <div className="mt-10 grid items-center gap-12 lg:grid-cols-[0.78fr_1.22fr]">
+            <div className="max-w-[39rem]">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-[color:var(--hero-pill)] px-4 py-2 text-[12px] font-semibold text-[color:var(--primary)] shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/10">
                 <Sparkles className="h-3.5 w-3.5 fill-[color:var(--primary)]" />
                 Our Services
               </div>
 
-              <h1 className="mt-6 text-[3rem] font-semibold leading-[1.04] tracking-[-0.07em] text-[color:var(--foreground)] sm:text-[4rem] lg:text-[4.5rem]">
+              <h1 className="page-main-heading mt-6">
                 Cross Platform
-                <span className="block bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
+                <span className="page-main-heading-accent block">
                   Development
                 </span>
               </h1>
@@ -424,7 +394,7 @@ export default function CrossPlatformDevelopmentPage() {
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <a
-                  href="/contact"
+                  href="/contact#contact-form"
                   className="inline-flex items-center justify-center gap-3 rounded-[0.9rem] bg-[color:var(--cta-dark)] px-7 py-4 text-[15px] font-semibold text-white shadow-[0_20px_40px_rgba(15,23,42,0.2)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.36)]"
                 >
                   Start Your Project
@@ -442,7 +412,7 @@ export default function CrossPlatformDevelopmentPage() {
               </div>
             </div>
 
-            <CrossPlatformMockup />
+            <CrossPlatformBanner />
           </div>
         </div>
       </section>
@@ -721,7 +691,7 @@ export default function CrossPlatformDevelopmentPage() {
                   </div>
 
                   <a
-                    href="/contact"
+                    href="/contact#contact-form"
                     className={`mt-5 inline-flex h-13 w-full items-center justify-center gap-3 rounded-[0.85rem] border text-[14px] font-bold shadow-[0_14px_30px_rgba(15,23,42,0.06)] ${
                       isFeatured
                         ? "border-white/20 bg-white text-[color:var(--primary)]"
@@ -809,7 +779,7 @@ export default function CrossPlatformDevelopmentPage() {
                 We&apos;re excited to help you grow.
               </p>
               <a
-                href="/contact"
+                href="/contact#contact-form"
                 className="mt-8 inline-flex items-center justify-center gap-3 rounded-[0.75rem] bg-white px-7 py-4 text-[15px] font-semibold text-[#111827] shadow-[0_18px_40px_rgba(15,23,42,0.18)]"
               >
                 Start a Project

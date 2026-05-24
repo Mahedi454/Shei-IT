@@ -136,7 +136,7 @@ export default function CareersPage() {
             <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
               Careers
             </p>
-            <h1 className="mt-5 max-w-4xl text-[clamp(2.7rem,6vw,5.4rem)] font-semibold leading-[0.98] tracking-[-0.055em]">
+            <h1 className="page-main-heading mt-5 max-w-4xl">
               Build meaningful digital work with Shei IT
             </h1>
             <p className="mt-6 max-w-3xl text-[16px] leading-8 text-[color:var(--muted-foreground)]">
@@ -153,7 +153,7 @@ export default function CareersPage() {
                 <ArrowRight className="h-4 w-4" />
               </a>
               <Link
-                href="/contact"
+                href="/contact#contact-form"
                 className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] px-5 py-3 text-[13px] font-bold text-[color:var(--foreground)]"
               >
                 Contact Team

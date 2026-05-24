@@ -341,16 +341,16 @@ export default function SeoMarketingPage() {
             </span>
           </nav>
 
-          <div className="mt-10 grid items-center gap-10 lg:grid-cols-[0.86fr_1.14fr]">
-            <div className="max-w-[44rem]">
+          <div className="mt-10 grid items-center gap-12 lg:grid-cols-[0.78fr_1.22fr]">
+            <div className="max-w-[39rem]">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-[color:var(--hero-pill)] px-4 py-2 text-[12px] font-semibold text-[color:var(--primary)] shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/10">
                 <Sparkles className="h-3.5 w-3.5 fill-[color:var(--primary)]" />
                 Our Services
               </div>
 
-              <h1 className="mt-6 text-[3rem] font-semibold leading-[1.04] tracking-[-0.07em] text-[color:var(--foreground)] sm:text-[4rem] lg:text-[4.5rem]">
+              <h1 className="page-main-heading mt-6">
                 SEO &
-                <span className="block bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
+                <span className="page-main-heading-accent block">
                   Marketing
                 </span>
               </h1>
@@ -390,7 +390,7 @@ export default function SeoMarketingPage() {
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <a
-                  href="/contact"
+                  href="/contact#contact-form"
                   className="inline-flex items-center justify-center gap-3 rounded-[0.9rem] bg-[color:var(--cta-dark)] px-7 py-4 text-[15px] font-semibold text-white shadow-[0_20px_40px_rgba(15,23,42,0.2)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.36)]"
                 >
                   Start Your Project
@@ -687,7 +687,7 @@ export default function SeoMarketingPage() {
                   </div>
 
                   <a
-                    href="/contact"
+                    href="/contact#contact-form"
                     className={`mt-5 inline-flex h-13 w-full items-center justify-center gap-3 rounded-[0.85rem] border text-[14px] font-bold shadow-[0_14px_30px_rgba(15,23,42,0.06)] ${
                       isFeatured
                         ? "border-white/20 bg-white text-[color:var(--primary)]"
@@ -775,7 +775,7 @@ export default function SeoMarketingPage() {
                 We&apos;re excited to help you grow.
               </p>
               <a
-                href="/contact"
+                href="/contact#contact-form"
                 className="mt-8 inline-flex items-center justify-center gap-3 rounded-[0.75rem] bg-white px-7 py-4 text-[15px] font-semibold text-[#111827] shadow-[0_18px_40px_rgba(15,23,42,0.18)]"
               >
                 Start a Project

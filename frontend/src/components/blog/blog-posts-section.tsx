@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   BadgeCheck,
@@ -68,6 +69,7 @@ function BlogThumbnail({
 }
 
 export function BlogPostsSection() {
+  const searchParams = useSearchParams();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -87,9 +89,26 @@ export function BlogPostsSection() {
     loadBlogs();
   }, []);
 
-  const featuredPost = blogs[0] ?? null;
-  const latestArticles = blogs.slice(1, 4);
-  const popularPosts = blogs.slice(4, 8);
+  const activeTopic = searchParams.get("topic")?.trim().toLowerCase() ?? "";
+  const activeSearch = searchParams.get("search")?.trim().toLowerCase() ?? "";
+
+  const filteredBlogs = useMemo(() => {
+    return blogs.filter((blog) => {
+      const tags = blog.tags ?? [];
+      const matchesTopic =
+        !activeTopic || tags.some((tag) => tag.toLowerCase() === activeTopic);
+      const searchableText = [blog.title, blog.excerpt, blog.content, ...tags]
+        .join(" ")
+        .toLowerCase();
+      const matchesSearch = !activeSearch || searchableText.includes(activeSearch);
+
+      return matchesTopic && matchesSearch;
+    });
+  }, [activeSearch, activeTopic, blogs]);
+
+  const featuredPost = filteredBlogs[0] ?? null;
+  const latestArticles = filteredBlogs.slice(1, 4);
+  const popularPosts = filteredBlogs.slice(4, 8);
 
   const topics = useMemo(() => {
     const counts = new Map<string, number>();
@@ -115,9 +134,19 @@ export function BlogPostsSection() {
     <section className="pb-16 lg:pb-20">
       <div className="mx-auto grid w-11/12 max-w-[1440px] gap-8 lg:grid-cols-[1fr_0.5fr]">
         <div className="rounded-[1rem] border border-[color:var(--button-border)] bg-[color:var(--card)] p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:shadow-[0_22px_60px_rgba(0,0,0,0.25)] sm:p-7">
-          <div className="flex items-center gap-2 text-[16px] font-semibold text-[color:var(--foreground)]">
-            <BadgeCheck className="h-5 w-5 text-[color:var(--primary)]" />
-            Featured Post
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-[16px] font-semibold text-[color:var(--foreground)]">
+              <BadgeCheck className="h-5 w-5 text-[color:var(--primary)]" />
+              Featured Post
+            </div>
+            {activeTopic || activeSearch ? (
+              <Link
+                href="/blog"
+                className="rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] px-3 py-1.5 text-[12px] font-bold text-[color:var(--primary)]"
+              >
+                Clear filters
+              </Link>
+            ) : null}
           </div>
 
           {error ? (
@@ -217,8 +246,23 @@ export function BlogPostsSection() {
               )}
             </>
           ) : (
-            <div className="mt-6 rounded-[1rem] border border-dashed border-[color:var(--stat-border)] px-5 py-12 text-center text-[14px] text-[color:var(--muted-foreground)]">
-              No blog posts are published yet.
+            <div className="mt-6 rounded-[1rem] border border-dashed border-[color:var(--stat-border)] px-5 py-12 text-center">
+              <h2 className="text-[1.25rem] font-semibold text-[color:var(--foreground)]">
+                {blogs.length ? "No topics found" : "No blog posts yet"}
+              </h2>
+              <p className="mx-auto mt-3 max-w-md text-[14px] leading-7 text-[color:var(--muted-foreground)]">
+                {blogs.length
+                  ? "No blog posts match your current search or selected topic. Try another keyword or clear the filters."
+                  : "No blog posts are published yet."}
+              </p>
+              {blogs.length ? (
+                <Link
+                  href="/blog"
+                  className="mt-5 inline-flex rounded-full bg-[color:var(--primary)] px-4 py-2 text-[12px] font-bold text-white"
+                >
+                  Clear filters
+                </Link>
+              ) : null}
             </div>
           )}
         </div>
@@ -269,15 +313,16 @@ export function BlogPostsSection() {
 
             <div className="mt-6 space-y-4">
               {topics.map(([topic, count]) => (
-                <div
+                <Link
                   key={topic}
+                  href={`/blog?topic=${encodeURIComponent(topic)}`}
                   className="flex items-center justify-between text-[13px] font-medium text-[color:var(--muted-foreground)]"
                 >
                   {topic}
                   <span className="font-semibold text-[color:var(--foreground)]">
                     {count}
                   </span>
-                </div>
+                </Link>
               ))}
             </div>
 

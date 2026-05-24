@@ -28,7 +28,7 @@ export function AboutCtaSection() {
             </div>
 
             <a
-              href="/contact"
+              href="/contact#contact-form"
               className="inline-flex shrink-0 items-center justify-center gap-3 rounded-[0.9rem] bg-white px-8 py-4 text-[15px] font-semibold text-[color:var(--primary)] shadow-[0_18px_40px_rgba(15,23,42,0.16)] md:mr-14 lg:mr-20 xl:mr-24"
             >
               Contact Us

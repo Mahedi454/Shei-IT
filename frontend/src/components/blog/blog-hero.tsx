@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   ChartNoAxesCombined,
   Cloud,
@@ -11,31 +13,76 @@ import {
   Sparkles,
   TrendingUp,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 import { blogpageBannerDark, blogpageBannerLight } from "@/assets";
 import { useTheme } from "@/components/providers/theme-provider";
 
 const topics = [
-  { label: "All Topics", icon: Sparkles, active: true },
-  { label: "Web Development", icon: Code2, active: false },
-  { label: "Mobile Development", icon: Smartphone, active: false },
-  { label: "SEO & Marketing", icon: ChartNoAxesCombined, active: false },
-  { label: "Hosting & DevOps", icon: Cloud, active: false },
-  { label: "Business Growth", icon: TrendingUp, active: false },
-  { label: "Tips & Guides", icon: Lightbulb, active: false },
+  { label: "All Topics", value: "", icon: Sparkles },
+  { label: "Web Development", value: "Web Development", icon: Code2 },
+  { label: "Mobile Development", value: "Mobile Development", icon: Smartphone },
+  { label: "SEO & Marketing", value: "SEO & Marketing", icon: ChartNoAxesCombined },
+  { label: "Hosting & DevOps", value: "Hosting & DevOps", icon: Cloud },
+  { label: "Business Growth", value: "Business Growth", icon: TrendingUp },
+  { label: "Tips & Guides", value: "Tips & Guides", icon: Lightbulb },
 ] as const;
 
 export function BlogHero() {
   const { theme } = useTheme();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
+  const [search, setSearch] = useState(searchParams.get("search") ?? "");
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    setSearch(searchParams.get("search") ?? "");
+  }, [searchParams]);
+
+  const activeTopic = searchParams.get("topic") ?? "";
   const bannerImage =
     mounted && theme === "dark" ? blogpageBannerDark : blogpageBannerLight;
+
+  const updateSearchQuery = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    const normalizedSearch = value.trim();
+
+    if (normalizedSearch) {
+      params.set("search", normalizedSearch);
+    } else {
+      params.delete("search");
+    }
+
+    const query = params.toString();
+    router.replace(query ? `/blog?${query}` : "/blog", { scroll: false });
+  };
+
+  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    updateSearchQuery(search);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    updateSearchQuery(value);
+  };
+
+  const getTopicHref = (topic: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (topic) {
+      params.set("topic", topic);
+    } else {
+      params.delete("topic");
+    }
+
+    const query = params.toString();
+    return query ? `/blog?${query}` : "/blog";
+  };
 
   return (
     <section className="relative overflow-hidden pb-14 pt-14 lg:pb-16 lg:pt-16">
@@ -48,11 +95,11 @@ export function BlogHero() {
             </div>
 
             <div className="mt-8 space-y-6">
-              <h1 className="text-[2.85rem] font-semibold leading-[1.08] tracking-[-0.07em] text-[color:var(--foreground)] sm:text-[3.7rem] lg:text-[4.15rem] xl:text-[4.55rem]">
+              <h1 className="page-main-heading">
                 <span className="block">Insights to Build</span>
                 <span className="block">
                   Smarter{" "}
-                  <span className="bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
+                  <span className="page-main-heading-accent">
                     Digital Solutions
                   </span>
                 </span>
@@ -63,7 +110,7 @@ export function BlogHero() {
               </p>
             </div>
 
-            <form className="mt-10 max-w-[40rem]" role="search">
+            <form className="mt-10 max-w-[40rem]" role="search" onSubmit={handleSearch}>
               <label htmlFor="blog-search" className="sr-only">
                 Search articles
               </label>
@@ -71,6 +118,8 @@ export function BlogHero() {
                 <input
                   id="blog-search"
                   type="search"
+                  value={search}
+                  onChange={(event) => handleSearchChange(event.target.value)}
                   placeholder="Search articles..."
                   className="min-w-0 flex-1 bg-transparent text-[15px] font-medium text-[color:var(--foreground)] outline-none placeholder:text-[color:var(--muted-foreground)]"
                 />
@@ -104,18 +153,18 @@ export function BlogHero() {
               const Icon = topic.icon;
 
               return (
-                <a
+                <Link
                   key={topic.label}
-                  href="#"
+                  href={getTopicHref(topic.value)}
                   className={`inline-flex h-12 items-center justify-center gap-3 rounded-[0.75rem] px-5 text-[13px] font-semibold ${
-                    topic.active
+                    activeTopic === topic.value
                       ? "border border-[color:var(--button-border)] bg-[color:var(--card-solid)] text-[color:var(--primary)] shadow-[0_10px_24px_rgba(108,99,255,0.08)]"
                       : "text-[color:var(--muted-foreground)] hover:bg-[color:var(--button-secondary-icon)] hover:text-[color:var(--foreground)]"
                   }`}
                 >
                   <Icon className="h-4.5 w-4.5" strokeWidth={2.1} />
                   {topic.label}
-                </a>
+                </Link>
               );
             })}
           </div>

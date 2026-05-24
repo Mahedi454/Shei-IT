@@ -221,7 +221,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
                 ))}
               </div>
 
-              <h1 className="mt-5 max-w-5xl text-[clamp(2.45rem,5.6vw,5rem)] font-semibold leading-[0.98] tracking-[-0.055em]">
+              <h1 className="page-main-heading mt-5 max-w-5xl">
                 {blog.title}
               </h1>
               <p className="mt-6 max-w-3xl text-[16px] leading-8 text-[color:var(--muted-foreground)]">

@@ -38,10 +38,10 @@ export function ServicesHero() {
           </div>
 
           <div className="mt-8 space-y-6">
-            <h1 className="text-[2.75rem] font-semibold leading-[1.08] tracking-[-0.07em] text-[color:var(--foreground)] sm:text-[3.35rem] lg:text-[3.6rem] xl:text-[4.35rem]">
+            <h1 className="page-main-heading">
               <span className="block whitespace-nowrap">Digital Services Built</span>
               <span className="block whitespace-nowrap">Around Your</span>
-              <span className="block whitespace-nowrap bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
+              <span className="page-main-heading-accent block whitespace-nowrap">
                 Business Needs
               </span>
             </h1>
@@ -53,7 +53,7 @@ export function ServicesHero() {
 
           <div className="mt-10 flex flex-wrap items-center gap-5">
             <a
-              href="/contact"
+              href="/contact#contact-form"
               className="inline-flex items-center justify-center gap-3 rounded-[0.9rem] bg-[color:var(--cta-dark)] px-7 py-4 text-[15px] font-semibold text-white shadow-[0_20px_40px_rgba(15,23,42,0.2)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.36)]"
             >
               Discuss Your Project

@@ -59,11 +59,11 @@ export function ContactHero() {
           </div>
 
           <div className="mt-7 space-y-5">
-            <h1 className="text-[2.85rem] font-semibold leading-[1.08] tracking-[-0.07em] text-[color:var(--foreground)] sm:text-[3.8rem] lg:text-[4.45rem] xl:text-[4.75rem]">
+            <h1 className="page-main-heading">
               <span className="block">Tell Us What You Need.</span>
               <span className="block">
                 We&apos;ll Build the{" "}
-                <span className="bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
+                <span className="page-main-heading-accent">
                   Right Solution.
                 </span>
               </span>

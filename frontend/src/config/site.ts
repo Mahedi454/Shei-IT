@@ -229,7 +229,7 @@ export const ctaSection = {
     "Tell us what you need. We'll help you turn it into a real digital product.",
   primaryAction: {
     label: "Start a Project",
-    href: "/contact",
+    href: "/contact#contact-form",
   },
 } as const;
 
@@ -353,8 +353,8 @@ export const footerConfig = {
     {
       title: "Support",
       links: [
-        { label: "Contact Us", href: "/contact" },
-        { label: "FAQs", href: "#" },
+        { label: "Contact Us", href: "/contact#contact-form" },
+        { label: "FAQs", href: "/faqs" },
         { label: "Privacy Policy", href: "/privacy-policy" },
         { label: "Terms of Service", href: "/terms-of-service" },
       ],

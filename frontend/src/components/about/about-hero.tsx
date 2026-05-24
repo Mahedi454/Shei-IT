@@ -29,9 +29,9 @@ export function AboutHero() {
           </div>
 
           <div className="mt-8 space-y-6">
-            <h1 className="text-[3rem] font-semibold leading-[0.95] tracking-[-0.07em] text-[color:var(--foreground)] sm:text-[4rem] lg:text-[5rem]">
+            <h1 className="page-main-heading">
               SHEI IT,
-              <span className="block text-[color:var(--primary)]">Built Around Your Needs</span>
+              <span className="page-main-heading-accent block">Built Around Your Needs</span>
             </h1>
             <p className="max-w-[34rem] text-[16px] leading-8 text-[color:var(--muted-foreground)] sm:text-[17px]">
               We help businesses build modern websites, mobile apps, hosting solutions, SEO foundations, and long-term digital support. Everything we build is made to solve real problems.
@@ -47,7 +47,7 @@ export function AboutHero() {
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
-              href="/contact"
+              href="/contact#contact-form"
               className="inline-flex items-center justify-center gap-3 rounded-full border border-[color:var(--button-border)] bg-[color:var(--button-secondary)] px-7 py-4 text-[15px] font-semibold text-[color:var(--foreground)] shadow-[0_16px_32px_rgba(15,23,42,0.06)]"
             >
               Let&apos;s Work Together

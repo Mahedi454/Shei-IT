@@ -30,3 +30,13 @@ prisma:error Error in PostgreSQL connection: Error { kind: Closed, cause: None }
 [0mGET /api/blogs/admin/all [36m304[0m 3104.399 ms - -[0m
 [0mGET /api/blogs/admin/all [36m304[0m 556.084 ms - -[0m
 [0mGET /api/seo/page/contact [32m200[0m 549.497 ms - 76[0m
+[0mGET /api/seo/service/website-development [32m200[0m 555.664 ms - 76[0m
+[0mGET /api/blogs/admin/all [36m304[0m 3562.755 ms - -[0m
+[0mGET /api/blogs/admin/all [36m304[0m 540.808 ms - -[0m
+[0mGET /api/projects/admin/all [36m304[0m 923.222 ms - -[0m
+[0mGET /api/projects/admin/all [36m304[0m 269.800 ms - -[0m
+[0mGET /api/seo/admin/all [36m304[0m 535.222 ms - -[0m
+[0mGET /api/seo/admin/all [36m304[0m 269.406 ms - -[0m
+[0mGET /api/seo/page/home [32m200[0m 531.853 ms - 76[0m
+[0mGET /api/projects [32m200[0m 553.750 ms - 1790[0m
+[0mGET /api/seo/admin/all [36m304[0m 2351.123 ms - -[0m
