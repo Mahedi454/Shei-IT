@@ -1,10 +1,11 @@
 "use client";
 
-import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { AlertTriangle, Loader2 } from "lucide-react";
 
-import { AdminModal } from "@/components/admin/admin-modal";
+import { AdminModal } from "./admin-modal";
 
 type ActionConfirmModalProps = {
+  cancelLabel?: string;
   confirmLabel?: string;
   description: string;
   isLoading?: boolean;
@@ -15,6 +16,7 @@ type ActionConfirmModalProps = {
 };
 
 export function ActionConfirmModal({
+  cancelLabel = "Go back",
   confirmLabel = "Confirm",
   description,
   isLoading = false,
@@ -29,42 +31,33 @@ export function ActionConfirmModal({
       onClose={onClose}
       title={title}
       description={description}
-      widthClassName="max-w-xl"
+      widthClassName="max-w-lg"
     >
-      <div className="rounded-[1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-4">
-        <div className="flex items-start gap-3">
-          <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[color:var(--button-secondary-icon)] text-[color:var(--primary)]">
-            <AlertCircle className="h-5 w-5" />
-          </span>
-          <div>
-            <p className="text-[14px] font-semibold text-[color:var(--foreground)]">
-              Please review before continuing
-            </p>
-            <p className="mt-1 text-[13px] leading-6 text-[color:var(--muted-foreground)]">
-              This action will update the live website configuration.
-            </p>
-          </div>
+      <div className="space-y-5">
+        <div className="flex gap-3 rounded-[1rem] border border-amber-500/20 bg-amber-500/10 p-4 text-[14px] text-amber-200">
+          <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
+          <p>Please review this action once more before continuing.</p>
         </div>
-      </div>
 
-      <div className="mt-5 flex flex-wrap justify-end gap-3">
-        <button
-          type="button"
-          onClick={onClose}
-          disabled={isLoading}
-          className="inline-flex items-center justify-center rounded-full border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-5 py-3 text-[13px] font-bold text-[color:var(--foreground)] disabled:opacity-60"
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          onClick={onConfirm}
-          disabled={isLoading}
-          className="inline-flex items-center gap-2 rounded-full bg-[color:var(--primary)] px-5 py-3 text-[13px] font-bold text-white disabled:opacity-60"
-        >
-          <CheckCircle2 className="h-4 w-4" />
-          {isLoading ? "Saving..." : confirmLabel}
-        </button>
+        <div className="flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={isLoading}
+            className="rounded-full border border-[color:var(--stat-border)] px-5 py-3 text-[14px] font-semibold text-[color:var(--foreground)] disabled:opacity-60"
+          >
+            {cancelLabel}
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            disabled={isLoading}
+            className="inline-flex items-center gap-2 rounded-full bg-[color:var(--talk-bg)] px-5 py-3 text-[14px] font-semibold text-[color:var(--talk-fg)] disabled:opacity-60"
+          >
+            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+            {isLoading ? "Processing..." : confirmLabel}
+          </button>
+        </div>
       </div>
     </AdminModal>
   );
