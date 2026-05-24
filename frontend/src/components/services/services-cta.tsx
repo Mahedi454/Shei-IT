@@ -1,6 +1,24 @@
 import { ArrowRight, Send } from "lucide-react";
+import { type ReactNode } from "react";
 
-export function ServicesCtaSection() {
+type ServicesCtaSectionProps = {
+  title?: ReactNode;
+  description?: string;
+  buttonLabel?: string;
+  href?: string;
+};
+
+export function ServicesCtaSection({
+  title = (
+    <>
+      Need One Service or a
+      <span className="block">Complete Digital System?</span>
+    </>
+  ),
+  description = "Tell us your goal. We'll suggest the best solution for your business.",
+  buttonLabel = "Get Free Consultation",
+  href = "/contact#contact-form",
+}: ServicesCtaSectionProps) {
   return (
     <section className="relative pb-16 lg:pb-20">
       <div className="mx-auto w-11/12 max-w-[1440px]">
@@ -18,20 +36,19 @@ export function ServicesCtaSection() {
 
               <div>
                 <h2 className="max-w-[42rem] text-[1.9rem] font-semibold leading-[1.35] tracking-[-0.04em] text-white sm:text-[2.25rem] lg:text-[2.65rem]">
-                  Need One Service or a
-                  <span className="block">Complete Digital System?</span>
+                  {title}
                 </h2>
                 <p className="mt-3 text-[15px] font-medium leading-7 text-white/82 sm:text-[16px]">
-                  Tell us your goal. We&apos;ll suggest the best solution for your business.
+                  {description}
                 </p>
               </div>
             </div>
 
             <a
-              href="/contact#contact-form"
+              href={href}
               className="inline-flex shrink-0 items-center justify-center gap-3 rounded-[0.95rem] bg-white px-8 py-4 text-[15px] font-semibold text-[color:var(--primary)] shadow-[0_18px_40px_rgba(15,23,42,0.16)] md:mr-16 lg:mr-24"
             >
-              Get Free Consultation
+              {buttonLabel}
               <ArrowRight className="h-4 w-4" strokeWidth={2.3} />
             </a>
           </div>

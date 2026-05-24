@@ -43,3 +43,18 @@ export const upsertAdminSeoSetting: RequestHandler = catchAsync(async (req, res)
     data: seo,
   });
 });
+
+export const deleteAdminSeoSetting: RequestHandler = catchAsync(async (req, res) => {
+  await prisma.seoSetting.deleteMany({
+    where: {
+      seoableType: String(req.params.type),
+      seoableId: String(req.params.id),
+    },
+  });
+
+  return sendResponse(res, 200, {
+    success: true,
+    message: "SEO setting removed successfully.",
+    data: null,
+  });
+});

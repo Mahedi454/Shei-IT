@@ -1,6 +1,6 @@
 "use client";
 
-import { Save, Search } from "lucide-react";
+import { RefreshCcw, Save, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { apiRequest } from "@/lib/api";
@@ -175,10 +175,46 @@ export function SeoManager() {
         tone: "success",
       });
       setConfirmSaveOpen(false);
-    } catch {
+    } catch (error) {
       showToast({
         title: "SEO save failed",
         description: "We could not save these SEO changes right now. Please review them and try again.",
+        tone: "error",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const resetSeo = async () => {
+    setSaving(true);
+
+    try {
+      const token = await getToken();
+
+      await apiRequest<null>(
+        `/seo/admin/${activeItem.type}/${encodeURIComponent(activeItem.id)}`,
+        {
+          method: "DELETE",
+          token,
+        },
+      );
+
+      setSettings((current) => {
+        const next = { ...current };
+        delete next[activeKey];
+        return next;
+      });
+
+      showToast({
+        title: "SEO settings removed",
+        description: `${activeItem.label} will now use the frontend default SEO.`,
+        tone: "success",
+      });
+    } catch (error) {
+      showToast({
+        title: "SEO reset failed",
+        description: error instanceof Error ? error.message : "Please try again.",
         tone: "error",
       });
     } finally {
@@ -235,15 +271,27 @@ export function SeoManager() {
                 Route: {activeItem.path}
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() => setConfirmSaveOpen(true)}
-              disabled={saving}
-              className="inline-flex items-center gap-2 rounded-full bg-[color:var(--primary)] px-5 py-3 text-[13px] font-bold text-white disabled:opacity-60"
-            >
-              <Save className="h-4 w-4" />
-              {saving ? "Saving..." : "Save SEO"}
-            </button>
+<div className="flex flex-wrap gap-3">
+  <button
+    type="button"
+    onClick={resetSeo}
+    disabled={saving}
+    className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-5 py-3 text-[13px] font-bold text-[color:var(--foreground)] disabled:opacity-60"
+  >
+    <RefreshCcw className="h-4 w-4" />
+    {saving ? "Resetting..." : "Reset"}
+  </button>
+
+  <button
+    type="button"
+    onClick={() => setConfirmSaveOpen(true)}
+    disabled={saving}
+    className="inline-flex items-center gap-2 rounded-full bg-[color:var(--primary)] px-5 py-3 text-[13px] font-bold text-white disabled:opacity-60"
+  >
+    <Save className="h-4 w-4" />
+    {saving ? "Saving..." : "Save SEO"}
+  </button>
+</div>
           </div>
 
           <div className="grid gap-4 lg:grid-cols-2">

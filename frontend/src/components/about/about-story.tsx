@@ -41,7 +41,7 @@ export function AboutStorySection() {
     : ourStoryBannerLight;
 
   return (
-    <section className="relative pb-16 lg:pb-20">
+    <section id="our-story" className="relative pb-16 lg:pb-20">
       <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="grid gap-12 lg:grid-cols-[1.02fr_0.98fr] items-center">
           <div className="relative pb-10 pl-6 sm:pb-12 sm:pl-8">
@@ -67,10 +67,13 @@ export function AboutStorySection() {
               Our Story
             </p>
             <h2 className="mt-4 text-[2.6rem] font-semibold tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[3.4rem]">
-              Why We Started
+              Why{" "}
+              <span className="bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
+                We Started
+              </span>
             </h2>
             <p className="mt-5 text-[15px] leading-8 text-[color:var(--muted-foreground)]">
-              We noticed that many businesses struggle because they get solutions they don&apos;t need, or systems that don&apos;t fit their actual goals. shei-it exists to change that. We build only what you need — nothing more, nothing less.
+              We noticed that many businesses struggle because they get solutions they don&apos;t need, or systems that don&apos;t fit their actual goals. shei-it exists to change that. We build only what you need, nothing more and nothing less.
             </p>
 
             <div className="mt-10 grid gap-5 sm:grid-cols-3">

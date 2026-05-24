@@ -132,7 +132,10 @@ export function AboutImpactTeamSection() {
             Our Impact
           </p>
           <h2 className="mt-4 max-w-[32rem] text-[2.1rem] font-semibold leading-[1.08] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.7rem]">
-            Numbers That Reflect Our Commitment
+            Numbers That Reflect{" "}
+            <span className="bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
+              Our Commitment
+            </span>
           </h2>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -168,7 +171,10 @@ export function AboutImpactTeamSection() {
             Meet The Team
           </p>
           <h2 className="mt-4 text-[2.1rem] font-semibold leading-[1.08] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.7rem]">
-            People Behind shei-it
+            People{" "}
+            <span className="bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
+              Behind shei-it
+            </span>
           </h2>
 
           <div className="mt-7 grid gap-5 md:grid-cols-3">

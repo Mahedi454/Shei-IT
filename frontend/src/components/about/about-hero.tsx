@@ -40,7 +40,7 @@ export function AboutHero() {
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <a
-              href="#our-story"
+              href="/about/our-story"
               className="inline-flex items-center justify-center gap-3 rounded-full bg-[color:var(--cta-dark)] px-7 py-4 text-[15px] font-semibold text-white shadow-[0_18px_40px_rgba(15,23,42,0.18)]"
             >
               Our Story
