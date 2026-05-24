@@ -27,10 +27,12 @@ function CellValue({ value }: { value: boolean | string }) {
 }
 
 export function PricingCompareSection() {
+  const plans = ["Starter", "Business", "Professional", "Enterprise"] as const;
+
   return (
     <section className="relative pb-16 lg:pb-20">
       <div className="mx-auto w-11/12 max-w-[1440px]">
-        <div className="grid gap-9 rounded-[1.8rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-8 shadow-[0_24px_70px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:shadow-none lg:grid-cols-[0.72fr_1.58fr] lg:items-center lg:p-10">
+        <div className="grid gap-7 rounded-[1.4rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5 shadow-[0_24px_70px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:shadow-none sm:p-8 lg:grid-cols-[0.72fr_1.58fr] lg:items-center lg:p-10">
           <div className="max-w-[30rem] lg:-mt-8">
             <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
               Compare Plans
@@ -45,16 +47,51 @@ export function PricingCompareSection() {
             </p>
           </div>
 
-          <div className="relative pt-4">
-            <span className="absolute left-[calc(20%+30%)] top-0 z-20 -translate-x-1/2 rounded-full bg-[image:var(--gradient-primary)] px-4 py-1 text-[12px] font-semibold text-white shadow-[0_12px_24px_rgba(108,99,255,0.24)]">
+          <div className="relative pt-1 lg:pt-4">
+            <span className="absolute left-[calc(20%+30%)] top-0 z-20 hidden -translate-x-1/2 rounded-full bg-[image:var(--gradient-primary)] px-4 py-1 text-[12px] font-semibold text-white shadow-[0_12px_24px_rgba(108,99,255,0.24)] lg:block">
               Popular
             </span>
 
-            <div className="overflow-hidden rounded-[1.6rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_20px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:shadow-none">
+            <div className="grid gap-3 lg:hidden">
+              {plans.map((plan, planIndex) => (
+                <article
+                  key={plan}
+                  className="rounded-[1rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] p-4 shadow-[0_14px_34px_rgba(15,23,42,0.04)]"
+                >
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <h3 className="text-[15px] font-bold text-[color:var(--foreground)]">
+                      {plan}
+                    </h3>
+                    {plan === "Business" ? (
+                      <span className="rounded-full bg-[image:var(--gradient-primary)] px-3 py-1 text-[10px] font-bold text-white">
+                        Popular
+                      </span>
+                    ) : null}
+                  </div>
+                  <div className="space-y-2">
+                    {rows.map((row) => (
+                      <div
+                        key={`${plan}-${row[0]}`}
+                        className="flex items-center justify-between gap-3 rounded-[0.8rem] bg-[color:var(--stat-bg)] px-3 py-2"
+                      >
+                        <span className="text-[12px] font-semibold text-[color:var(--muted-foreground)]">
+                          {row[0]}
+                        </span>
+                        <span className="text-right text-[12px] font-bold text-[color:var(--foreground)]">
+                          <CellValue value={row[planIndex + 1]} />
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="hidden overflow-hidden rounded-[1.6rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_20px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:shadow-none lg:block">
               <div className="overflow-x-auto">
                 <div className="min-w-[760px]">
                 <div className="grid grid-cols-[1.25fr_repeat(4,1fr)] border-b border-[color:var(--stat-border)]">
-                  {["Features", "Starter", "Business", "Professional", "Enterprise"].map((heading) => (
+                  {["Features", ...plans].map((heading) => (
                     <div
                       key={heading}
                       className="border-r border-[color:var(--stat-border)] px-7 py-4 text-[14px] font-semibold text-[color:var(--foreground)] last:border-r-0"

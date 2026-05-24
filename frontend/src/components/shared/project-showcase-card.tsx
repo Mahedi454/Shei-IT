@@ -26,11 +26,11 @@ const tagAccentMap: Record<TagAccent, string> = {
 
 function ProjectImage({ image, title }: { image: string; title: string }) {
   return (
-    <div className="overflow-hidden rounded-[1.35rem] border border-[color:var(--stat-border)]">
+    <div className="overflow-hidden rounded-[1.15rem] border border-[color:var(--stat-border)]">
       <img
         src={image}
         alt={title}
-        className="h-[240px] w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
+        className="aspect-[1.62/1] h-auto w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
         loading="lazy"
       />
     </div>
@@ -158,52 +158,65 @@ export function ProjectShowcaseCard({
   ctaLabel = "View Details",
 }: ProjectShowcaseCardProps) {
   return (
-    <article className="flex min-h-[500px] flex-col rounded-[2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5 shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
+    <article className="flex min-h-[520px] flex-col rounded-[1.5rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5 shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl transition duration-200 ease-out hover:-translate-y-1 hover:border-[color:var(--primary)] hover:shadow-[0_24px_54px_rgba(108,99,255,0.12)] dark:shadow-none">
       {image ? (
         <ProjectImage image={image} title={title} />
       ) : (
         <ProjectPreview theme={previewTheme ?? "portfolio"} />
       )}
 
-      <div className="mt-6 flex flex-1 flex-col">
-        <div className="flex items-start justify-between gap-4">
-          <h3 className="text-[1.65rem] font-semibold tracking-[-0.05em] text-[color:var(--foreground)]">
-            {title}
-          </h3>
+      <div className="mt-2 flex flex-1 flex-col sm:mt-3">
+        {tags.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {tags.slice(0, 2).map((tag) => (
+              <span
+                key={tag}
+                className={`rounded-full px-3 py-1.5 text-[12px] font-semibold ${tagAccentMap[accent]}`}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        ) : null}
 
-          {metric || metricLabel ? (
-            <div className="shrink-0 text-right">
-              {metric ? (
-                <p className="text-[15px] font-semibold text-[color:var(--primary)]">
-                  {metric}
-                </p>
-              ) : null}
-              {metricLabel ? (
-                <p className="text-[12px] text-[color:var(--muted-foreground)]">
-                  {metricLabel}
-                </p>
-              ) : null}
-            </div>
-          ) : null}
-        </div>
+        {metric || metricLabel ? (
+          <div className="mt-2 flex w-full items-center justify-between gap-3 rounded-[0.9rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-4 py-3 shadow-[0_8px_18px_rgba(15,23,42,0.04)] dark:shadow-none">
+            {metricLabel ? (
+              <span className="min-w-0 text-[12px] font-semibold leading-5 text-[color:var(--muted-foreground)]">
+                {metricLabel}
+              </span>
+            ) : null}
+            {metric ? (
+              <span className="shrink-0 text-[17px] font-bold leading-none text-[color:var(--primary)]">
+                {metric}
+              </span>
+            ) : null}
+          </div>
+        ) : null}
 
-        <div className="mt-4 flex flex-wrap gap-2.5">
-          {tags.map((tag) => (
+        <h3 className="mt-3 text-[1.45rem] font-semibold leading-tight text-[color:var(--foreground)] xl:text-[1.55rem]">
+          {title}
+        </h3>
+
+        {tags.length > 2 ? (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {tags.slice(2).map((tag) => (
             <span
               key={tag}
-              className={`rounded-full px-3 py-1.5 text-[13px] font-medium ${tagAccentMap[accent]}`}
+              className={`rounded-full px-3 py-1.5 text-[12px] font-semibold ${tagAccentMap[accent]}`}
             >
               {tag}
             </span>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : null}
 
         <a
           href={href}
-          className="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-4 py-3 text-[14px] font-semibold text-[color:var(--foreground)] shadow-[0_10px_24px_rgba(15,23,42,0.04)] dark:bg-[color:var(--card-solid)] dark:shadow-none"
+          className="group mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-4 py-3 text-[14px] font-semibold text-[color:var(--foreground)] shadow-[0_10px_24px_rgba(15,23,42,0.04)] transition duration-200 ease-out hover:-translate-y-0.5 hover:border-[color:var(--primary)] hover:bg-[color:var(--primary)] hover:text-white hover:shadow-[0_16px_32px_rgba(108,99,255,0.2)] dark:bg-[color:var(--card-solid)] dark:shadow-none"
         >
           {ctaLabel}
-          <ArrowRight className="h-4 w-4 text-[color:var(--primary)]" />
+          <ArrowRight className="h-4 w-4 text-[color:var(--primary)] transition duration-200 group-hover:translate-x-0.5 group-hover:text-white" />
         </a>
       </div>
     </article>

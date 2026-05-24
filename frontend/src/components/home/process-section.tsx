@@ -32,7 +32,7 @@ const iconShellMap = {
 
 export function ProcessSection() {
   return (
-    <section className="relative pb-28 pt-8">
+    <section className="relative pb-14 pt-4 md:pb-28 md:pt-8">
       <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="max-w-2xl">
           <h2 className="text-[2.2rem] font-semibold tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.8rem]">
@@ -46,7 +46,7 @@ export function ProcessSection() {
           </p>
         </div>
 
-        <div className="mt-14 grid items-stretch gap-8 xl:grid-cols-5">
+        <div className="mt-12 grid items-stretch gap-14 xl:mt-14 xl:grid-cols-5 xl:gap-8">
           {processSection.steps.map((step, index) => {
             const Icon = iconMap[step.icon];
             const isLast = index === processSection.steps.length - 1;
