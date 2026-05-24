@@ -7,6 +7,7 @@ import { apiRequest } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 import { useAdminAuth } from "./admin-auth-provider";
+import { ActionConfirmModal } from "./action-confirm-modal";
 import { useAdminFeedback } from "./admin-feedback-provider";
 
 type SeoableType = "page" | "service";
@@ -111,6 +112,7 @@ export function SeoManager() {
   const [settings, setSettings] = useState<Record<string, SeoSetting>>({});
   const [activeKey, setActiveKey] = useState(`${seoItems[0].type}:${seoItems[0].id}`);
   const [saving, setSaving] = useState(false);
+  const [confirmSaveOpen, setConfirmSaveOpen] = useState(false);
 
   const activeItem = useMemo(
     () => seoItems.find((item) => `${item.type}:${item.id}` === activeKey) ?? seoItems[0],
@@ -172,6 +174,7 @@ export function SeoManager() {
         description: `${activeItem.label} SEO has been updated.`,
         tone: "success",
       });
+      setConfirmSaveOpen(false);
     } catch (error) {
       showToast({
         title: "SEO save failed",
@@ -280,7 +283,7 @@ export function SeoManager() {
               </button>
               <button
                 type="button"
-                onClick={saveSeo}
+                onClick={() => setConfirmSaveOpen(true)}
                 disabled={saving}
                 className="inline-flex items-center gap-2 rounded-full bg-[color:var(--primary)] px-5 py-3 text-[13px] font-bold text-white disabled:opacity-60"
               >
@@ -436,6 +439,16 @@ export function SeoManager() {
           </div>
         </section>
       </div>
+
+      <ActionConfirmModal
+        open={confirmSaveOpen}
+        onClose={() => setConfirmSaveOpen(false)}
+        onConfirm={saveSeo}
+        isLoading={saving}
+        title="Review SEO changes"
+        description={`Please confirm that you want to save the SEO settings for ${activeItem.label}.`}
+        confirmLabel="Save SEO changes"
+      />
     </div>
   );
 }
