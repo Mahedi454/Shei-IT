@@ -7,6 +7,19 @@ import { env } from "./env";
 const backendRoot = path.resolve(__dirname, "../..");
 
 const getServiceAccount = () => {
+  if (env.FIREBASE_SERVICE_ACCOUNT_JSON) {
+    return JSON.parse(env.FIREBASE_SERVICE_ACCOUNT_JSON);
+  }
+
+  if (env.FIREBASE_SERVICE_ACCOUNT_BASE64) {
+    const decodedServiceAccount = Buffer.from(
+      env.FIREBASE_SERVICE_ACCOUNT_BASE64,
+      "base64",
+    ).toString("utf8");
+
+    return JSON.parse(decodedServiceAccount);
+  }
+
   if (!env.FIREBASE_SERVICE_ACCOUNT) {
     return null;
   }

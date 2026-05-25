@@ -27,6 +27,10 @@ export const env = {
   ADMIN_EMAILS: parseList(process.env.ADMIN_EMAILS),
   FIREBASE_SERVICE_ACCOUNT:
     process.env.FIREBASE_SERVICE_ACCOUNT ?? "./firebasadminsdk.json",
+  FIREBASE_SERVICE_ACCOUNT_JSON:
+    process.env.FIREBASE_SERVICE_ACCOUNT_JSON ?? "",
+  FIREBASE_SERVICE_ACCOUNT_BASE64:
+    process.env.FIREBASE_SERVICE_ACCOUNT_BASE64 ?? "",
   SMTP_HOST: process.env.SMTP_HOST ?? "",
   SMTP_PORT: smtpPort,
   SMTP_SECURE: process.env.SMTP_SECURE === "true",
