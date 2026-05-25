@@ -11,16 +11,24 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { homepageBannerDark, homepageBannerLight } from "@/assets";
+import {
+  clientImtiuzMahmudZidan,
+  clientMannanHossain,
+  clientMoznuMiah,
+  clientYunusRahat,
+  clientZahidHassanLipu,
+  homepageBannerDark,
+  homepageBannerLight,
+} from "@/assets";
 import { useTheme } from "@/components/providers/theme-provider";
 import { siteConfig } from "@/config/site";
 
-const avatarColors = [
-  "from-[#7c8cff] to-[#6fe7c8]",
-  "from-[#ffb98a] to-[#ff9f5a]",
-  "from-[#8b7cff] to-[#d8b4fe]",
-  "from-[#5daeff] to-[#93c5fd]",
-  "from-[#6fe7c8] to-[#9fdcff]",
+const clientImages = [
+  { src: clientZahidHassanLipu, alt: "Zahid Hassan Lipu" },
+  { src: clientYunusRahat, alt: "Yunus Rahat" },
+  { src: clientMoznuMiah, alt: "Moznu Miah" },
+  { src: clientMannanHossain, alt: "Mannan Hossain" },
+  { src: clientImtiuzMahmudZidan, alt: "Imtiuz Mahmud Zidan" },
 ] as const;
 
 export function HeroSection() {
@@ -88,19 +96,25 @@ export function HeroSection() {
 
               <div className="mt-9 flex items-center gap-4">
                 <div className="flex -space-x-2">
-                  {avatarColors.map((color, index) => (
+                  {clientImages.map((client) => (
                     <span
-                      key={color}
-                      className={`inline-flex h-9 w-9 items-center justify-center rounded-full border-[2.5px] border-[color:var(--avatar-ring)] bg-gradient-to-br ${color} text-[10px] font-semibold text-white shadow-[0_10px_24px_rgba(15,23,42,0.12)]`}
+                      key={client.alt}
+                      className="relative inline-flex h-9 w-9 overflow-hidden rounded-full border-[2.5px] border-[color:var(--avatar-ring)] bg-[color:var(--card-solid)] shadow-[0_10px_24px_rgba(15,23,42,0.12)]"
                     >
-                      {index + 1}
+                      <Image
+                        src={client.src}
+                        alt={client.alt}
+                        fill
+                        sizes="36px"
+                        className="object-cover"
+                      />
                     </span>
                   ))}
                 </div>
 
                 <div className="space-y-0.5">
                   <p className="text-[15px] font-semibold text-[color:var(--foreground)]">
-                    200+ Happy Clients
+                    32+ Happy Clients
                   </p>
                   <p className="text-[13px] text-[color:var(--muted-foreground)]">
                     Trusted by businesses worldwide
