@@ -1,8 +1,30 @@
+import Image from "next/image";
 import { Quote } from "lucide-react";
 
+import {
+  clientImtiuzMahmudZidan,
+  clientMannanHossain,
+  clientMoznuMiah,
+  clientYunusRahat,
+  clientZahidHassanLipu,
+} from "@/assets";
 import { testimonialsSection } from "@/config/site";
 
+const testimonialClients = [
+  { name: "Zahid Hassan Lipu", image: clientZahidHassanLipu },
+  { name: "Yunus Rahat", image: clientYunusRahat },
+  { name: "Moznu Miah", image: clientMoznuMiah },
+  { name: "Mannan Hossain", image: clientMannanHossain },
+  { name: "Imtiuz Mahmud Zidan", image: clientImtiuzMahmudZidan },
+] as const;
+
 export function TestimonialsSection() {
+  const testimonials = testimonialClients.map((client, index) => ({
+    ...testimonialsSection.items[index % testimonialsSection.items.length],
+    image: client.image,
+    name: client.name,
+  }));
+
   return (
     <section className="relative py-12 md:py-24">
       <div className="mx-auto w-11/12 max-w-[1440px]">
@@ -18,8 +40,8 @@ export function TestimonialsSection() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-          {testimonialsSection.items.map((item, index) => (
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          {testimonials.map((item, index) => (
             <article
               key={item.name}
               className="flex h-full flex-col rounded-[1.6rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-6 shadow-[0_16px_40px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none"
@@ -31,7 +53,7 @@ export function TestimonialsSection() {
 
               <div className="mt-auto flex items-center gap-3 pt-7">
                 <div
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] text-[13px] font-semibold text-[color:var(--foreground)]"
+                  className="relative inline-flex h-12 w-12 shrink-0 overflow-hidden rounded-full border border-[color:var(--stat-border)] bg-[color:var(--card-solid)]"
                   style={{
                     boxShadow:
                       index % 2 === 0
@@ -39,7 +61,13 @@ export function TestimonialsSection() {
                         : "0 8px 20px rgba(93,174,255,0.14)",
                   }}
                 >
-                  {item.avatar}
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    sizes="48px"
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <p className="text-[16px] font-semibold text-[color:var(--foreground)]">
