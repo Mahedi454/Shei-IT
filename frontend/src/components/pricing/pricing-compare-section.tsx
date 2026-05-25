@@ -1,5 +1,7 @@
 import { Check, X } from "lucide-react";
 
+import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
+
 const rows = [
   ["Responsive Design", true, true, true, true],
   ["Pages", "Up to 5", "Up to 15", "Up to 30", "Unlimited"],
@@ -20,7 +22,12 @@ function CellValue({ value }: { value: boolean | string }) {
   }
 
   if (value === false) {
-    return <X className="mx-auto h-5 w-5 text-[color:var(--muted-foreground)]/70" strokeWidth={2.4} />;
+    return (
+      <X
+        className="mx-auto h-5 w-5 text-[color:var(--muted-foreground)]/70"
+        strokeWidth={2.4}
+      />
+    );
   }
 
   return <span>{value}</span>;
@@ -37,10 +44,9 @@ export function PricingCompareSection() {
             <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
               Compare Plans
             </p>
-            <h2 className="mt-4 text-[2.2rem] font-semibold leading-[1.12] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.75rem]">
-              Find the Right Plan
-              <span className="block">for You</span>
-            </h2>
+            <ServiceGradientHeading className="mt-4 text-[2.2rem] font-semibold leading-[1.12] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.75rem]">
+              Find the Right Plan for You
+            </ServiceGradientHeading>
             <p className="mt-6 max-w-[25rem] text-[15px] leading-8 text-[color:var(--muted-foreground)]">
               All plans include high-quality design, clean code, and reliable
               support. Choose a plan that matches your needs.
@@ -90,36 +96,36 @@ export function PricingCompareSection() {
             <div className="hidden overflow-hidden rounded-[1.6rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_20px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:shadow-none lg:block">
               <div className="overflow-x-auto">
                 <div className="min-w-[760px]">
-                <div className="grid grid-cols-[1.25fr_repeat(4,1fr)] border-b border-[color:var(--stat-border)]">
-                  {["Features", ...plans].map((heading) => (
-                    <div
-                      key={heading}
-                      className="border-r border-[color:var(--stat-border)] px-7 py-4 text-[14px] font-semibold text-[color:var(--foreground)] last:border-r-0"
-                    >
-                      <span>{heading}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {rows.map((row) => (
-                  <div
-                    key={row[0]}
-                    className="grid grid-cols-[1.25fr_repeat(4,1fr)] border-b border-[color:var(--stat-border)] last:border-b-0"
-                  >
-                    {row.map((value, index) => (
+                  <div className="grid grid-cols-[1.25fr_repeat(4,1fr)] border-b border-[color:var(--stat-border)]">
+                    {["Features", ...plans].map((heading) => (
                       <div
-                        key={`${row[0]}-${index}`}
-                        className={`border-r border-[color:var(--stat-border)] px-7 py-3.5 text-[14px] font-medium last:border-r-0 ${
-                          index === 0
-                            ? "text-[color:var(--muted-foreground)]"
-                            : "text-center text-[color:var(--foreground)]"
-                        }`}
+                        key={heading}
+                        className="border-r border-[color:var(--stat-border)] px-7 py-4 text-[14px] font-semibold text-[color:var(--foreground)] last:border-r-0"
                       >
-                        <CellValue value={value} />
+                        <span>{heading}</span>
                       </div>
                     ))}
                   </div>
-                ))}
+
+                  {rows.map((row) => (
+                    <div
+                      key={row[0]}
+                      className="grid grid-cols-[1.25fr_repeat(4,1fr)] border-b border-[color:var(--stat-border)] last:border-b-0"
+                    >
+                      {row.map((value, index) => (
+                        <div
+                          key={`${row[0]}-${index}`}
+                          className={`border-r border-[color:var(--stat-border)] px-7 py-3.5 text-[14px] font-medium last:border-r-0 ${
+                            index === 0
+                              ? "text-[color:var(--muted-foreground)]"
+                              : "text-center text-[color:var(--foreground)]"
+                          }`}
+                        >
+                          <CellValue value={value} />
+                        </div>
+                      ))}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

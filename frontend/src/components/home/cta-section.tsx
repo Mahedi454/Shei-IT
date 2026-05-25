@@ -15,7 +15,7 @@ export function CtaSection() {
           <div className="pointer-events-none absolute right-[10%] top-[24%] h-3 w-3 rounded-full bg-[#d3ccff]/90" />
           <div className="pointer-events-none absolute right-[18%] bottom-[18%] h-5 w-5 rounded-full bg-[#f5a6ff]/75 blur-[1px]" />
 
-          <div className="relative grid gap-2 sm:gap-6 xl:grid-cols-[1.05fr_0.95fr] xl:items-center">
+          <div className="relative grid gap-2 sm:gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center xl:grid-cols-[1.05fr_0.95fr]">
             <div className="max-w-[540px] py-1 lg:py-2">
               <h3 className="text-[1.45rem] font-semibold leading-tight tracking-[-0.04em] sm:text-[2.4rem] lg:text-[2.8rem]">
                 {ctaSection.title}
@@ -33,13 +33,24 @@ export function CtaSection() {
               </a>
             </div>
 
-            <div className="relative mx-auto hidden w-full max-w-[360px] xl:mx-0 xl:ml-auto xl:block xl:max-w-[556px]">
+            <div className="relative hidden h-52 w-56 overflow-visible md:block lg:h-60 lg:w-64 xl:hidden">
               <Image
                 src={ctaImage}
                 alt="Launch CTA illustration"
                 quality={85}
-                sizes="(min-width: 1280px) 556px, (min-width: 1024px) 42vw, 92vw"
-                className="h-auto w-full object-contain"
+                sizes="(min-width: 1024px) 256px, 224px"
+                className="h-full w-full scale-[1.75] object-contain"
+                priority={false}
+              />
+            </div>
+
+            <div className="relative mx-auto hidden h-[22rem] w-full max-w-[34rem] overflow-visible xl:mx-0 xl:ml-auto xl:block">
+              <Image
+                src={ctaImage}
+                alt="Launch CTA illustration"
+                quality={85}
+                sizes="(min-width: 1280px) 544px, 92vw"
+                className="h-full w-full scale-[1.35] object-contain"
                 priority={false}
               />
             </div>

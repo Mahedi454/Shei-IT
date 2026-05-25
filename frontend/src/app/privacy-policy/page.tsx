@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { CalendarDays, CheckCircle2, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
+import {
+  CalendarDays,
+  CheckCircle2,
+  LockKeyhole,
+  Mail,
+  ShieldCheck,
+} from "lucide-react";
 
 import { SiteHeader } from "@/components/layout/site-header";
 
@@ -69,8 +75,9 @@ export default function PrivacyPolicyPage() {
               How we protect and manage your information
             </h1>
             <p className="mt-6 max-w-3xl text-[16px] leading-8 text-[color:var(--muted-foreground)]">
-              This policy explains what information Shei IT collects, why we collect it, and how
-              we handle it when you use our website, contact forms, and digital services.
+              This policy explains what information Shei IT collects, why we
+              collect it, and how we handle it when you use our website, contact
+              forms, and digital services.
             </p>
           </div>
 
@@ -81,7 +88,9 @@ export default function PrivacyPolicyPage() {
                   <ShieldCheck className="h-5 w-5" />
                 </span>
                 <div>
-                  <p className="text-[14px] font-semibold">Responsible data handling</p>
+                  <p className="text-[14px] font-semibold">
+                    Responsible data handling
+                  </p>
                   <p className="text-[12px] text-[color:var(--muted-foreground)]">
                     Clear purpose, limited use, careful protection.
                   </p>
@@ -121,29 +130,31 @@ export default function PrivacyPolicyPage() {
         <aside className="lg:sticky lg:top-24 lg:self-start">
           <div className="rounded-[1.1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5 shadow-[var(--shadow-soft)] backdrop-blur">
             <div className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-[color:var(--button-secondary-icon)] text-[color:var(--primary)]">
+              <span className="grid h-10 w-10 place-items-center text-[color:var(--primary)]">
                 <LockKeyhole className="h-5 w-5" />
               </span>
               <div>
                 <h2 className="text-[15px] font-semibold">Quick Summary</h2>
                 <p className="mt-1 text-[12px] leading-5 text-[color:var(--muted-foreground)]">
-                  We collect only practical information needed to communicate, support projects,
-                  and improve the website experience.
+                  We collect only practical information needed to communicate,
+                  support projects, and improve the website experience.
                 </p>
               </div>
             </div>
             <div className="mt-5 space-y-3">
-              {["No selling personal data", "Used for service communication", "Security-focused handling"].map(
-                (item) => (
-                  <div
-                    key={item}
-                    className="flex items-center gap-2 text-[13px] text-[color:var(--muted-foreground)]"
-                  >
-                    <CheckCircle2 className="h-4 w-4 text-[color:var(--primary)]" />
-                    {item}
-                  </div>
-                ),
-              )}
+              {[
+                "No selling personal data",
+                "Used for service communication",
+                "Security-focused handling",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center gap-2 text-[13px] text-[color:var(--muted-foreground)]"
+                >
+                  <CheckCircle2 className="h-4 w-4 text-[color:var(--primary)]" />
+                  {item}
+                </div>
+              ))}
             </div>
           </div>
         </aside>

@@ -13,6 +13,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import ctaImage from "@/assets/cta-image.png";
+import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
 
 const benefits = [
   {
@@ -31,7 +32,8 @@ const benefits = [
   },
   {
     title: "Quality & Security",
-    description: "We follow best practices to ensure quality and data security.",
+    description:
+      "We follow best practices to ensure quality and data security.",
     icon: Shield,
     accent:
       "bg-[linear-gradient(180deg,rgba(255,159,90,0.18),rgba(255,159,90,0.08))] text-[color:var(--orange)]",
@@ -75,9 +77,12 @@ export function ContactSupportSection() {
     <section className="relative pb-14 md:pb-20 lg:pb-28">
       <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="rounded-[1.2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-5 py-6 shadow-[0_18px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none md:rounded-[1.4rem] lg:px-9">
-          <h2 className="text-center text-[1.45rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]">
+          <ServiceGradientHeading
+            highlightText="Shei-it"
+            className="text-center text-[1.45rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]"
+          >
             Why Work With Shei-it?
-          </h2>
+          </ServiceGradientHeading>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4 xl:gap-5">
             {benefits.map((benefit) => {
@@ -109,9 +114,9 @@ export function ContactSupportSection() {
             <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
               FAQ
             </p>
-            <h2 className="mt-3 text-[1.55rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]">
+            <ServiceGradientHeading className="mt-3 text-[1.55rem] font-semibold tracking-[-0.04em] text-[color:var(--foreground)]">
               Frequently Asked Questions
-            </h2>
+            </ServiceGradientHeading>
 
             <div className="mt-5 space-y-3">
               {faqs.map((faq) => {
@@ -169,30 +174,34 @@ export function ContactSupportSection() {
             <div className="pointer-events-none absolute right-[7%] bottom-[34%] h-5 w-5 rounded-full bg-[#d3ccff]/90" />
             <div className="pointer-events-none absolute right-[40%] bottom-[26%] h-6 w-6 rounded-full bg-[#aee7ff]/85 blur-[1px]" />
 
-            <div className="relative z-10 max-w-[25rem] pt-2 sm:max-w-[20rem] sm:pt-8 xl:max-w-[24rem]">
-              <h2 className="text-[2rem] font-semibold tracking-[-0.05em] sm:text-[2.35rem]">
-                Ready to Start Your Project?
-              </h2>
-              <p className="mt-3 max-w-[21rem] text-[15px] font-medium leading-7 text-white/86">
-                Let&apos;s turn your idea into a powerful digital solution.
-                We&apos;re excited to help you grow.
-              </p>
-              <a
-                href="mailto:sheiitofficial@gmail.com"
-                className="mt-8 inline-flex items-center justify-center gap-3 rounded-[0.75rem] bg-white px-7 py-4 text-[15px] font-semibold text-[#111827] shadow-[0_18px_40px_rgba(15,23,42,0.18)]"
-              >
-                Start a Project
-                <ArrowRight className="h-4 w-4 text-[color:var(--primary)]" />
-              </a>
-            </div>
+            <div className="relative z-10 grid min-h-[220px] gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
+              <div className="max-w-[30rem]">
+                <h2 className="text-[2rem] font-semibold leading-[1.16] tracking-[-0.035em] sm:text-[2.35rem]">
+                  Ready to Start Your Project?
+                </h2>
+                <p className="mt-4 max-w-[25rem] text-[15px] font-medium leading-7 text-white/86">
+                  Let&apos;s turn your idea into a powerful digital solution.
+                  We&apos;re excited to help you grow.
+                </p>
+                <a
+                  href="mailto:sheiitofficial@gmail.com"
+                  className="mt-8 inline-flex items-center justify-center gap-3 rounded-[0.75rem] bg-white px-7 py-4 text-[15px] font-semibold text-[#111827] shadow-[0_18px_40px_rgba(15,23,42,0.18)]"
+                >
+                  Start a Project
+                  <ArrowRight className="h-4 w-4 text-[color:var(--primary)]" />
+                </a>
+              </div>
 
-            <div className="pointer-events-none absolute right-0 top-1/2 hidden w-[52%] max-w-[430px] -translate-y-1/2 xl:block xl:w-[56%]">
-              <Image
-                src={ctaImage}
-                alt="Launch CTA illustration"
-                className="h-auto w-full object-contain"
-                priority={false}
-              />
+              <div className="relative hidden h-52 w-56 overflow-visible md:block xl:h-60 xl:w-64">
+                <Image
+                  src={ctaImage}
+                  alt="Launch CTA illustration"
+                  quality={85}
+                  sizes="(min-width: 1280px) 256px, 224px"
+                  className="h-full w-full scale-[1.75] object-contain"
+                  priority={false}
+                />
+              </div>
             </div>
           </div>
         </div>

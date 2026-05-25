@@ -3,30 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-  ChartNoAxesCombined,
-  Cloud,
-  Code2,
-  Lightbulb,
-  Search,
-  Smartphone,
-  Sparkles,
-  TrendingUp,
-} from "lucide-react";
+import { Search, Sparkles } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
 
 import { blogpageBannerDark, blogpageBannerLight } from "@/assets";
 import { useTheme } from "@/components/providers/theme-provider";
-
-const topics = [
-  { label: "All Topics", value: "", icon: Sparkles },
-  { label: "Web Development", value: "Web Development", icon: Code2 },
-  { label: "Mobile Development", value: "Mobile Development", icon: Smartphone },
-  { label: "SEO & Marketing", value: "SEO & Marketing", icon: ChartNoAxesCombined },
-  { label: "Hosting & DevOps", value: "Hosting & DevOps", icon: Cloud },
-  { label: "Business Growth", value: "Business Growth", icon: TrendingUp },
-  { label: "Tips & Guides", value: "Tips & Guides", icon: Lightbulb },
-] as const;
+import { blogTopicOptions, getServiceIcon } from "@/lib/services";
 
 export function BlogHero() {
   const { theme } = useTheme();
@@ -53,6 +35,7 @@ export function BlogHero() {
 
     if (normalizedSearch) {
       params.set("search", normalizedSearch);
+      params.delete("topic");
     } else {
       params.delete("search");
     }
@@ -76,6 +59,7 @@ export function BlogHero() {
 
     if (topic) {
       params.set("topic", topic);
+      params.delete("search");
     } else {
       params.delete("topic");
     }
@@ -110,7 +94,11 @@ export function BlogHero() {
               </p>
             </div>
 
-            <form className="mt-10 max-w-[40rem]" role="search" onSubmit={handleSearch}>
+            <form
+              className="mt-10 max-w-[40rem]"
+              role="search"
+              onSubmit={handleSearch}
+            >
               <label htmlFor="blog-search" className="sr-only">
                 Search articles
               </label>
@@ -147,23 +135,28 @@ export function BlogHero() {
           </div>
         </div>
 
-        <div className="mt-12 overflow-x-auto rounded-[1rem] border border-[color:var(--button-border)] bg-[color:var(--button-secondary)] p-3 shadow-[0_18px_44px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:shadow-[0_18px_44px_rgba(0,0,0,0.24)]">
-          <div className="flex min-w-max items-center justify-between gap-3">
-            {topics.map((topic) => {
-              const Icon = topic.icon;
+        <div className="mt-12 rounded-[1rem] border border-[color:var(--button-border)] bg-[color:var(--button-secondary)] p-3 shadow-[0_18px_44px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:shadow-[0_18px_44px_rgba(0,0,0,0.24)]">
+          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-[repeat(20,minmax(0,1fr))]">
+            {[
+              { label: "All Topics", value: "", icon: "spark" },
+              ...blogTopicOptions,
+            ].map((topic, topicIndex) => {
+              const Icon = topic.value ? getServiceIcon(topic.icon) : Sparkles;
 
               return (
                 <Link
                   key={topic.label}
                   href={getTopicHref(topic.value)}
-                  className={`inline-flex h-12 items-center justify-center gap-3 rounded-[0.75rem] px-5 text-[13px] font-semibold ${
+                  className={`inline-flex h-12 min-w-0 items-center justify-center gap-3 rounded-[0.75rem] px-4 text-[13px] font-semibold ${
+                    topicIndex < 5 ? "xl:col-span-4" : "xl:col-span-5"
+                  } ${
                     activeTopic === topic.value
                       ? "border border-[color:var(--button-border)] bg-[color:var(--card-solid)] text-[color:var(--primary)] shadow-[0_10px_24px_rgba(108,99,255,0.08)]"
                       : "text-[color:var(--muted-foreground)] hover:bg-[color:var(--button-secondary-icon)] hover:text-[color:var(--foreground)]"
                   }`}
                 >
                   <Icon className="h-4.5 w-4.5" strokeWidth={2.1} />
-                  {topic.label}
+                  <span className="truncate">{topic.label}</span>
                 </Link>
               );
             })}

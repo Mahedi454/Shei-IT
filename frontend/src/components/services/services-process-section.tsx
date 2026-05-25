@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { signMahediDark, signMahediLight } from "@/assets";
+import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
 
 const processSteps = [
   {
@@ -62,7 +63,8 @@ const benefits = [
   },
   {
     title: "SEO & Performance Focus",
-    description: "We follow SEO best practices and ensure blazing fast performance.",
+    description:
+      "We follow SEO best practices and ensure blazing fast performance.",
     icon: ChartNoAxesColumnIncreasing,
     accent:
       "bg-[linear-gradient(180deg,rgba(111,231,200,0.2),rgba(111,231,200,0.08))] text-[color:var(--mint)]",
@@ -84,9 +86,9 @@ export function ServicesProcessSection() {
           <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
             Our Process
           </p>
-          <h2 className="mt-3 text-[2rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.45rem] xl:text-[2.85rem]">
+          <ServiceGradientHeading className="mt-3 text-[2rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.45rem] xl:text-[2.85rem]">
             Simple Process. Clear Delivery.
-          </h2>
+          </ServiceGradientHeading>
         </div>
 
         <div className="mt-10 grid gap-7 md:grid-cols-2 xl:mt-12 xl:grid-cols-4 xl:gap-8">
@@ -138,8 +140,8 @@ export function ServicesProcessSection() {
               </span>
             </h2>
             <p className="mt-5 max-w-[31rem] text-[15px] leading-8 text-[color:var(--muted-foreground)]">
-              We focus on delivering value, building trust, and growing
-              together with our clients. Your success is always our priority.
+              We focus on delivering value, building trust, and growing together
+              with our clients. Your success is always our priority.
             </p>
 
             <div className="mt-7 flex items-center gap-1">
