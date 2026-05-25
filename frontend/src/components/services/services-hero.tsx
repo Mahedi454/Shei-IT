@@ -30,7 +30,7 @@ export function ServicesHero() {
 
   return (
     <section className="relative overflow-hidden pb-10 pt-10 lg:pb-12 lg:pt-12">
-      <div className="relative mx-auto grid w-11/12 max-w-[1440px] items-center gap-12 lg:grid-cols-[0.82fr_1.18fr]">
+      <div className="relative mx-auto grid w-11/12 max-w-[1440px] items-center gap-10 md:grid-cols-[0.82fr_1.18fr] xl:gap-12">
         <div className="max-w-[42rem]">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-[color:var(--hero-pill)] px-4 py-2 text-[12px] font-semibold text-[color:var(--muted-foreground)] shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/10">
             <Star className="h-3.5 w-3.5 fill-[color:var(--orange)] text-[color:var(--orange)]" />
@@ -93,7 +93,7 @@ export function ServicesHero() {
           </div>
         </div>
 
-        <div className="relative flex items-center justify-center lg:justify-end">
+        <div className="relative hidden items-center justify-center md:flex md:justify-end">
           <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--purple-glow)] blur-[120px]" />
           <div className="relative w-full max-w-[820px]">
             <Image

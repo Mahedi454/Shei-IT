@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, CalendarDays, Clock3, UserRound } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Clock3,
+  UserRound,
+} from "lucide-react";
 
 import { SiteHeader } from "@/components/layout/site-header";
+import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
 import { API_BASE_URL, type ApiResponse } from "@/lib/api";
 import { buildSeoMetadata, type SeoSetting } from "@/lib/seo";
 
@@ -81,7 +88,10 @@ function renderContent(content: string) {
     .map((block) => block.trim())
     .filter(Boolean)
     .map((block) => {
-      const lines = block.split("\n").map((line) => line.trim()).filter(Boolean);
+      const lines = block
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean);
       const bulletLines = lines.filter((line) => /^[-*]\s+/.test(line));
 
       if (bulletLines.length === lines.length) {
@@ -110,7 +120,13 @@ function uniqueBySlug(blogs: Blog[]) {
   });
 }
 
-function SidebarPost({ blog, compact = false }: { blog: Blog; compact?: boolean }) {
+function SidebarPost({
+  blog,
+  compact = false,
+}: {
+  blog: Blog;
+  compact?: boolean;
+}) {
   return (
     <Link
       href={`/blog/${blog.slug}`}
@@ -137,7 +153,9 @@ function SidebarPost({ blog, compact = false }: { blog: Blog; compact?: boolean 
   );
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { slug } = await params;
 
   try {
@@ -164,23 +182,24 @@ export default async function BlogDetailPage({ params }: PageProps) {
   const otherBlogs = blogs.filter((item) => item.slug !== blog.slug);
   const blogCategory = blog.category || "General";
   const relatedBlogs = uniqueBySlug([
-    ...otherBlogs.filter((item) => (item.category || "General") === blogCategory),
-    ...otherBlogs.filter((item) => (item.tags ?? []).some((tag) => (blog.tags ?? []).includes(tag))),
+    ...otherBlogs.filter(
+      (item) => (item.category || "General") === blogCategory,
+    ),
+    ...otherBlogs.filter((item) =>
+      (item.tags ?? []).some((tag) => (blog.tags ?? []).includes(tag)),
+    ),
     ...otherBlogs,
   ]).slice(0, 4);
   const featuredBlogs = uniqueBySlug([
     ...otherBlogs.filter((item) => item.featured),
     ...otherBlogs,
   ]).slice(0, 5);
-  const categoryGroups = [...otherBlogs, blog].reduce(
-    (groups, item) => {
-      const category = item.category || "General";
-      const current = groups.get(category) ?? [];
-      groups.set(category, [...current, item]);
-      return groups;
-    },
-    new Map<string, Blog[]>(),
-  );
+  const categoryGroups = [...otherBlogs, blog].reduce((groups, item) => {
+    const category = item.category || "General";
+    const current = groups.get(category) ?? [];
+    groups.set(category, [...current, item]);
+    return groups;
+  }, new Map<string, Blog[]>());
   const relatedCategories = [...categoryGroups.entries()]
     .sort((left, right) => {
       if (left[0] === blogCategory) return -1;
@@ -221,9 +240,18 @@ export default async function BlogDetailPage({ params }: PageProps) {
                 ))}
               </div>
 
-              <h1 className="page-main-heading mt-5 max-w-5xl">
-                {blog.title}
-              </h1>
+              {blog.title.trim().split(/\s+/).length > 4 ? (
+                <ServiceGradientHeading
+                  as="h1"
+                  className="page-main-heading mt-5 max-w-5xl"
+                >
+                  {blog.title}
+                </ServiceGradientHeading>
+              ) : (
+                <h1 className="page-main-heading mt-5 max-w-5xl">
+                  {blog.title}
+                </h1>
+              )}
               <p className="mt-6 max-w-3xl text-[16px] leading-8 text-[color:var(--muted-foreground)]">
                 {blog.excerpt}
               </p>
@@ -319,7 +347,8 @@ export default async function BlogDetailPage({ params }: PageProps) {
               </h2>
               <div className="space-y-3">
                 {relatedCategories.map(([category, items]) => {
-                  const firstPost = items.find((item) => item.slug !== blog.slug) ?? items[0];
+                  const firstPost =
+                    items.find((item) => item.slug !== blog.slug) ?? items[0];
 
                   return (
                     <Link

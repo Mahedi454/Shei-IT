@@ -65,7 +65,7 @@ export function ServicesSection() {
             return (
               <article
                 key={item.title}
-                className="rounded-[2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-8 shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none"
+                className="rounded-[1.4rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-6 shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none md:rounded-[2rem] md:p-8"
               >
                 <span
                   className={`inline-flex h-16 w-16 items-center justify-center rounded-[1.4rem] ${accentMap[item.accent]}`}
@@ -73,7 +73,7 @@ export function ServicesSection() {
                   <Icon className="h-7 w-7" strokeWidth={2.1} />
                 </span>
 
-                <h3 className="mt-6 max-w-[12ch] text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.05em] text-[color:var(--foreground)]">
+                <h3 className="mt-5 max-w-[12ch] text-[1.55rem] font-semibold leading-[1.1] tracking-[-0.05em] text-[color:var(--foreground)] md:mt-6 md:text-[1.85rem]">
                   {item.title}
                 </h3>
 

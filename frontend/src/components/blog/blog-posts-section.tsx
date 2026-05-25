@@ -14,6 +14,11 @@ import { useEffect, useMemo, useState } from "react";
 
 import { apiRequest } from "@/lib/api";
 import { PublicErrorState } from "@/components/public/public-error-state";
+import {
+  blogTopicOptions,
+  getBlogTopicSearchText,
+  topicMatchesValue,
+} from "@/lib/services";
 
 type Blog = {
   id: string;
@@ -22,6 +27,7 @@ type Blog = {
   excerpt: string;
   content: string;
   coverImage?: string | null;
+  category?: string | null;
   tags?: string[];
   authorName?: string | null;
   readTime?: string | null;
@@ -29,14 +35,7 @@ type Blog = {
   publishedAt?: string | null;
 };
 
-const fallbackTopics = [
-  "Web Development",
-  "Mobile Development",
-  "SEO & Marketing",
-  "Hosting & DevOps",
-  "Business Growth",
-  "Tips & Guides",
-] as const;
+const fallbackTopics = blogTopicOptions.map((topic) => topic.label);
 
 function BlogThumbnail({
   image,
@@ -53,7 +52,11 @@ function BlogThumbnail({
         <img
           src={image}
           alt={title}
-          className={compact ? "aspect-square h-full w-full object-cover" : "h-[200px] w-full object-cover"}
+          className={
+            compact
+              ? "aspect-square h-full w-full object-cover"
+              : "h-[200px] w-full object-cover"
+          }
           loading="lazy"
         />
       </div>
@@ -93,18 +96,27 @@ export function BlogPostsSection() {
     loadBlogs();
   }, []);
 
-  const activeTopic = searchParams.get("topic")?.trim().toLowerCase() ?? "";
+  const activeTopic = searchParams.get("topic")?.trim() ?? "";
   const activeSearch = searchParams.get("search")?.trim().toLowerCase() ?? "";
 
   const filteredBlogs = useMemo(() => {
     return blogs.filter((blog) => {
       const tags = blog.tags ?? [];
+      const category = blog.category ?? "";
       const matchesTopic =
-        !activeTopic || tags.some((tag) => tag.toLowerCase() === activeTopic);
-      const searchableText = [blog.title, blog.excerpt, blog.content, ...tags]
+        !activeTopic ||
+        topicMatchesValue(activeTopic, category) ||
+        tags.some((tag) => topicMatchesValue(activeTopic, tag));
+      const searchableText = [
+        blog.title,
+        blog.excerpt,
+        blog.content,
+        getBlogTopicSearchText(category, tags),
+      ]
         .join(" ")
         .toLowerCase();
-      const matchesSearch = !activeSearch || searchableText.includes(activeSearch);
+      const matchesSearch =
+        !activeSearch || searchableText.includes(activeSearch);
 
       return matchesTopic && matchesSearch;
     });
@@ -118,9 +130,17 @@ export function BlogPostsSection() {
     const counts = new Map<string, number>();
 
     blogs.forEach((blog) => {
-      (blog.tags ?? []).forEach((tag) => {
-        counts.set(tag, (counts.get(tag) ?? 0) + 1);
-      });
+      const category = blog.category?.trim() ?? "";
+      const topic = blogTopicOptions.find(
+        (item) =>
+          topicMatchesValue(item.value, category) ||
+          (blog.tags ?? []).some((tag) => topicMatchesValue(item.value, tag)),
+      );
+      const topicLabel = topic?.label ?? category;
+
+      if (topicLabel) {
+        counts.set(topicLabel, (counts.get(topicLabel) ?? 0) + 1);
+      }
     });
 
     const dynamicTopics = [...counts.entries()]
@@ -170,11 +190,14 @@ export function BlogPostsSection() {
           ) : featuredPost ? (
             <>
               <article className="mt-5 grid gap-7 border-b border-[color:var(--button-border)] pb-8 lg:grid-cols-[0.88fr_1fr]">
-                <BlogThumbnail image={featuredPost.coverImage} title={featuredPost.title} />
+                <BlogThumbnail
+                  image={featuredPost.coverImage}
+                  title={featuredPost.title}
+                />
 
                 <div className="flex flex-col justify-center">
                   <span className="w-fit rounded-full bg-[color:var(--button-secondary-icon)] px-3 py-1 text-[12px] font-semibold text-[color:var(--primary)]">
-                    {(featuredPost.tags ?? [])[0] ?? "Latest"}
+                    {featuredPost.category ?? "Latest"}
                   </span>
                   <h2 className="mt-4 max-w-[24ch] text-[1.65rem] font-semibold leading-tight tracking-[-0.04em] text-[color:var(--foreground)]">
                     {featuredPost.title}
@@ -189,9 +212,13 @@ export function BlogPostsSection() {
                     </p>
                     <p>
                       {featuredPost.publishedAt
-                        ? new Date(featuredPost.publishedAt).toLocaleDateString()
+                        ? new Date(
+                            featuredPost.publishedAt,
+                          ).toLocaleDateString()
                         : "Latest"}
-                      {featuredPost.readTime ? ` / ${featuredPost.readTime}` : ""}
+                      {featuredPost.readTime
+                        ? ` / ${featuredPost.readTime}`
+                        : ""}
                     </p>
                   </div>
 
@@ -214,16 +241,27 @@ export function BlogPostsSection() {
                 <div className="mt-6 grid gap-6 md:grid-cols-3">
                   {latestArticles.map((article) => (
                     <article key={article.id}>
-                      <BlogThumbnail image={article.coverImage} title={article.title} />
+                      <BlogThumbnail
+                        image={article.coverImage}
+                        title={article.title}
+                      />
                       <div className="mt-4 flex flex-wrap gap-2">
-                        {(article.tags ?? []).slice(0, 2).map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-full bg-[color:var(--button-secondary-icon)] px-2.5 py-1 text-[11px] font-semibold text-[color:var(--primary)]"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                        {Array.from(
+                          new Set(
+                            [article.category, ...(article.tags ?? [])].filter(
+                              (tag): tag is string => Boolean(tag),
+                            ),
+                          ),
+                        )
+                          .slice(0, 2)
+                          .map((tag) => (
+                            <span
+                              key={`article-chip-${article.id}-${tag}`}
+                              className="rounded-full bg-[color:var(--button-secondary-icon)] px-2.5 py-1 text-[11px] font-semibold text-[color:var(--primary)]"
+                            >
+                              {tag}
+                            </span>
+                          ))}
                       </div>
                       <h3 className="mt-4 text-[18px] font-semibold leading-snug tracking-[-0.035em] text-[color:var(--foreground)]">
                         {article.title}
@@ -285,8 +323,15 @@ export function BlogPostsSection() {
             <div className="mt-6 space-y-5">
               {popularPosts.length ? (
                 popularPosts.map((post, index) => (
-                  <article key={post.id} className="grid grid-cols-[4.25rem_1rem_1fr] gap-3">
-                    <BlogThumbnail image={post.coverImage} title={post.title} compact />
+                  <article
+                    key={post.id}
+                    className="grid grid-cols-[4.25rem_1rem_1fr] gap-3"
+                  >
+                    <BlogThumbnail
+                      image={post.coverImage}
+                      title={post.title}
+                      compact
+                    />
                     <span className="pt-1 text-[13px] font-semibold text-[color:var(--muted-foreground)]">
                       {index + 1}
                     </span>

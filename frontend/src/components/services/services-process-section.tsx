@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { signMahediDark, signMahediLight } from "@/assets";
+import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
 
 const processSteps = [
   {
@@ -62,7 +63,8 @@ const benefits = [
   },
   {
     title: "SEO & Performance Focus",
-    description: "We follow SEO best practices and ensure blazing fast performance.",
+    description:
+      "We follow SEO best practices and ensure blazing fast performance.",
     icon: ChartNoAxesColumnIncreasing,
     accent:
       "bg-[linear-gradient(180deg,rgba(111,231,200,0.2),rgba(111,231,200,0.08))] text-[color:var(--mint)]",
@@ -78,18 +80,18 @@ const benefits = [
 
 export function ServicesProcessSection() {
   return (
-    <section className="relative pb-24 lg:pb-28">
+    <section className="relative pb-14 md:pb-20 lg:pb-28">
       <div className="mx-auto w-11/12 max-w-[1440px]">
         <div className="mx-auto max-w-[42rem] text-center">
           <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
             Our Process
           </p>
-          <h2 className="mt-3 text-[2.25rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.85rem]">
+          <ServiceGradientHeading className="mt-3 text-[2rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.45rem] xl:text-[2.85rem]">
             Simple Process. Clear Delivery.
-          </h2>
+          </ServiceGradientHeading>
         </div>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-4">
+        <div className="mt-10 grid gap-7 md:grid-cols-2 xl:mt-12 xl:grid-cols-4 xl:gap-8">
           {processSteps.map((step, index) => {
             const Icon = step.icon;
             const isLast = index === processSteps.length - 1;
@@ -97,10 +99,10 @@ export function ServicesProcessSection() {
             return (
               <div key={step.title} className="relative">
                 {!isLast ? (
-                  <div className="pointer-events-none absolute left-[calc(100%-0.2rem)] top-1/2 hidden w-[calc(100%+0.4rem)] -translate-y-1/2 border-t-2 border-dashed border-[color:var(--primary-soft)]/50 lg:block" />
+                  <div className="pointer-events-none absolute left-[calc(100%-0.2rem)] top-1/2 hidden w-[calc(100%+0.4rem)] -translate-y-1/2 border-t-2 border-dashed border-[color:var(--primary-soft)]/50 xl:block" />
                 ) : null}
 
-                <article className="relative z-10 min-h-[170px] rounded-[1.4rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-7 pb-6 pt-12 shadow-[0_18px_44px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none">
+                <article className="relative z-10 min-h-[160px] rounded-[1.2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-5 pb-5 pt-12 shadow-[0_18px_44px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none xl:min-h-[170px] xl:rounded-[1.4rem] xl:px-7 xl:pb-6">
                   <span className="absolute -top-4 left-7 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] text-[15px] font-semibold text-[color:var(--primary)] shadow-[0_16px_36px_rgba(15,23,42,0.08)] dark:shadow-none">
                     {step.number}
                   </span>
@@ -122,13 +124,13 @@ export function ServicesProcessSection() {
           })}
         </div>
 
-        <div className="mt-20 grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
+        <div className="mt-12 grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-center xl:mt-20 xl:gap-12">
           <div className="relative">
             <div className="pointer-events-none absolute -left-10 bottom-4 hidden h-32 w-20 bg-[radial-gradient(circle,rgba(139,124,255,0.18)_1px,transparent_1px)] [background-size:12px_12px] lg:block" />
             <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
               Why Choose shei-it
             </p>
-            <h2 className="mt-4 text-[2.35rem] font-semibold leading-[1.08] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[3.1rem]">
+            <h2 className="mt-4 text-[2rem] font-semibold leading-[1.08] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.5rem] xl:text-[3.1rem]">
               Not Just Services.
               <span className="block">
                 A{" "}
@@ -138,8 +140,8 @@ export function ServicesProcessSection() {
               </span>
             </h2>
             <p className="mt-5 max-w-[31rem] text-[15px] leading-8 text-[color:var(--muted-foreground)]">
-              We focus on delivering value, building trust, and growing
-              together with our clients. Your success is always our priority.
+              We focus on delivering value, building trust, and growing together
+              with our clients. Your success is always our priority.
             </p>
 
             <div className="mt-7 flex items-center gap-1">
@@ -186,7 +188,7 @@ export function ServicesProcessSection() {
               return (
                 <article
                   key={benefit.title}
-                  className="flex min-h-[132px] items-center gap-5 rounded-[1.35rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-6 shadow-[0_18px_44px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none"
+                  className="flex min-h-[120px] items-center gap-4 rounded-[1.15rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5 shadow-[0_18px_44px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none xl:min-h-[132px] xl:gap-5 xl:rounded-[1.35rem] xl:p-6"
                 >
                   <span
                     className={`inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-[1.2rem] ${benefit.accent}`}

@@ -10,6 +10,7 @@ import {
   Smartphone,
 } from "lucide-react";
 
+import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
 import { servicesSection } from "@/config/site";
 
 const iconMap = {
@@ -26,18 +27,14 @@ const iconMap = {
 const accentMap = {
   violet:
     "bg-[linear-gradient(180deg,rgba(139,124,255,0.18),rgba(139,124,255,0.08))] text-[color:var(--primary)]",
-  blue:
-    "bg-[linear-gradient(180deg,rgba(93,174,255,0.18),rgba(93,174,255,0.08))] text-[color:var(--blue)]",
-  mint:
-    "bg-[linear-gradient(180deg,rgba(111,231,200,0.2),rgba(111,231,200,0.08))] text-[color:var(--mint)]",
+  blue: "bg-[linear-gradient(180deg,rgba(93,174,255,0.18),rgba(93,174,255,0.08))] text-[color:var(--blue)]",
+  mint: "bg-[linear-gradient(180deg,rgba(111,231,200,0.2),rgba(111,231,200,0.08))] text-[color:var(--mint)]",
   orange:
     "bg-[linear-gradient(180deg,rgba(255,159,90,0.18),rgba(255,159,90,0.08))] text-[color:var(--orange)]",
-  pink:
-    "bg-[linear-gradient(180deg,rgba(244,114,182,0.18),rgba(244,114,182,0.08))] text-[#ec4899]",
+  pink: "bg-[linear-gradient(180deg,rgba(244,114,182,0.18),rgba(244,114,182,0.08))] text-[#ec4899]",
   purple:
     "bg-[linear-gradient(180deg,rgba(167,139,250,0.18),rgba(167,139,250,0.08))] text-[color:var(--primary-soft)]",
-  sky:
-    "bg-[linear-gradient(180deg,rgba(159,220,255,0.2),rgba(159,220,255,0.08))] text-[color:var(--sky)]",
+  sky: "bg-[linear-gradient(180deg,rgba(159,220,255,0.2),rgba(159,220,255,0.08))] text-[color:var(--sky)]",
   indigo:
     "bg-[linear-gradient(180deg,rgba(99,102,241,0.18),rgba(99,102,241,0.08))] text-[#6366f1]",
 } as const;
@@ -50,22 +47,25 @@ export function ServicesCoreSection() {
           <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
             What We Can Build For You
           </p>
-          <h2 className="mt-3 text-[2.35rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[3rem]">
+          <ServiceGradientHeading
+            highlightText="Services"
+            className="mt-3 text-[2rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.5rem] xl:text-[3rem]"
+          >
             Our Core Services
-          </h2>
+          </ServiceGradientHeading>
           <p className="mt-3 text-[15px] leading-8 text-[color:var(--muted-foreground)]">
             Focused services for businesses that want practical digital growth.
           </p>
         </div>
 
-        <div className="mt-9 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:mt-9 xl:grid-cols-4 xl:gap-5">
           {servicesSection.items.map((item) => {
             const Icon = iconMap[item.icon];
 
             return (
               <article
                 key={item.title}
-                className="flex min-h-[198px] flex-col rounded-[1.45rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5 shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none"
+                className="flex min-h-[178px] flex-col rounded-[1.2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5 shadow-[0_20px_50px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none xl:min-h-[198px] xl:rounded-[1.45rem]"
               >
                 <div className="flex items-start gap-5">
                   <span

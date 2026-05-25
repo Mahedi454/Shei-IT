@@ -44,20 +44,20 @@ export function ServiceDetailPage({ service }: { service: Service }) {
             <span className="text-[color:var(--foreground)]">{service.title}</span>
           </nav>
 
-          <div className="mt-10 grid items-center gap-10 lg:grid-cols-[0.86fr_1.14fr]">
+          <div className="mt-10 grid items-center gap-10 md:grid-cols-[0.86fr_1.14fr]">
             <div className="max-w-[44rem]">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-[color:var(--hero-pill)] px-4 py-2 text-[12px] font-semibold text-[color:var(--primary)] shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/10">
                 <Sparkles className="h-3.5 w-3.5 fill-[color:var(--primary)]" />
                 Our Services
               </div>
 
-              <h1 className="mt-6 text-[3rem] font-semibold leading-[1.04] tracking-[-0.07em] text-[color:var(--foreground)] sm:text-[4rem] lg:text-[4.5rem]">
+              <h1 className="mt-6 text-[2.2rem] font-semibold leading-[1.06] tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[3.2rem] lg:text-[4rem] xl:text-[4.5rem]">
                 {titleParts.plain ? `${titleParts.plain} ` : ""}
                 <span className="bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
                   {titleParts.highlight || service.title}
                 </span>
               </h1>
-              <p className="mt-5 max-w-[38rem] text-[17px] font-medium leading-8 text-[color:var(--muted-foreground)]">
+              <p className="mt-5 max-w-[38rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)] sm:text-[17px]">
                 {service.heroSummary}
               </p>
               <p className="mt-4 max-w-[40rem] text-[15px] leading-8 text-[color:var(--muted-foreground)]">
@@ -73,16 +73,16 @@ export function ServiceDetailPage({ service }: { service: Service }) {
                   return (
                     <div
                       key={`${item.label}-${index}`}
-                      className="flex items-center gap-3 rounded-[1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-4 py-3 shadow-[0_16px_36px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:shadow-none"
+                      className="flex min-w-0 items-center gap-3 rounded-[1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-4 py-3 shadow-[0_16px_36px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:shadow-none"
                     >
                       <span className="inline-flex h-9 w-9 items-center justify-center rounded-[0.75rem] bg-[color:var(--stat-icon-bg)] text-[color:var(--primary)]">
                         <Icon className="h-4.5 w-4.5" strokeWidth={2.2} />
                       </span>
-                      <span>
+                      <span className="min-w-0">
                         <span className="block text-[14px] font-bold text-[color:var(--foreground)]">
                           {item.value}
                         </span>
-                        <span className="block text-[11px] font-semibold text-[color:var(--muted-foreground)]">
+                        <span className="block truncate text-[11px] font-semibold text-[color:var(--muted-foreground)]">
                           {item.label}
                         </span>
                       </span>
@@ -111,7 +111,7 @@ export function ServiceDetailPage({ service }: { service: Service }) {
               </div>
             </div>
 
-            <div className="relative flex items-center justify-center lg:justify-end">
+            <div className="relative hidden items-center justify-center md:flex md:justify-end">
               <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--purple-glow)] blur-[120px]" />
               <div className="relative w-full max-w-[760px] overflow-hidden rounded-[2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_24px_60px_rgba(15,23,42,0.12)]">
                 {service.heroImageUrl ? (
@@ -513,7 +513,7 @@ export function ServiceDetailPage({ service }: { service: Service }) {
               </a>
             </div>
 
-            <div className="pointer-events-none absolute right-0 top-1/2 hidden w-[52%] max-w-[430px] -translate-y-1/2 sm:block xl:w-[56%]">
+            <div className="pointer-events-none absolute right-0 top-1/2 hidden w-[52%] max-w-[430px] -translate-y-1/2 xl:block xl:w-[56%]">
               <img src={ctaImage.src} alt="Launch CTA illustration" className="h-auto w-full object-contain" />
             </div>
           </div>

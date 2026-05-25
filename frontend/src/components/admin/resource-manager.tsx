@@ -15,6 +15,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 
 import { AdminModal } from "@/components/admin/admin-modal";
 import { ActionConfirmModal } from "@/components/admin/action-confirm-modal";
+import { servicesSection } from "@/config/site";
 import { apiRequest } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
@@ -113,15 +114,10 @@ const blogTagOptions = [
   "Support",
 ] as const;
 
-const blogCategoryOptions = [
-  "Web Development",
-  "SEO & Marketing",
-  "Performance",
-  "Product Strategy",
-  "Hosting & DevOps",
-  "Mobile Apps",
-  "Business Growth",
-] as const;
+const blogCategoryOptions: string[] = servicesSection.items.map(
+  (service) => service.title,
+);
+const defaultBlogCategory = blogCategoryOptions[0] ?? "General";
 
 const projectCategoryOptions = [
   "Website",
@@ -168,7 +164,8 @@ const defaultArchitectureSteps: ArchitectureStep[] = [
 const defaultIntegrationCards: DetailCard[] = [
   {
     title: "Workflow behavior",
-    description: "Important user actions are coordinated with backend-confirmed state.",
+    description:
+      "Important user actions are coordinated with backend-confirmed state.",
   },
   {
     title: "Why it is reliable",
@@ -196,7 +193,7 @@ const initialForm = {
   description: "",
   excerpt: "",
   featured: false,
-  category: "Web Development",
+  category: defaultBlogCategory,
   authorName: "Shei IT Team",
   readTime: "",
   seoTitle: "",
@@ -252,7 +249,10 @@ const createDefaultSeo = (): SeoForm => ({
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   Boolean(value) && typeof value === "object" && !Array.isArray(value);
 
-const readDetailCards = (value: unknown, fallback: DetailCard[]): DetailCard[] => {
+const readDetailCards = (
+  value: unknown,
+  fallback: DetailCard[],
+): DetailCard[] => {
   if (!Array.isArray(value)) {
     return fallback;
   }
@@ -265,10 +265,13 @@ const readDetailCards = (value: unknown, fallback: DetailCard[]): DetailCard[] =
 
       return {
         title: typeof item.title === "string" ? item.title : "",
-        description: typeof item.description === "string" ? item.description : "",
+        description:
+          typeof item.description === "string" ? item.description : "",
       };
     })
-    .filter((item): item is DetailCard => Boolean(item?.title || item?.description));
+    .filter((item): item is DetailCard =>
+      Boolean(item?.title || item?.description),
+    );
 
   return parsed.length ? parsed : fallback;
 };
@@ -288,11 +291,15 @@ const readFeatures = (value: unknown): FeatureGroup[] => {
         title: typeof item.title === "string" ? item.title : "",
         icon: typeof item.icon === "string" ? item.icon : "",
         items: Array.isArray(item.items)
-          ? item.items.filter((entry): entry is string => typeof entry === "string")
+          ? item.items.filter(
+              (entry): entry is string => typeof entry === "string",
+            )
           : [],
       };
     })
-    .filter((item): item is FeatureGroup => Boolean(item?.title || item?.items.length));
+    .filter((item): item is FeatureGroup =>
+      Boolean(item?.title || item?.items.length),
+    );
 
   return parsed.length ? parsed : defaultFeatures;
 };
@@ -309,12 +316,18 @@ const readArchitectureSteps = (value: unknown): ArchitectureStep[] => {
       }
 
       return {
-        number: typeof item.number === "string" ? item.number : String(index + 1).padStart(2, "0"),
+        number:
+          typeof item.number === "string"
+            ? item.number
+            : String(index + 1).padStart(2, "0"),
         title: typeof item.title === "string" ? item.title : "",
-        description: typeof item.description === "string" ? item.description : "",
+        description:
+          typeof item.description === "string" ? item.description : "",
       };
     })
-    .filter((item): item is ArchitectureStep => Boolean(item?.title || item?.description));
+    .filter((item): item is ArchitectureStep =>
+      Boolean(item?.title || item?.description),
+    );
 
   return parsed.length ? parsed : defaultArchitectureSteps;
 };
@@ -333,11 +346,15 @@ const readTechStack = (value: unknown): TechStackGroup[] => {
       return {
         title: typeof item.title === "string" ? item.title : "",
         tools: Array.isArray(item.tools)
-          ? item.tools.filter((entry): entry is string => typeof entry === "string")
+          ? item.tools.filter(
+              (entry): entry is string => typeof entry === "string",
+            )
           : [],
       };
     })
-    .filter((item): item is TechStackGroup => Boolean(item?.title || item?.tools.length));
+    .filter((item): item is TechStackGroup =>
+      Boolean(item?.title || item?.tools.length),
+    );
 
   return parsed.length ? parsed : defaultTechStack;
 };
@@ -354,7 +371,8 @@ const normalizeOptionalUrl = (value: string) => {
 
 const normalizeOptionalDetailText = (value: string) => {
   const trimmed = value.trim();
-  return trimmed && !["What the project is...", "Why it was built..."].includes(trimmed)
+  return trimmed &&
+    !["What the project is...", "Why it was built..."].includes(trimmed)
     ? trimmed
     : undefined;
 };
@@ -400,7 +418,9 @@ function SeoEditor({
   seo: SeoForm;
   updateSeo: (value: Partial<SeoForm>) => void;
 }) {
-  const slugPreview = seo.slug ? `/${seo.slug.replace(/^\/+/, "")}` : "/your-slug";
+  const slugPreview = seo.slug
+    ? `/${seo.slug.replace(/^\/+/, "")}`
+    : "/your-slug";
   const previewTitle = seo.metaTitle || "SEO title preview";
   const previewDescription =
     seo.metaDescription || "Meta description preview for search results.";
@@ -412,7 +432,8 @@ function SeoEditor({
           SEO Settings
         </h3>
         <p className="mt-1 text-[13px] leading-6 text-[color:var(--muted-foreground)]">
-          Control search previews, social sharing, canonical URL, and robots rules.
+          Control search previews, social sharing, canonical URL, and robots
+          rules.
         </p>
       </div>
 
@@ -438,7 +459,9 @@ function SeoEditor({
           <input
             className="admin-input w-full"
             value={seo.focusKeyword}
-            onChange={(event) => updateSeo({ focusKeyword: event.target.value })}
+            onChange={(event) =>
+              updateSeo({ focusKeyword: event.target.value })
+            }
             placeholder="Primary keyword"
           />
         </label>
@@ -454,7 +477,9 @@ function SeoEditor({
         <textarea
           className="admin-input min-h-24 w-full"
           value={seo.metaDescription}
-          onChange={(event) => updateSeo({ metaDescription: event.target.value })}
+          onChange={(event) =>
+            updateSeo({ metaDescription: event.target.value })
+          }
           placeholder="Search result description"
         />
       </label>
@@ -478,7 +503,9 @@ function SeoEditor({
           <input
             className="admin-input w-full"
             value={seo.canonicalUrl}
-            onChange={(event) => updateSeo({ canonicalUrl: event.target.value })}
+            onChange={(event) =>
+              updateSeo({ canonicalUrl: event.target.value })
+            }
             placeholder="https://example.com/page"
           />
         </label>
@@ -572,7 +599,9 @@ function SeoEditor({
 
       <div className="mt-5 rounded-[0.95rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] p-4">
         <p className="text-[12px] text-emerald-500">shei-it.com{slugPreview}</p>
-        <p className="mt-1 text-[18px] font-medium text-[#8ab4f8]">{previewTitle}</p>
+        <p className="mt-1 text-[18px] font-medium text-[#8ab4f8]">
+          {previewTitle}
+        </p>
         <p className="mt-1 text-[13px] leading-6 text-[color:var(--muted-foreground)]">
           {previewDescription}
         </p>
@@ -598,7 +627,9 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
 
   const counts = useMemo(() => {
     const total = items.length;
-    const published = items.filter((item) => item.status === "published").length;
+    const published = items.filter(
+      (item) => item.status === "published",
+    ).length;
     return { draft: total - published, published, total };
   }, [items]);
 
@@ -607,7 +638,9 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
 
     try {
       const token = await getToken();
-      const data = await apiRequest<ResourceItem[]>(`/${resource}/admin/all`, { token });
+      const data = await apiRequest<ResourceItem[]>(`/${resource}/admin/all`, {
+        token,
+      });
       setItems(data);
     } catch (error) {
       showToast({
@@ -641,7 +674,7 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       description: item.description ?? "",
       excerpt: item.excerpt ?? "",
       featured: Boolean(item.featured),
-      category: item.category ?? "Web Development",
+      category: item.category ?? defaultBlogCategory,
       authorName: item.authorName ?? "Shei IT Team",
       readTime: item.readTime ?? "",
       seoTitle: item.seoTitle ?? "",
@@ -658,7 +691,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       features: readFeatures(item.features),
       accessRoles: readDetailCards(item.accessRoles, defaultAccessRoles),
       architectureSteps: readArchitectureSteps(item.architectureSteps),
-      integrationCards: readDetailCards(item.integrationCards, defaultIntegrationCards),
+      integrationCards: readDetailCards(
+        item.integrationCards,
+        defaultIntegrationCards,
+      ),
       techStack: readTechStack(item.techStack),
       image: item.coverImage ?? item.image ?? "",
       metric: item.metric ?? "",
@@ -708,7 +744,11 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
     }));
   };
 
-  const updateFeatureItem = (groupIndex: number, itemIndex: number, value: string) => {
+  const updateFeatureItem = (
+    groupIndex: number,
+    itemIndex: number,
+    value: string,
+  ) => {
     setForm((current) => ({
       ...current,
       features: current.features.map((group, currentGroupIndex) =>
@@ -737,7 +777,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
     }));
   };
 
-  const updateArchitectureStep = (index: number, value: Partial<ArchitectureStep>) => {
+  const updateArchitectureStep = (
+    index: number,
+    value: Partial<ArchitectureStep>,
+  ) => {
     setForm((current) => ({
       ...current,
       architectureSteps: current.architectureSteps.map((item, itemIndex) =>
@@ -755,7 +798,11 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
     }));
   };
 
-  const updateTechTool = (groupIndex: number, toolIndex: number, value: string) => {
+  const updateTechTool = (
+    groupIndex: number,
+    toolIndex: number,
+    value: string,
+  ) => {
     setForm((current) => ({
       ...current,
       techStack: current.techStack.map((group, currentGroupIndex) =>
@@ -829,8 +876,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
             excerpt: form.excerpt.trim(),
             content: form.content.trim(),
             coverImage: normalizeOptionalUrl(form.image),
-            category: normalizeOptionalText(form.category) ?? "General",
-            authorName: normalizeOptionalText(form.authorName) ?? "Shei IT Team",
+            category:
+              normalizeOptionalText(form.category) ?? defaultBlogCategory,
+            authorName:
+              normalizeOptionalText(form.authorName) ?? "Shei IT Team",
             readTime: normalizeOptionalText(form.readTime),
             featured: form.featured,
             tags: form.selectedLabels,
@@ -884,7 +933,9 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       );
 
       showToast({
-        title: editing ? `${title.slice(0, -1)} updated` : `${title.slice(0, -1)} created`,
+        title: editing
+          ? `${title.slice(0, -1)} updated`
+          : `${title.slice(0, -1)} created`,
         description: editing
           ? "Your changes are now saved successfully."
           : "The new item has been created successfully.",
@@ -896,7 +947,8 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
     } catch {
       showToast({
         title: `${title.slice(0, -1)} not saved`,
-        description: "We could not save these changes right now. Please review the form and try again.",
+        description:
+          "We could not save these changes right now. Please review the form and try again.",
         tone: "error",
       });
     } finally {
@@ -927,7 +979,8 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
     } catch {
       showToast({
         title: "Delete failed",
-        description: "We could not remove this item right now. Please try again in a moment.",
+        description:
+          "We could not remove this item right now. Please try again in a moment.",
         tone: "error",
       });
     }
@@ -944,8 +997,8 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
             {title}
           </h1>
           <p className="mt-3 max-w-3xl text-[15px] leading-8 text-[color:var(--muted-foreground)]">
-            Review existing {title.toLowerCase()}, edit them in place, or add new ones
-            without leaving the page.
+            Review existing {title.toLowerCase()}, edit them in place, or add
+            new ones without leaving the page.
           </p>
         </div>
 
@@ -969,7 +1022,9 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
             key={label}
             className="rounded-[1.15rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] px-5 py-4"
           >
-            <p className="text-[13px] text-[color:var(--muted-foreground)]">{label}</p>
+            <p className="text-[13px] text-[color:var(--muted-foreground)]">
+              {label}
+            </p>
             <p className="mt-2 text-[1.8rem] font-semibold tracking-[-0.05em] text-[color:var(--foreground)]">
               {loading ? "—" : value}
             </p>
@@ -985,7 +1040,14 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
         ) : items.length ? (
           <div className="grid gap-6 xl:grid-cols-2">
             {items.map((item) => {
-              const labels = item.tags ?? item.categories ?? [];
+              const labels = isBlog
+                ? Array.from(
+                    new Set([
+                      item.category ?? defaultBlogCategory,
+                      ...(item.tags ?? []),
+                    ]),
+                  )
+                : (item.categories ?? []);
               const image = item.coverImage ?? item.image ?? "";
 
               return (
@@ -1073,23 +1135,37 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                       <div className="text-[12px] text-[color:var(--muted-foreground)]">
                         {isBlog ? (
                           item.publishedAt ? (
-                            <>Published {new Date(item.publishedAt).toLocaleDateString()}</>
+                            <>
+                              Published{" "}
+                              {new Date(item.publishedAt).toLocaleDateString()}
+                            </>
                           ) : (
-                            <>Draft saved {new Date(item.createdAt).toLocaleDateString()}</>
+                            <>
+                              Draft saved{" "}
+                              {new Date(item.createdAt).toLocaleDateString()}
+                            </>
                           )
                         ) : item.metric || item.metricLabel ? (
                           <>
-                            {item.metric || "Metric"} {item.metricLabel ? `/ ${item.metricLabel}` : ""}
+                            {item.metric || "Metric"}{" "}
+                            {item.metricLabel ? `/ ${item.metricLabel}` : ""}
                           </>
                         ) : (
-                          <>Created {new Date(item.createdAt).toLocaleDateString()}</>
+                          <>
+                            Created{" "}
+                            {new Date(item.createdAt).toLocaleDateString()}
+                          </>
                         )}
                       </div>
 
                       <div className="flex items-center gap-3">
                         {item.status === "published" ? (
                           <a
-                            href={isBlog ? `/blog/${item.slug}` : `/portfolio/${item.slug}`}
+                            href={
+                              isBlog
+                                ? `/blog/${item.slug}`
+                                : `/portfolio/${item.slug}`
+                            }
                             className="inline-flex items-center gap-2 text-[13px] font-semibold text-[color:var(--primary)]"
                           >
                             <Eye className="h-4 w-4" />
@@ -1118,8 +1194,8 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
               No {title.toLowerCase()} yet
             </h3>
             <p className="mt-2 text-[14px] text-[color:var(--muted-foreground)]">
-              Add your first {title.slice(0, -1).toLowerCase()} to start populating the
-              live frontend.
+              Add your first {title.slice(0, -1).toLowerCase()} to start
+              populating the live frontend.
             </p>
             <button
               type="button"
@@ -1136,7 +1212,9 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       <AdminModal
         open={openModal}
         onClose={closeModal}
-        title={editing ? `Edit ${title.slice(0, -1)}` : `Add ${title.slice(0, -1)}`}
+        title={
+          editing ? `Edit ${title.slice(0, -1)}` : `Add ${title.slice(0, -1)}`
+        }
         description={
           isBlog
             ? "Fill in the article details and choose the tags and publish status."
@@ -1153,7 +1231,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                 className="admin-input w-full"
                 value={form.title}
                 onChange={(event) =>
-                  setForm((current) => ({ ...current, title: event.target.value }))
+                  setForm((current) => ({
+                    ...current,
+                    title: event.target.value,
+                  }))
                 }
                 placeholder="Enter a strong title"
               />
@@ -1166,7 +1247,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                 className="admin-input w-full"
                 value={form.slug}
                 onChange={(event) =>
-                  setForm((current) => ({ ...current, slug: event.target.value }))
+                  setForm((current) => ({
+                    ...current,
+                    slug: event.target.value,
+                  }))
                 }
                 placeholder="Optional custom slug"
               />
@@ -1181,7 +1265,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
               className="admin-input w-full"
               value={form.image}
               onChange={(event) =>
-                setForm((current) => ({ ...current, image: event.target.value }))
+                setForm((current) => ({
+                  ...current,
+                  image: event.target.value,
+                }))
               }
               placeholder="https://..."
             />
@@ -1209,7 +1296,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                     className="admin-input w-full"
                     value={form.category}
                     onChange={(event) =>
-                      setForm((current) => ({ ...current, category: event.target.value }))
+                      setForm((current) => ({
+                        ...current,
+                        category: event.target.value,
+                      }))
                     }
                   >
                     {blogCategoryOptions.map((category) => (
@@ -1227,7 +1317,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                     className="admin-input w-full"
                     value={form.authorName}
                     onChange={(event) =>
-                      setForm((current) => ({ ...current, authorName: event.target.value }))
+                      setForm((current) => ({
+                        ...current,
+                        authorName: event.target.value,
+                      }))
                     }
                     placeholder="Shei IT Team"
                   />
@@ -1240,7 +1333,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                     className="admin-input w-full"
                     value={form.readTime}
                     onChange={(event) =>
-                      setForm((current) => ({ ...current, readTime: event.target.value }))
+                      setForm((current) => ({
+                        ...current,
+                        readTime: event.target.value,
+                      }))
                     }
                     placeholder="5 min read"
                   />
@@ -1255,7 +1351,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                   className="admin-input min-h-24 w-full"
                   value={form.excerpt}
                   onChange={(event) =>
-                    setForm((current) => ({ ...current, excerpt: event.target.value }))
+                    setForm((current) => ({
+                      ...current,
+                      excerpt: event.target.value,
+                    }))
                   }
                   placeholder="Short summary for cards and previews"
                 />
@@ -1268,7 +1367,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                   className="admin-input min-h-56 w-full"
                   value={form.content}
                   onChange={(event) =>
-                    setForm((current) => ({ ...current, content: event.target.value }))
+                    setForm((current) => ({
+                      ...current,
+                      content: event.target.value,
+                    }))
                   }
                   placeholder="Write the full blog content"
                 />
@@ -1286,7 +1388,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                   className="admin-input min-h-40 w-full"
                   value={form.description}
                   onChange={(event) =>
-                    setForm((current) => ({ ...current, description: event.target.value }))
+                    setForm((current) => ({
+                      ...current,
+                      description: event.target.value,
+                    }))
                   }
                   placeholder="Describe the project, value, and scope"
                 />
@@ -1301,7 +1406,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                     className="admin-input w-full"
                     value={form.metric}
                     onChange={(event) =>
-                      setForm((current) => ({ ...current, metric: event.target.value }))
+                      setForm((current) => ({
+                        ...current,
+                        metric: event.target.value,
+                      }))
                     }
                     placeholder="+42%"
                   />
@@ -1330,7 +1438,8 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                     Project record
                   </h3>
                   <p className="mt-1 text-[13px] leading-6 text-[color:var(--muted-foreground)]">
-                    One project record powers cards, the portfolio page, and the full case-study page.
+                    One project record powers cards, the portfolio page, and the
+                    full case-study page.
                   </p>
                 </div>
 
@@ -1397,7 +1506,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                       className="admin-input min-h-32 w-full"
                       value={form.overview}
                       onChange={(event) =>
-                        setForm((current) => ({ ...current, overview: event.target.value }))
+                        setForm((current) => ({
+                          ...current,
+                          overview: event.target.value,
+                        }))
                       }
                       placeholder="What the project is..."
                     />
@@ -1410,7 +1522,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                       className="admin-input min-h-32 w-full"
                       value={form.purpose}
                       onChange={(event) =>
-                        setForm((current) => ({ ...current, purpose: event.target.value }))
+                        setForm((current) => ({
+                          ...current,
+                          purpose: event.target.value,
+                        }))
                       }
                       placeholder="Why it was built..."
                     />
@@ -1442,7 +1557,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                       className="admin-input w-full"
                       value={form.delivery}
                       onChange={(event) =>
-                        setForm((current) => ({ ...current, delivery: event.target.value }))
+                        setForm((current) => ({
+                          ...current,
+                          delivery: event.target.value,
+                        }))
                       }
                       placeholder="Responsive product experience"
                     />
@@ -1482,7 +1600,9 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                             className="admin-input w-full"
                             value={feature.title}
                             onChange={(event) =>
-                              updateFeature(featureIndex, { title: event.target.value })
+                              updateFeature(featureIndex, {
+                                title: event.target.value,
+                              })
                             }
                             placeholder="Product Scope"
                           />
@@ -1490,7 +1610,9 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                             className="admin-input w-full"
                             value={feature.icon}
                             onChange={(event) =>
-                              updateFeature(featureIndex, { icon: event.target.value })
+                              updateFeature(featureIndex, {
+                                icon: event.target.value,
+                              })
                             }
                           >
                             <option value="dashboard">Dashboard</option>
@@ -1525,7 +1647,11 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                                 className="admin-input w-full"
                                 value={item}
                                 onChange={(event) =>
-                                  updateFeatureItem(featureIndex, itemIndex, event.target.value)
+                                  updateFeatureItem(
+                                    featureIndex,
+                                    itemIndex,
+                                    event.target.value,
+                                  )
                                 }
                                 placeholder="Important product capability"
                               />
@@ -1655,10 +1781,9 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                             architectureSteps: [
                               ...current.architectureSteps,
                               {
-                                number: String(current.architectureSteps.length + 1).padStart(
-                                  2,
-                                  "0",
-                                ),
+                                number: String(
+                                  current.architectureSteps.length + 1,
+                                ).padStart(2, "0"),
                                 title: "",
                                 description: "",
                               },
@@ -1711,9 +1836,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                           onClick={() =>
                             setForm((current) => ({
                               ...current,
-                              architectureSteps: current.architectureSteps.filter(
-                                (_item, index) => index !== stepIndex,
-                              ),
+                              architectureSteps:
+                                current.architectureSteps.filter(
+                                  (_item, index) => index !== stepIndex,
+                                ),
                             }))
                           }
                           className="inline-flex h-[50px] items-center justify-center rounded-full border border-rose-500/30 px-4 text-rose-400"
@@ -1734,7 +1860,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                         onClick={() =>
                           setForm((current) => ({
                             ...current,
-                            techStack: [...current.techStack, { title: "", tools: [""] }],
+                            techStack: [
+                              ...current.techStack,
+                              { title: "", tools: [""] },
+                            ],
                           }))
                         }
                         className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] px-3 py-2 text-[12px] font-semibold text-[color:var(--foreground)]"
@@ -1753,7 +1882,9 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                             className="admin-input w-full"
                             value={group.title}
                             onChange={(event) =>
-                              updateTechStack(groupIndex, { title: event.target.value })
+                              updateTechStack(groupIndex, {
+                                title: event.target.value,
+                              })
                             }
                             placeholder="Frontend"
                           />
@@ -1782,7 +1913,11 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                                 className="admin-input w-full"
                                 value={tool}
                                 onChange={(event) =>
-                                  updateTechTool(groupIndex, toolIndex, event.target.value)
+                                  updateTechTool(
+                                    groupIndex,
+                                    toolIndex,
+                                    event.target.value,
+                                  )
                                 }
                                 placeholder="Next.js"
                               />
@@ -1881,7 +2016,10 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
               <button
                 type="button"
                 onClick={() =>
-                  setForm((current) => ({ ...current, featured: !current.featured }))
+                  setForm((current) => ({
+                    ...current,
+                    featured: !current.featured,
+                  }))
                 }
                 className={cn(
                   "admin-input flex h-[50px] items-center justify-between",
@@ -1917,7 +2055,11 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
 
             <div className="flex items-end">
               <a
-                href={form.slug ? `/${isBlog ? "blog" : "portfolio"}/${form.slug}` : "#"}
+                href={
+                  form.slug
+                    ? `/${isBlog ? "blog" : "portfolio"}/${form.slug}`
+                    : "#"
+                }
                 className="inline-flex h-[50px] w-full items-center justify-center gap-2 rounded-full border border-[color:var(--stat-border)] px-4 text-[13px] font-semibold text-[color:var(--foreground)]"
               >
                 <ExternalLink className="h-4 w-4 text-[color:var(--primary)]" />
@@ -1990,13 +2132,21 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
         onClose={() => setConfirmSaveOpen(false)}
         onConfirm={performSubmit}
         isLoading={saving}
-        title={editing ? `Review ${title.slice(0, -1)} update` : `Review new ${title.slice(0, -1).toLowerCase()}`}
+        title={
+          editing
+            ? `Review ${title.slice(0, -1)} update`
+            : `Review new ${title.slice(0, -1).toLowerCase()}`
+        }
         description={
           editing
             ? "Please confirm that you want to save these changes before we update this item."
             : "Please confirm that you want to create this item before it is added to the system."
         }
-        confirmLabel={editing ? `Save ${title.slice(0, -1)} changes` : `Create ${title.slice(0, -1)}`}
+        confirmLabel={
+          editing
+            ? `Save ${title.slice(0, -1)} changes`
+            : `Create ${title.slice(0, -1)}`
+        }
       />
     </div>
   );

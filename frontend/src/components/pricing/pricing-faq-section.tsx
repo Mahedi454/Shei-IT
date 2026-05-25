@@ -4,6 +4,8 @@ import { ArrowRight, ChevronDown, HelpCircle, Send } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
+import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
+
 const faqs = [
   {
     question: "Can I upgrade my plan later?",
@@ -47,9 +49,9 @@ export function PricingFaqSection() {
           <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
             FAQ
           </p>
-          <h2 className="mt-3 text-[2.35rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[3rem]">
+          <ServiceGradientHeading className="mt-3 text-[2.35rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[3rem]">
             Frequently Asked Questions
-          </h2>
+          </ServiceGradientHeading>
         </div>
 
         <div className="mt-8 grid items-start gap-4 lg:grid-cols-2">
@@ -57,52 +59,52 @@ export function PricingFaqSection() {
             const isOpen = openFaq === faq.question;
 
             return (
-            <article
-              key={faq.question}
-              className="overflow-hidden rounded-[1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_16px_44px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none"
-            >
-              <button
-                type="button"
-                aria-expanded={isOpen}
-                onClick={() => setOpenFaq(isOpen ? null : faq.question)}
-                className="flex w-full items-center gap-5 px-6 py-5 text-left"
+              <article
+                key={faq.question}
+                className="overflow-hidden rounded-[1rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[0_16px_44px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:shadow-none"
               >
-                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[0.85rem] bg-[linear-gradient(180deg,rgba(139,124,255,0.18),rgba(139,124,255,0.08))] text-[color:var(--primary)]">
-                  <HelpCircle className="h-5 w-5" strokeWidth={2.2} />
-                </span>
-                <span className="flex-1 text-[15px] font-semibold text-[color:var(--foreground)]">
-                  {faq.question}
-                </span>
-                <motion.span
-                  animate={{ rotate: isOpen ? 180 : 0 }}
-                  transition={{ duration: 0.22, ease: "easeOut" }}
-                  className="inline-flex h-5 w-5 shrink-0 items-center justify-center text-[color:var(--foreground)]"
+                <button
+                  type="button"
+                  aria-expanded={isOpen}
+                  onClick={() => setOpenFaq(isOpen ? null : faq.question)}
+                  className="flex w-full items-center gap-5 px-6 py-5 text-left"
                 >
-                  <ChevronDown className="h-5 w-5" strokeWidth={2.2} />
-                </motion.span>
-              </button>
-
-              <AnimatePresence initial={false}>
-                {isOpen ? (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[0.85rem] bg-[linear-gradient(180deg,rgba(139,124,255,0.18),rgba(139,124,255,0.08))] text-[color:var(--primary)]">
+                    <HelpCircle className="h-5 w-5" strokeWidth={2.2} />
+                  </span>
+                  <span className="flex-1 text-[15px] font-semibold text-[color:var(--foreground)]">
+                    {faq.question}
+                  </span>
+                  <motion.span
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.22, ease: "easeOut" }}
+                    className="inline-flex h-5 w-5 shrink-0 items-center justify-center text-[color:var(--foreground)]"
                   >
-                    <motion.p
-                      initial={{ y: -8 }}
-                      animate={{ y: 0 }}
-                      exit={{ y: -8 }}
-                      transition={{ duration: 0.24, ease: "easeOut" }}
-                      className="px-6 pb-6 pl-[5.75rem] pr-8 text-[14px] font-medium leading-7 text-[color:var(--muted-foreground)]"
+                    <ChevronDown className="h-5 w-5" strokeWidth={2.2} />
+                  </motion.span>
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isOpen ? (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                     >
-                      {faq.answer}
-                    </motion.p>
-                  </motion.div>
-                ) : null}
-              </AnimatePresence>
-            </article>
+                      <motion.p
+                        initial={{ y: -8 }}
+                        animate={{ y: 0 }}
+                        exit={{ y: -8 }}
+                        transition={{ duration: 0.24, ease: "easeOut" }}
+                        className="px-6 pb-6 pl-[5.75rem] pr-8 text-[14px] font-medium leading-7 text-[color:var(--muted-foreground)]"
+                      >
+                        {faq.answer}
+                      </motion.p>
+                    </motion.div>
+                  ) : null}
+                </AnimatePresence>
+              </article>
             );
           })}
         </div>
@@ -123,7 +125,8 @@ export function PricingFaqSection() {
                   Not Sure Which Plan is Right for You?
                 </h3>
                 <p className="mt-2 text-[15px] font-medium leading-7 text-white/82 sm:text-[16px]">
-                  Let&apos;s discuss your project and find the best solution together.
+                  Let&apos;s discuss your project and find the best solution
+                  together.
                 </p>
               </div>
             </div>

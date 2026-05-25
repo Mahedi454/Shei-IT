@@ -31,12 +31,12 @@ export function AboutApproachSection() {
   return (
     <section className="relative pb-16 lg:pb-20">
       <div className="mx-auto w-11/12 max-w-[1440px]">
-        <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] items-start">
+        <div className="grid items-start gap-8 lg:grid-cols-[0.85fr_1.15fr] xl:gap-12">
           <div className="max-w-[36rem]">
             <p className="text-[13px] font-semibold uppercase tracking-[0.26em] text-[color:var(--primary)]">
               Our Approach
             </p>
-            <h2 className="mt-4 text-[2.6rem] font-semibold tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[3.4rem]">
+            <h2 className="mt-4 text-[2.05rem] font-semibold tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.6rem] xl:text-[3.4rem]">
               How{" "}
               <span className="bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
                 We Work
@@ -47,7 +47,7 @@ export function AboutApproachSection() {
             </p>
           </div>
 
-          <div className="grid items-stretch gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4 xl:gap-5">
             {approachSteps.map((step, index) => {
               const Icon = step.icon;
               const isLast = index === approachSteps.length - 1;
@@ -58,7 +58,7 @@ export function AboutApproachSection() {
                     <div className="pointer-events-none absolute right-[-2rem] top-1/2 hidden h-0.5 w-[88px] -translate-y-1/2 bg-[color:var(--primary-soft)] xl:block" />
                   ) : null}
 
-                  <article className="flex h-full flex-col rounded-[2rem] border border-[color:var(--stat-border)] bg-transparent p-6 shadow-[0_24px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:bg-transparent dark:shadow-none">
+                  <article className="flex h-full flex-col rounded-[1.25rem] border border-[color:var(--stat-border)] bg-transparent p-5 shadow-[0_24px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:bg-transparent dark:shadow-none xl:rounded-[2rem] xl:p-6">
                     <span className={`inline-flex h-14 w-14 items-center justify-center rounded-[1.4rem] ${step.accent}`}>
                       <Icon className="h-6 w-6" strokeWidth={2.1} />
                     </span>

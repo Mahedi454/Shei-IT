@@ -9,6 +9,8 @@ import {
   ShoppingCart,
 } from "lucide-react";
 
+import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
+
 const plans = [
   {
     name: "Starter Package",
@@ -107,9 +109,9 @@ export function PricingPlansSection() {
             <p className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[color:var(--primary)]">
               Pricing Packages
             </p>
-            <h2 className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
+            <ServiceGradientHeading className="mt-3 text-[2.1rem] font-semibold leading-tight tracking-[-0.05em] text-[color:var(--foreground)] sm:text-[2.55rem]">
               Transparent Pricing for Every Business Stage
-            </h2>
+            </ServiceGradientHeading>
           </div>
           <p className="max-w-[43rem] text-[15px] font-medium leading-8 text-[color:var(--muted-foreground)] lg:justify-self-end">
             Choose the perfect website package based on your business goals.

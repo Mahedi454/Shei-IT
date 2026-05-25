@@ -31,6 +31,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { servicesSection } from "@/config/site";
+
 export type PublishStatus = "draft" | "published";
 export type ServiceAccent =
   | "violet"
@@ -195,32 +197,99 @@ export const serviceIconMap: Record<string, LucideIcon> = {
   timer: Timer,
 };
 
-export const serviceCardAccentMap: Record<Exclude<ServiceAccent, "featured">, string> = {
+export const serviceCardAccentMap: Record<
+  Exclude<ServiceAccent, "featured">,
+  string
+> = {
   violet:
     "bg-[linear-gradient(180deg,rgba(139,124,255,0.18),rgba(139,124,255,0.08))] text-[color:var(--primary)]",
-  blue:
-    "bg-[linear-gradient(180deg,rgba(93,174,255,0.18),rgba(93,174,255,0.08))] text-[color:var(--blue)]",
-  mint:
-    "bg-[linear-gradient(180deg,rgba(111,231,200,0.2),rgba(111,231,200,0.08))] text-[color:var(--mint)]",
+  blue: "bg-[linear-gradient(180deg,rgba(93,174,255,0.18),rgba(93,174,255,0.08))] text-[color:var(--blue)]",
+  mint: "bg-[linear-gradient(180deg,rgba(111,231,200,0.2),rgba(111,231,200,0.08))] text-[color:var(--mint)]",
   orange:
     "bg-[linear-gradient(180deg,rgba(255,159,90,0.18),rgba(255,159,90,0.08))] text-[color:var(--orange)]",
-  pink:
-    "bg-[linear-gradient(180deg,rgba(244,114,182,0.18),rgba(244,114,182,0.08))] text-[#ec4899]",
+  pink: "bg-[linear-gradient(180deg,rgba(244,114,182,0.18),rgba(244,114,182,0.08))] text-[#ec4899]",
   purple:
     "bg-[linear-gradient(180deg,rgba(167,139,250,0.18),rgba(167,139,250,0.08))] text-[color:var(--primary-soft)]",
-  sky:
-    "bg-[linear-gradient(180deg,rgba(159,220,255,0.2),rgba(159,220,255,0.08))] text-[color:var(--sky)]",
+  sky: "bg-[linear-gradient(180deg,rgba(159,220,255,0.2),rgba(159,220,255,0.08))] text-[color:var(--sky)]",
   indigo:
     "bg-[linear-gradient(180deg,rgba(99,102,241,0.18),rgba(99,102,241,0.08))] text-[#6366f1]",
 };
 
 export const getServiceIcon = (icon: string) => serviceIconMap[icon] ?? Code2;
 
+export const blogTopicOptions = servicesSection.items.map((service) => ({
+  label: service.title,
+  value: service.title,
+  icon: service.icon,
+}));
+
+const topicAliases: Record<string, string[]> = {
+  "Website Development": ["Web Development"],
+  "Mobile App Development": ["Mobile Development", "Mobile Apps"],
+  "Hosting & Cloud": ["Hosting", "Hosting & DevOps"],
+  "Deployment & DevOps": ["DevOps", "Hosting & DevOps"],
+  "Cross Platform Development": [
+    "Cross Platform",
+    "Cross-Platform Development",
+  ],
+  "Maintenance & Support": ["Maintenance", "Support"],
+  "UI/UX Design": ["UI UX Design", "UI/UX"],
+  "SEO & Marketing": ["SEO", "Digital Marketing"],
+};
+
+const normalizeTopicValue = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+
+export const getTopicSearchTerms = (topic: string) => [
+  topic,
+  ...(topicAliases[topic] ?? []),
+];
+
+export const topicMatchesValue = (topic: string, value?: string | null) => {
+  if (!topic || !value) {
+    return false;
+  }
+
+  const normalizedValue = normalizeTopicValue(value);
+
+  return getTopicSearchTerms(topic).some(
+    (term) => normalizeTopicValue(term) === normalizedValue,
+  );
+};
+
+export const getBlogTopicSearchText = (
+  category?: string | null,
+  tags: string[] = [],
+) => {
+  const matchingTopic = blogTopicOptions.find(
+    (topic) =>
+      topicMatchesValue(topic.value, category) ||
+      tags.some((tag) => topicMatchesValue(topic.value, tag)),
+  );
+
+  return [
+    category,
+    ...(category && matchingTopic
+      ? getTopicSearchTerms(matchingTopic.value)
+      : []),
+    ...tags,
+  ]
+    .filter((value): value is string => Boolean(value))
+    .join(" ");
+};
+
 export const getServiceAccentClass = (accent?: ServiceAccent) =>
-  serviceCardAccentMap[(accent && accent !== "featured" ? accent : "violet") as Exclude<
-    ServiceAccent,
-    "featured"
-  >];
+  serviceCardAccentMap[
+    (accent && accent !== "featured" ? accent : "violet") as Exclude<
+      ServiceAccent,
+      "featured"
+    >
+  ];
 
 export const splitServiceTitle = (title: string) => {
   const words = title.trim().split(/\s+/);
