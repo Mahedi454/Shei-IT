@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Backend API for the shei-it website",
   "main": "dist/server.js",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "prisma generate && tsc",

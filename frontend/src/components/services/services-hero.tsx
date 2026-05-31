@@ -4,16 +4,23 @@ import Image from "next/image";
 import { ArrowRight, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { servicepageBannerDark, servicepageBannerLight } from "@/assets";
+import {
+  clientImtiuzMahmudZidan,
+  clientMannanHossain,
+  clientMoznuMiah,
+  clientYunusRahat,
+  clientZahidHassanLipu,
+  servicepageBannerDark,
+  servicepageBannerLight,
+} from "@/assets";
 import { useTheme } from "@/components/providers/theme-provider";
 
-const clientAvatars = ["MH", "SA", "PM", "RA", "NJ"] as const;
-const avatarColors = [
-  "from-[#6c63ff] to-[#5daeff]",
-  "from-[#ff9f5a] to-[#ffb98a]",
-  "from-[#6fe7c8] to-[#5daeff]",
-  "from-[#8b7cff] to-[#d8b4fe]",
-  "from-[#111827] to-[#64748b]",
+const clientImages = [
+  { src: clientZahidHassanLipu, alt: "Zahid Hassan Lipu" },
+  { src: clientYunusRahat, alt: "Yunus Rahat" },
+  { src: clientMoznuMiah, alt: "Moznu Miah" },
+  { src: clientMannanHossain, alt: "Mannan Hossain" },
+  { src: clientImtiuzMahmudZidan, alt: "Imtiuz Mahmud Zidan" },
 ] as const;
 
 export function ServicesHero() {
@@ -46,7 +53,7 @@ export function ServicesHero() {
               </span>
             </h1>
             <p className="max-w-[35rem] text-[16px] leading-9 text-[color:var(--muted-foreground)] sm:text-[17px]">
-              Choose only what you need — website, app, hosting, SEO,
+              Choose only what you need: website, app, hosting, SEO,
               maintenance, or a complete digital system.
             </p>
           </div>
@@ -72,19 +79,25 @@ export function ServicesHero() {
 
           <div className="mt-12 flex flex-wrap items-center gap-4">
             <div className="flex -space-x-2">
-              {clientAvatars.map((avatar, index) => (
+              {clientImages.map((client) => (
                 <span
-                  key={avatar}
-                  className={`inline-flex h-10 w-10 items-center justify-center rounded-full border-[2.5px] border-[color:var(--avatar-ring)] bg-gradient-to-br ${avatarColors[index]} text-[10px] font-semibold text-white shadow-[0_10px_24px_rgba(15,23,42,0.12)]`}
+                  key={client.alt}
+                  className="relative inline-flex h-9 w-9 overflow-hidden rounded-full border-[2.5px] border-[color:var(--avatar-ring)] bg-[color:var(--card-solid)] shadow-[0_10px_24px_rgba(15,23,42,0.12)]"
                 >
-                  {avatar}
+                  <Image
+                    src={client.src}
+                    alt={client.alt}
+                    fill
+                    sizes="36px"
+                    className="object-cover"
+                  />
                 </span>
               ))}
             </div>
 
             <div className="space-y-0.5">
-              <p className="text-[15px] font-semibold text-[color:var(--primary)]">
-                200+ Happy Clients
+              <p className="text-[15px] font-semibold text-[color:var(--foreground)]">
+                32+ Happy Clients
               </p>
               <p className="text-[13px] text-[color:var(--muted-foreground)]">
                 Trusted by businesses worldwide

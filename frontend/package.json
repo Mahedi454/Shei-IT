@@ -2,8 +2,12 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev --webpack",
+    "prebuild": "node scripts/check-case-sensitive-imports.js",
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint"
