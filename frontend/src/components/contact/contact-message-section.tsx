@@ -6,6 +6,7 @@ import {
   ChevronDown,
   Mail,
   MapPin,
+  MessageCircle,
   Phone,
   ShieldCheck,
 } from "lucide-react";
@@ -25,28 +26,28 @@ const contactMethods = [
   },
   {
     title: "Call Us",
-    value: "+880 1768 857058",
+    value: "+880 1768 57058",
     description: "Mon - Sat, 9:00 AM - 7:00 PM",
-    href: "tel:+8801768857058",
+    href: "tel:+880176857058",
     icon: Phone,
     accent:
       "bg-[linear-gradient(180deg,rgba(111,231,200,0.2),rgba(111,231,200,0.08))] text-[#0f9f7f]",
   },
   {
     title: "Visit Our Office",
-    value: "House 12, Road 5, Dhanmondi",
-    description: "Dhaka, Bangladesh",
-    href: "https://maps.google.com/?q=Dhanmondi%20Dhaka%20Bangladesh",
+    value: "GreatWall City, Chandana-Chowrasta",
+    description: "Gazipur, Dhaka, Bangladesh",
+    href: "https://goo.gl/maps/ZTjn6rMvpjw9YR7PA",
     icon: MapPin,
     accent:
       "bg-[linear-gradient(180deg,rgba(255,159,90,0.18),rgba(255,159,90,0.08))] text-[color:var(--orange)]",
   },
   {
-    title: "Skype",
-    value: "shei.it.agency",
-    description: "Let's connect on Skype",
-    href: "skype:shei.it.agency?chat",
-    icon: Phone,
+    title: "WhatsApp",
+    value: "+880 1575 626672",
+    description: "Message us on WhatsApp",
+    href: "https://wa.me/8801575626672",
+    icon: MessageCircle,
     accent:
       "bg-[linear-gradient(180deg,rgba(93,174,255,0.18),rgba(93,174,255,0.08))] text-[color:var(--blue)]",
   },

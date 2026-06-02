@@ -10,7 +10,7 @@ This folder contains the Express, Prisma, and PostgreSQL backend.
 
 ```txt
 Root directory: backend
-Build command: npm install && npx prisma db push && npm run build
+Build command: npm install --include=dev && npx prisma db push && npm run build
 Start command: npm start
 Health check path: /api/health
 Node.js version: 20 or newer
