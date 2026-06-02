@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 
-dotenv.config({ override: true });
+dotenv.config();
 
 const port = Number(process.env.PORT ?? 5000);
 const smtpPort = Number(process.env.SMTP_PORT ?? 587);

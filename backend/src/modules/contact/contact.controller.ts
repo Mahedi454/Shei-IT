@@ -10,7 +10,12 @@ export const createContact: RequestHandler = catchAsync(async (req, res) => {
   const contact = await prisma.contact.create({
     data: req.body,
   });
-  await sendContactEmail(req.body);
+
+  try {
+    await sendContactEmail(req.body);
+  } catch (error) {
+    console.warn("Contact request saved, but email notification failed.", error);
+  }
 
   return sendResponse(res, 201, {
     success: true,
