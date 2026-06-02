@@ -6,8 +6,12 @@ const bootstrap = async () => {
   if (!env.DATABASE_URL) {
     console.warn("DATABASE_URL is missing. Prisma-backed routes will fail.");
   } else {
-    await prisma.$connect();
-    console.log("PostgreSQL connected.");
+    try {
+      await prisma.$connect();
+      console.log("PostgreSQL connected.");
+    } catch (error) {
+      console.error("PostgreSQL connection failed. Prisma-backed routes will fail.", error);
+    }
   }
 
   app.listen(env.PORT, () => {
