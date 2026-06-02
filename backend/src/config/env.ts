@@ -19,10 +19,17 @@ const parseList = (value?: string) =>
     .map((item) => item.trim().toLowerCase())
     .filter(Boolean) ?? [];
 
+const parseCsv = (value?: string) =>
+  value
+    ?.split(",")
+    .map((item) => item.trim())
+    .filter(Boolean) ?? [];
+
 export const env = {
   PORT: port,
   NODE_ENV: process.env.NODE_ENV ?? "development",
   FRONTEND_URL: process.env.FRONTEND_URL ?? "http://localhost:3000",
+  FRONTEND_URLS: parseCsv(process.env.FRONTEND_URL ?? "http://localhost:3000"),
   DATABASE_URL: process.env.DATABASE_URL ?? "",
   ADMIN_EMAILS: parseList(process.env.ADMIN_EMAILS),
   FIREBASE_SERVICE_ACCOUNT:

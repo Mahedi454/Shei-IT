@@ -9,10 +9,23 @@ import { notFound } from "./middlewares/notFound";
 import routes from "./routes";
 
 const app = express();
+const allowedOrigins = new Set(env.FRONTEND_URLS);
+
+if (env.NODE_ENV === "development") {
+  allowedOrigins.add("http://localhost:3000");
+  allowedOrigins.add("http://127.0.0.1:3000");
+}
 
 app.use(
   cors({
-    origin: env.FRONTEND_URL,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.has(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`CORS origin not allowed: ${origin}`));
+    },
     credentials: true,
   }),
 );

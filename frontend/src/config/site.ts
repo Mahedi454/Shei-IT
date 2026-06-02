@@ -366,8 +366,12 @@ export const footerConfig = {
       href: "mailto:sheiitofficial@gmail.com",
       type: "email",
     },
-    { label: "+880 1768 857058", href: "tel:+8801768857058", type: "phone" },
-    { label: "Dhaka, Bangladesh", href: "#", type: "location" },
+    { label: "+880 1768 57058", href: "tel:+880176857058", type: "phone" },
+    {
+      label: "Gazipur, Dhaka, Bangladesh",
+      href: "https://goo.gl/maps/ZTjn6rMvpjw9YR7PA",
+      type: "location",
+    },
   ],
   socialLinks: [
     {
