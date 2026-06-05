@@ -7,6 +7,7 @@ import { env } from "./config/env";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import { notFound } from "./middlewares/notFound";
 import routes from "./routes";
+import { getHealthPayload } from "./utils/health";
 
 const app = express();
 const allowedOrigins = new Set(env.FRONTEND_URLS);
@@ -15,6 +16,10 @@ if (env.NODE_ENV === "development") {
   allowedOrigins.add("http://localhost:3000");
   allowedOrigins.add("http://127.0.0.1:3000");
 }
+
+app.get("/health", (_req, res) => {
+  res.status(200).json(getHealthPayload());
+});
 
 app.use(
   cors({

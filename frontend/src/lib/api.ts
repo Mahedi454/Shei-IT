@@ -4,8 +4,14 @@ export type ApiResponse<T> = {
   data: T;
 };
 
-export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000/api";
+const getApiBaseUrl = () => {
+  const configuredUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000/api";
+  const normalizedUrl = configuredUrl.replace(/\/+$/, "");
+
+  return normalizedUrl.endsWith("/api") ? normalizedUrl : `${normalizedUrl}/api`;
+};
+
+export const API_BASE_URL = getApiBaseUrl();
 
 type ApiOptions = RequestInit & {
   token?: string;
