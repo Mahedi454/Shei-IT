@@ -7,7 +7,7 @@ Deploy the backend as its own Hostinger Node.js web app, separate from the Next.
 ```txt
 Frontend app/domain: https://www.shei-it.com
 Backend app/domain: https://api.shei-it.com
-Backend health URL: https://api.shei-it.com/api/health
+Backend health URLs: https://api.shei-it.com/health and https://api.shei-it.com/api/health
 ```
 
 ## Hostinger Settings
@@ -33,6 +33,14 @@ The app entry point is:
 ```txt
 dist/server.js
 ```
+
+The start command is:
+
+```txt
+npm start
+```
+
+`api.shei-it.com` must point to this backend Node.js app, not to `public_html` or a static file directory. If Hostinger shows its own `403 Forbidden` page for `/health`, the request is being handled before Express starts; check the subdomain document root / Node app mapping and remove any Apache rule that blocks routing to the Node app.
 
 ## Backend Environment Variables
 
@@ -76,6 +84,7 @@ Test the backend directly:
 
 ```txt
 https://api.shei-it.com/
+https://api.shei-it.com/health
 https://api.shei-it.com/api/health
 ```
 
@@ -89,7 +98,8 @@ Rebuild/redeploy the frontend after changing `NEXT_PUBLIC_API_URL`.
 
 ## Common Issues
 
-- `403 Forbidden`: the backend was uploaded as static files instead of deployed as a Node.js app.
+- `403 Forbidden` on `/health`: `api.shei-it.com` is not reaching the Express app. Make sure the subdomain is mapped to the backend Node.js app with `dist/server.js` as the entry file and `npm start` as the startup command. If the subdomain uses Apache/static hosting, remove blocking `.htaccess` rules or change the document root / proxy mapping so requests are forwarded to Node.
+- `403 Forbidden` on admin API routes only: confirm `ADMIN_EMAILS` includes the exact Firebase login email.
 - `500` on API routes: check `DATABASE_URL`, Firebase env, and whether `npx prisma db push` ran.
 - CORS errors in the browser: make sure `FRONTEND_URL` exactly includes the frontend origin, including `https://` and no trailing slash.
 - Admin login problems: confirm Firebase web env vars are set on the frontend and Firebase Admin service account is set on the backend.
