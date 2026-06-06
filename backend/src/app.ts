@@ -10,33 +10,40 @@ import routes from "./routes";
 import { getHealthPayload } from "./utils/health";
 
 const app = express();
-const allowedOrigins = new Set(env.FRONTEND_URLS);
+const productionOrigins = ["https://www.shei-it.com", "https://shei-it.com"];
+const normalizeOrigin = (origin: string) => origin.replace(/\/$/, "");
+const allowedOrigins = new Set(
+  [...productionOrigins, ...env.FRONTEND_URLS].map(normalizeOrigin),
+);
 
 if (env.NODE_ENV === "development") {
   allowedOrigins.add("http://localhost:3000");
   allowedOrigins.add("http://127.0.0.1:3000");
 }
 
-app.get("/health", (_req, res) => {
-  res.status(200).json(getHealthPayload());
-});
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.has(normalizeOrigin(origin))) {
+      callback(null, true);
+      return;
+    }
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.has(origin)) {
-        callback(null, true);
-        return;
-      }
+    callback(new Error(`CORS origin not allowed: ${origin}`));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
-      callback(new Error(`CORS origin not allowed: ${origin}`));
-    },
-    credentials: true,
-  }),
-);
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
+
+app.get("/health", (_req, res) => {
+  res.status(200).json(getHealthPayload());
+});
 
 app.get("/", (_req, res) => {
   res.json({
