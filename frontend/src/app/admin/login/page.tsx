@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
+import { getFirebaseAuthErrorMessage } from "@/lib/firebase-auth-errors";
 import { firebaseAuth, isFirebaseConfigured } from "@/lib/firebase";
 
 export default function AdminLoginPage() {
@@ -31,8 +32,7 @@ export default function AdminLoginPage() {
       await signInWithEmailAndPassword(firebaseAuth, email, password);
       router.replace("/admin");
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Admin login failed.";
-      setError(message);
+      setError(getFirebaseAuthErrorMessage(err));
     } finally {
       setLoading(false);
     }

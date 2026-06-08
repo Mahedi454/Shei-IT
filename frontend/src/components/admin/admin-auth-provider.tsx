@@ -3,9 +3,11 @@
 import { User, onAuthStateChanged } from "firebase/auth";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
+import { getFirebaseAuthErrorMessage } from "@/lib/firebase-auth-errors";
 import { firebaseAuth } from "@/lib/firebase";
 
 type AdminAuthContextValue = {
+  error: string;
   user: User | null;
   loading: boolean;
   getToken: () => Promise<string>;
@@ -14,6 +16,7 @@ type AdminAuthContextValue = {
 const AdminAuthContext = createContext<AdminAuthContextValue | null>(null);
 
 export function AdminAuthProvider({ children }: { children: ReactNode }) {
+  const [error, setError] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -23,10 +26,19 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    return onAuthStateChanged(firebaseAuth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
+    return onAuthStateChanged(
+      firebaseAuth,
+      (currentUser) => {
+        setError("");
+        setUser(currentUser);
+        setLoading(false);
+      },
+      (authError) => {
+        setError(getFirebaseAuthErrorMessage(authError));
+        setUser(null);
+        setLoading(false);
+      },
+    );
   }, []);
 
   const getToken = async () => {
@@ -38,7 +50,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AdminAuthContext.Provider value={{ user, loading, getToken }}>
+    <AdminAuthContext.Provider value={{ error, user, loading, getToken }}>
       {children}
     </AdminAuthContext.Provider>
   );

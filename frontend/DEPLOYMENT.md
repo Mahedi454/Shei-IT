@@ -66,6 +66,25 @@ NEXT_PUBLIC_FIREBASE_APP_ID=...
 
 Set these in Hostinger's environment variable panel before building. `NEXT_PUBLIC_*` values are baked into the browser bundle during `npm run build`, so rebuild/redeploy after changing them.
 
+## Firebase Auth Authorized Domains
+
+The Firebase Web App config must stay in environment variables. Do not hardcode Firebase values in source files.
+
+For production Firebase Authentication, also add both production hostnames in:
+
+```txt
+Firebase Console -> Authentication -> Settings -> Authorized domains
+```
+
+Required domains:
+
+```txt
+shei-it.com
+www.shei-it.com
+```
+
+Without these entries, Firebase will warn that the current domain is not authorized for OAuth operations and Google popup/redirect sign-in will fail with `auth/unauthorized-domain`.
+
 After the Hostinger domain is live, update the Render backend environment variable:
 
 ```txt
