@@ -17,6 +17,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useMemo, useState } from "react";
 
 import { useAdminFeedback } from "@/components/admin/admin-feedback-provider";
+import { getFirebaseAuthErrorMessage } from "@/lib/firebase-auth-errors";
 import { firebaseAuth } from "@/lib/firebase";
 import { cn } from "@/lib/utils";
 
@@ -48,17 +49,25 @@ export function AdminShell({ children }: { children: ReactNode }) {
   );
 
   const handleLogout = async () => {
-    if (firebaseAuth) {
-      await signOut(firebaseAuth);
+    try {
+      if (firebaseAuth) {
+        await signOut(firebaseAuth);
+      }
+
+      showToast({
+        title: "Signed out",
+        description: "Your admin session has been closed safely.",
+        tone: "success",
+      });
+
+      router.replace("/admin/login");
+    } catch (error) {
+      showToast({
+        title: "Sign out failed",
+        description: getFirebaseAuthErrorMessage(error),
+        tone: "error",
+      });
     }
-
-    showToast({
-      title: "Signed out",
-      description: "Your admin session has been closed safely.",
-      tone: "success",
-    });
-
-    router.replace("/admin/login");
   };
 
   return (
