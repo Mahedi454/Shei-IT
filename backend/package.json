@@ -8,8 +8,11 @@
   },
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "prebuild": "node scripts/free-prisma-engine.js",
     "build": "prisma generate && tsc",
     "start": "node dist/server.js",
+    "pregenerate": "node scripts/free-prisma-engine.js",
+    "generate": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:push": "prisma db push"
@@ -23,7 +26,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@prisma/client": "^6.16.2",
+    "@prisma/client": "6.19.3",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/morgan": "^1.9.10",
@@ -37,7 +40,7 @@
     "morgan": "^1.10.1",
     "nodemailer": "^8.0.7",
     "pg": "^8.20.0",
-    "prisma": "^6.16.2",
+    "prisma": "6.19.3",
     "typescript": "^6.0.3",
     "zod": "^4.4.3"
   },
