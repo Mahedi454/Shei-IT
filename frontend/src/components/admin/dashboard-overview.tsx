@@ -88,7 +88,7 @@ export function DashboardOverview() {
         <p className="text-[12px] font-semibold uppercase tracking-[0.24em] text-[color:var(--primary)]">
           Overview
         </p>
-        <h1 className="mt-3 text-[2.5rem] font-semibold tracking-[-0.06em] text-[color:var(--foreground)]">
+        <h1 className="mt-3 text-[2.45rem] font-semibold tracking-[-0.06em] text-[color:var(--foreground)]">
           Admin Dashboard
         </h1>
         <p className="mt-3 max-w-3xl text-[15px] leading-8 text-[color:var(--muted-foreground)]">
@@ -176,7 +176,7 @@ export function DashboardOverview() {
           </div>
         </div>
 
-        <div className="rounded-[1.3rem] border border-[color:var(--stat-border)] bg-[linear-gradient(180deg,rgba(139,124,255,0.14),rgba(139,124,255,0.04))] p-6">
+        <div className="rounded-[1.3rem] border border-[color:var(--stat-border)] bg-[linear-gradient(180deg,rgba(139,124,255,0.14),rgba(139,124,255,0.04))] p-6 shadow-[var(--shadow-soft)]">
           <p className="text-[12px] font-semibold uppercase tracking-[0.22em] text-[color:var(--primary)]">
             Publishing Snapshot
           </p>
