@@ -24,9 +24,14 @@ model Blog {
   slug           String        @unique
   excerpt        String
   content        String
+  contentBlocks  Json?
   coverImage     String?
+  coverCaption   String?
   category       String        @default("General")
   authorName     String        @default("Shei IT Team")
+  authorRole     String?
+  authorAvatar   String?
+  authorBio      String?
   readTime       String?
   seoTitle       String?
   seoDescription String?

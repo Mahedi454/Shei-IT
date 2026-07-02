@@ -15,8 +15,15 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 
 import { AdminModal } from "@/components/admin/admin-modal";
 import { ActionConfirmModal } from "@/components/admin/action-confirm-modal";
+import { BlogBlocksEditor } from "@/components/admin/blog-blocks-editor";
 import { servicesSection } from "@/config/site";
 import { apiRequest } from "@/lib/api";
+import {
+  blocksToPlainText,
+  cleanBlocks,
+  normalizeBlocks,
+  type BlogBlock,
+} from "@/lib/blog-blocks";
 import { cn } from "@/lib/utils";
 
 import { useAdminAuth } from "./admin-auth-provider";
@@ -31,11 +38,16 @@ type ResourceItem = {
   slug: string;
   excerpt?: string | null;
   content?: string | null;
+  contentBlocks?: unknown;
   description?: string | null;
   coverImage?: string | null;
+  coverCaption?: string | null;
   image?: string | null;
   category?: string | null;
   authorName?: string | null;
+  authorRole?: string | null;
+  authorAvatar?: string | null;
+  authorBio?: string | null;
   readTime?: string | null;
   seoTitle?: string | null;
   seoDescription?: string | null;
@@ -190,11 +202,16 @@ const defaultTechStack: TechStackGroup[] = [
 
 const initialForm = {
   content: "",
+  contentBlocks: [] as BlogBlock[],
   description: "",
   excerpt: "",
   featured: false,
   category: defaultBlogCategory,
   authorName: "Shei IT Team",
+  authorRole: "",
+  authorAvatar: "",
+  authorBio: "",
+  coverCaption: "",
   readTime: "",
   seoTitle: "",
   seoDescription: "",
@@ -410,6 +427,26 @@ const cleanTechStack = (groups: TechStackGroup[]) =>
       tools: group.tools.map((tool) => tool.trim()).filter(Boolean),
     }))
     .filter((group) => group.title && group.tools.length);
+
+// Seed the block editor: use stored blocks when present, otherwise convert a
+// legacy plain-text `content` string into paragraph blocks so old posts remain
+// editable in the new editor.
+const seedBlocks = (blocks: unknown, content?: string | null): BlogBlock[] => {
+  const parsed = normalizeBlocks(blocks);
+  if (parsed.length > 0) {
+    return parsed;
+  }
+
+  if (!content || !content.trim()) {
+    return [];
+  }
+
+  return content
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+    .map((paragraph) => ({ type: "paragraph" as const, text: paragraph }));
+};
 
 function SeoEditor({
   seo,
@@ -671,11 +708,16 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
     setEditing(item);
     setForm({
       content: item.content ?? "",
+      contentBlocks: seedBlocks(item.contentBlocks, item.content),
       description: item.description ?? "",
       excerpt: item.excerpt ?? "",
       featured: Boolean(item.featured),
       category: item.category ?? defaultBlogCategory,
       authorName: item.authorName ?? "Shei IT Team",
+      authorRole: item.authorRole ?? "",
+      authorAvatar: item.authorAvatar ?? "",
+      authorBio: item.authorBio ?? "",
+      coverCaption: item.coverCaption ?? "",
       readTime: item.readTime ?? "",
       seoTitle: item.seoTitle ?? "",
       seoDescription: item.seoDescription ?? "",
@@ -828,7 +870,6 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
   const validateBlogForm = () => {
     const titleValue = form.title.trim();
     const excerptValue = form.excerpt.trim();
-    const contentValue = form.content.trim();
 
     if (titleValue.length < 2) {
       return "Title must be at least 2 characters.";
@@ -838,8 +879,8 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
       return "Excerpt must be at least 10 characters.";
     }
 
-    if (contentValue.length < 20) {
-      return "Content must be at least 20 characters.";
+    if (cleanBlocks(form.contentBlocks).length === 0) {
+      return "Add at least one content block with text.";
     }
 
     return null;
@@ -869,17 +910,23 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
 
     try {
       const token = await getToken();
+      const cleanedBlocks = cleanBlocks(form.contentBlocks);
       const payload = isBlog
         ? {
             title: form.title.trim(),
             slug: normalizeOptionalText(form.slug),
             excerpt: form.excerpt.trim(),
-            content: form.content.trim(),
+            content: blocksToPlainText(cleanedBlocks) || form.excerpt.trim(),
+            contentBlocks: cleanedBlocks,
             coverImage: normalizeOptionalUrl(form.image),
+            coverCaption: normalizeOptionalText(form.coverCaption),
             category:
               normalizeOptionalText(form.category) ?? defaultBlogCategory,
             authorName:
               normalizeOptionalText(form.authorName) ?? "Shei IT Team",
+            authorRole: normalizeOptionalText(form.authorRole),
+            authorAvatar: normalizeOptionalUrl(form.authorAvatar),
+            authorBio: normalizeOptionalText(form.authorBio),
             readTime: normalizeOptionalText(form.readTime),
             featured: form.featured,
             tags: form.selectedLabels,
@@ -1325,7 +1372,23 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                     placeholder="Shei IT Team"
                   />
                 </label>
-                <label className="space-y-2 lg:col-span-2">
+                <label className="space-y-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    Author role
+                  </span>
+                  <input
+                    className="admin-input w-full"
+                    value={form.authorRole}
+                    onChange={(event) =>
+                      setForm((current) => ({
+                        ...current,
+                        authorRole: event.target.value,
+                      }))
+                    }
+                    placeholder="Principal Architect"
+                  />
+                </label>
+                <label className="space-y-2">
                   <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
                     Read time
                   </span>
@@ -1339,6 +1402,54 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                       }))
                     }
                     placeholder="5 min read"
+                  />
+                </label>
+                <label className="space-y-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    Author avatar URL
+                  </span>
+                  <input
+                    className="admin-input w-full"
+                    value={form.authorAvatar}
+                    onChange={(event) =>
+                      setForm((current) => ({
+                        ...current,
+                        authorAvatar: event.target.value,
+                      }))
+                    }
+                    placeholder="https://... (falls back to initials)"
+                  />
+                </label>
+                <label className="space-y-2 lg:col-span-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    Cover image caption
+                  </span>
+                  <input
+                    className="admin-input w-full"
+                    value={form.coverCaption}
+                    onChange={(event) =>
+                      setForm((current) => ({
+                        ...current,
+                        coverCaption: event.target.value,
+                      }))
+                    }
+                    placeholder="Caption shown under the hero image"
+                  />
+                </label>
+                <label className="space-y-2 lg:col-span-2">
+                  <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
+                    Author bio
+                  </span>
+                  <textarea
+                    className="admin-input min-h-20 w-full"
+                    value={form.authorBio}
+                    onChange={(event) =>
+                      setForm((current) => ({
+                        ...current,
+                        authorBio: event.target.value,
+                      }))
+                    }
+                    placeholder="Short author bio for the bottom byline card"
                   />
                 </label>
               </div>
@@ -1359,22 +1470,13 @@ export function ResourceManager({ resource, title }: ResourceManagerProps) {
                   placeholder="Short summary for cards and previews"
                 />
               </label>
-              <label className="block space-y-2">
-                <span className="text-[13px] font-semibold text-[color:var(--foreground)]">
-                  Content
-                </span>
-                <textarea
-                  className="admin-input min-h-56 w-full"
-                  value={form.content}
-                  onChange={(event) =>
-                    setForm((current) => ({
-                      ...current,
-                      content: event.target.value,
-                    }))
-                  }
-                  placeholder="Write the full blog content"
-                />
-              </label>
+
+              <BlogBlocksEditor
+                blocks={form.contentBlocks}
+                onChange={(blocks) =>
+                  setForm((current) => ({ ...current, contentBlocks: blocks }))
+                }
+              />
 
               <SeoEditor seo={form.seo} updateSeo={updateSeo} />
             </>

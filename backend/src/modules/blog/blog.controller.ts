@@ -87,6 +87,7 @@ export const createBlog: RequestHandler = catchAsync(async (req, res) => {
     data: {
       ...blogPayload,
       slug,
+      content: blogPayload.content || blogPayload.excerpt,
       category: blogPayload.category || "General",
       authorName: blogPayload.authorName || "Shei IT Team",
       publishedAt: blogPayload.status === "published" ? new Date() : undefined,
@@ -143,6 +144,10 @@ export const updateBlog: RequestHandler = catchAsync(async (req, res) => {
 
   if (payload.category === "") {
     payload.category = "General";
+  }
+
+  if (payload.content === "") {
+    payload.content = payload.excerpt ?? existingBlog.content;
   }
 
   const blog = await prisma.blog.update({

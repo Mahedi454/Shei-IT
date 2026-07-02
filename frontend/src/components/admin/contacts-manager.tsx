@@ -235,7 +235,7 @@ export function ContactsManager() {
           </div>
         </div>
 
-        <div className="rounded-[1.4rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-6">
+        <div className="rounded-[1.4rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-6 shadow-[var(--shadow-soft)]">
           {selectedContact ? (
             <>
               <div className="flex items-start justify-between gap-4 border-b border-[color:var(--stat-border)] pb-5">

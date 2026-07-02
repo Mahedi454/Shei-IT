@@ -2,17 +2,28 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  ArrowLeft,
   ArrowRight,
+  AtSign,
   CalendarDays,
+  ChevronRight,
   Clock3,
-  UserRound,
+  Globe,
+  Link2,
 } from "lucide-react";
 
 import { SiteHeader } from "@/components/layout/site-header";
 import { ServiceGradientHeading } from "@/components/services/service-gradient-heading";
+import { CtaSection } from "@/components/home/cta-section";
+import { ArticleContent } from "@/components/blog/article-content";
+import { ArticleToc } from "@/components/blog/article-toc";
+import { HelpfulActions, ShareActions } from "@/components/blog/article-actions";
 import { API_BASE_URL, type ApiResponse } from "@/lib/api";
 import { buildSeoMetadata, type SeoSetting } from "@/lib/seo";
+import {
+  extractTocHeadings,
+  normalizeBlocks,
+  type BlogBlock,
+} from "@/lib/blog-blocks";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -23,9 +34,14 @@ type Blog = {
   title: string;
   excerpt: string;
   content: string;
+  contentBlocks?: unknown;
   coverImage?: string | null;
+  coverCaption?: string | null;
   category?: string | null;
   authorName?: string | null;
+  authorRole?: string | null;
+  authorAvatar?: string | null;
+  authorBio?: string | null;
   readTime?: string | null;
   seoTitle?: string | null;
   seoDescription?: string | null;
@@ -82,7 +98,9 @@ function formatDate(value?: string | null) {
   }).format(new Date(value));
 }
 
-function renderContent(content: string) {
+// Legacy fallback: turn a plain-text `content` string into simple paragraph and
+// bullet-list blocks so posts created before the block editor still render.
+function legacyBlocks(content: string): BlogBlock[] {
   return content
     .split(/\n{2,}/)
     .map((block) => block.trim())
@@ -94,18 +112,25 @@ function renderContent(content: string) {
         .filter(Boolean);
       const bulletLines = lines.filter((line) => /^[-*]\s+/.test(line));
 
-      if (bulletLines.length === lines.length) {
+      if (bulletLines.length === lines.length && lines.length > 0) {
         return {
           type: "list" as const,
-          items: lines.map((line) => line.replace(/^[-*]\s+/, "")),
+          style: "bullet" as const,
+          items: lines.map((line) => ({ text: line.replace(/^[-*]\s+/, "") })),
         };
       }
 
-      return {
-        type: "paragraph" as const,
-        text: lines.join(" "),
-      };
+      return { type: "paragraph" as const, text: lines.join(" ") };
     });
+}
+
+function getInitials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0]?.toUpperCase() ?? "")
+    .join("");
 }
 
 function uniqueBySlug(blogs: Blog[]) {
@@ -120,35 +145,64 @@ function uniqueBySlug(blogs: Blog[]) {
   });
 }
 
-function SidebarPost({
+function AuthorAvatar({
   blog,
-  compact = false,
+  size = "md",
 }: {
   blog: Blog;
-  compact?: boolean;
+  size?: "sm" | "md" | "lg";
 }) {
+  const dimensions =
+    size === "lg" ? "h-14 w-14" : size === "sm" ? "h-9 w-9" : "h-11 w-11";
+  const author = blog.authorName || "Shei IT Team";
+
+  if (blog.authorAvatar) {
+    return (
+      <img
+        src={blog.authorAvatar}
+        alt={author}
+        className={`${dimensions} shrink-0 rounded-full object-cover ring-2 ring-[color:var(--avatar-ring)]`}
+        loading="lazy"
+      />
+    );
+  }
+
+  return (
+    <span
+      className={`${dimensions} inline-flex shrink-0 items-center justify-center rounded-full bg-[color:var(--gradient-primary)] bg-[image:var(--gradient-primary)] text-[13px] font-bold text-white ring-2 ring-[color:var(--avatar-ring)]`}
+    >
+      {getInitials(author)}
+    </span>
+  );
+}
+
+function BlogCard({ blog }: { blog: Blog }) {
   return (
     <Link
       href={`/blog/${blog.slug}`}
-      className="group grid gap-3 rounded-[0.9rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] p-3 transition hover:border-[color:var(--primary)]"
+      className="group flex flex-col overflow-hidden rounded-[1.1rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] transition hover:border-[color:var(--primary)]"
     >
-      {!compact && blog.coverImage ? (
+      {blog.coverImage ? (
         <img
           src={blog.coverImage}
           alt={blog.title}
-          className="aspect-[16/8] w-full rounded-[0.7rem] object-cover"
+          className="aspect-[16/9] w-full object-cover"
           loading="lazy"
         />
-      ) : null}
-      <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[color:var(--primary)]">
-        {blog.category || "General"}
-      </span>
-      <h3 className="text-[13px] font-semibold leading-5 text-[color:var(--foreground)] group-hover:text-[color:var(--primary)]">
-        {blog.title}
-      </h3>
-      <p className="line-clamp-2 text-[12px] leading-5 text-[color:var(--muted-foreground)]">
-        {blog.excerpt}
-      </p>
+      ) : (
+        <div className="aspect-[16/9] w-full bg-[color:var(--premium-pill)]" />
+      )}
+      <div className="flex flex-1 flex-col gap-2 p-4">
+        <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-[color:var(--primary)]">
+          {blog.category || "General"}
+        </span>
+        <h3 className="text-[15px] font-semibold leading-6 text-[color:var(--foreground)] group-hover:text-[color:var(--primary)]">
+          {blog.title}
+        </h3>
+        <p className="line-clamp-2 text-[13px] leading-6 text-[color:var(--muted-foreground)]">
+          {blog.excerpt}
+        </p>
+      </div>
     </Link>
   );
 }
@@ -178,9 +232,13 @@ export default async function BlogDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const [blog, blogs] = await Promise.all([getBlog(slug), getPublishedBlogs()]);
   const publishedDate = formatDate(blog.publishedAt || blog.createdAt);
-  const contentBlocks = renderContent(blog.content);
+  const parsedBlocks = normalizeBlocks(blog.contentBlocks);
+  const blocks =
+    parsedBlocks.length > 0 ? parsedBlocks : legacyBlocks(blog.content);
+  const tocHeadings = extractTocHeadings(blocks);
   const otherBlogs = blogs.filter((item) => item.slug !== blog.slug);
   const blogCategory = blog.category || "General";
+  const author = blog.authorName || "Shei IT Team";
   const relatedBlogs = uniqueBySlug([
     ...otherBlogs.filter(
       (item) => (item.category || "General") === blogCategory,
@@ -189,186 +247,239 @@ export default async function BlogDetailPage({ params }: PageProps) {
       (item.tags ?? []).some((tag) => (blog.tags ?? []).includes(tag)),
     ),
     ...otherBlogs,
-  ]).slice(0, 4);
-  const featuredBlogs = uniqueBySlug([
-    ...otherBlogs.filter((item) => item.featured),
-    ...otherBlogs,
-  ]).slice(0, 5);
-  const categoryGroups = [...otherBlogs, blog].reduce((groups, item) => {
-    const category = item.category || "General";
-    const current = groups.get(category) ?? [];
-    groups.set(category, [...current, item]);
-    return groups;
-  }, new Map<string, Blog[]>());
-  const relatedCategories = [...categoryGroups.entries()]
-    .sort((left, right) => {
-      if (left[0] === blogCategory) return -1;
-      if (right[0] === blogCategory) return 1;
-      return right[1].length - left[1].length;
-    })
-    .slice(0, 3);
+  ]).slice(0, 3);
 
   return (
     <main className="min-h-screen bg-[image:var(--hero-surface)] bg-no-repeat text-[color:var(--foreground)]">
       <SiteHeader />
 
-      <div className="mx-auto w-11/12 max-w-[1440px] pb-20 pt-8">
-        <div className="mb-8">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] px-4 py-2 text-[12px] font-bold text-[color:var(--foreground)] shadow-[0_10px_24px_rgba(15,23,42,0.04)]"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Blog
+      <div className="mx-auto w-11/12 max-w-[1180px] pb-16 pt-8">
+        {/* Breadcrumb */}
+        <nav className="flex flex-wrap items-center gap-1.5 text-[12px] font-medium text-[color:var(--muted-foreground)]">
+          <Link href="/" className="hover:text-[color:var(--primary)]">
+            Home
           </Link>
-        </div>
+          <ChevronRight className="h-3.5 w-3.5" />
+          <Link href="/blog" className="hover:text-[color:var(--primary)]">
+            Insights
+          </Link>
+          <ChevronRight className="h-3.5 w-3.5" />
+          <span className="text-[color:var(--foreground)]">{blogCategory}</span>
+        </nav>
 
-        <div className="grid gap-7 lg:grid-cols-[7fr_3fr] lg:items-start">
-          <article className="min-w-0">
-            <header className="pb-8">
-              <div className="flex flex-wrap gap-2">
-                <span className="rounded-full bg-[color:var(--button-secondary-icon)] px-3 py-1 text-[12px] font-semibold text-[color:var(--primary)]">
-                  {blogCategory}
+        {/* Article header */}
+        <header className="mt-6 max-w-3xl">
+          <div className="flex flex-wrap gap-2">
+            <span className="rounded-full bg-[color:var(--button-secondary-icon)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-[color:var(--primary)]">
+              {blogCategory}
+            </span>
+            {(blog.tags ?? []).slice(0, 3).map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-[color:var(--stat-border)] bg-[color:var(--premium-pill)] px-3 py-1 text-[11px] font-semibold text-[color:var(--foreground)]"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {blog.title.trim().split(/\s+/).length > 4 ? (
+            <ServiceGradientHeading as="h1" className="page-main-heading mt-5">
+              {blog.title}
+            </ServiceGradientHeading>
+          ) : (
+            <h1 className="page-main-heading mt-5">{blog.title}</h1>
+          )}
+
+          <p className="mt-5 text-[17px] leading-8 text-[color:var(--muted-foreground)]">
+            {blog.excerpt}
+          </p>
+
+          {/* Byline */}
+          <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-y border-[color:var(--stat-border)] py-4">
+            <div className="flex items-center gap-3">
+              <AuthorAvatar blog={blog} />
+              <div>
+                <p className="text-[14px] font-semibold text-[color:var(--foreground)]">
+                  {author}
+                </p>
+                {blog.authorRole ? (
+                  <p className="text-[12px] text-[color:var(--muted-foreground)]">
+                    {blog.authorRole}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-4">
+              <span className="inline-flex items-center gap-1.5 text-[12px] font-medium text-[color:var(--muted-foreground)]">
+                <CalendarDays className="h-4 w-4 text-[color:var(--primary)]" />
+                {publishedDate}
+              </span>
+              {blog.readTime ? (
+                <span className="inline-flex items-center gap-1.5 text-[12px] font-medium text-[color:var(--muted-foreground)]">
+                  <Clock3 className="h-4 w-4 text-[color:var(--primary)]" />
+                  {blog.readTime}
                 </span>
-                {(blog.tags ?? []).slice(0, 4).map((tag) => (
+              ) : null}
+              <ShareActions title={blog.title} />
+            </div>
+          </div>
+        </header>
+
+        {/* Hero image */}
+        {blog.coverImage ? (
+          <figure className="mt-8">
+            <div className="overflow-hidden rounded-[1.4rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[var(--shadow-soft)]">
+              <img
+                src={blog.coverImage}
+                alt={blog.title}
+                className="aspect-[16/7] w-full object-cover"
+                loading="eager"
+              />
+            </div>
+            {blog.coverCaption ? (
+              <figcaption className="mt-3 text-center text-[12px] text-[color:var(--muted-foreground)]">
+                {blog.coverCaption}
+              </figcaption>
+            ) : null}
+          </figure>
+        ) : null}
+
+        {/* Body + sidebar */}
+        <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-start">
+          <article className="min-w-0">
+            <ArticleContent blocks={blocks} />
+
+            {/* Author bio */}
+            {blog.authorBio ? (
+              <section className="mt-12 rounded-[1.2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-6 shadow-[var(--shadow-soft)] backdrop-blur">
+                <div className="flex flex-wrap items-start gap-4">
+                  <AuthorAvatar blog={blog} size="lg" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-[color:var(--primary)]">
+                      Written by
+                    </p>
+                    <h3 className="mt-1 text-[17px] font-semibold text-[color:var(--foreground)]">
+                      {author}
+                    </h3>
+                    {blog.authorRole ? (
+                      <p className="text-[13px] text-[color:var(--muted-foreground)]">
+                        {blog.authorRole}
+                      </p>
+                    ) : null}
+                    <p className="mt-3 text-[14px] leading-7 text-[color:var(--muted-foreground)]">
+                      {blog.authorBio}
+                    </p>
+                    <div className="mt-4 flex items-center gap-2">
+                      {[Link2, AtSign, Globe].map((Icon, index) => (
+                        <span
+                          key={index}
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--stat-border)] bg-[color:var(--button-secondary)] text-[color:var(--muted-foreground)]"
+                        >
+                          <Icon className="h-4 w-4" />
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            ) : null}
+
+            {/* Tags + helpful */}
+            <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[color:var(--stat-border)] pt-6">
+              <div className="flex flex-wrap gap-2">
+                {(blog.tags ?? []).map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-[color:var(--stat-border)] bg-[color:var(--premium-pill)] px-3 py-1 text-[12px] font-semibold text-[color:var(--foreground)]"
+                    className="rounded-full border border-[color:var(--stat-border)] bg-[color:var(--premium-pill)] px-3 py-1 text-[12px] font-semibold text-[color:var(--muted-foreground)]"
                   >
-                    {tag}
+                    #{tag}
                   </span>
                 ))}
               </div>
+              <HelpfulActions />
+            </div>
 
-              {blog.title.trim().split(/\s+/).length > 4 ? (
-                <ServiceGradientHeading
-                  as="h1"
-                  className="page-main-heading mt-5 max-w-5xl"
-                >
-                  {blog.title}
-                </ServiceGradientHeading>
-              ) : (
-                <h1 className="page-main-heading mt-5 max-w-5xl">
-                  {blog.title}
-                </h1>
-              )}
-              <p className="mt-6 max-w-3xl text-[16px] leading-8 text-[color:var(--muted-foreground)]">
-                {blog.excerpt}
-              </p>
-
-              <div className="mt-7 flex flex-wrap gap-3 text-[13px] font-semibold text-[color:var(--muted-foreground)]">
-                <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--premium-pill)] px-3 py-1.5">
-                  <UserRound className="h-4 w-4 text-[color:var(--primary)]" />
-                  {blog.authorName || "Shei IT Team"}
-                </span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--premium-pill)] px-3 py-1.5">
-                  <CalendarDays className="h-4 w-4 text-[color:var(--primary)]" />
-                  {publishedDate}
-                </span>
-                {blog.readTime ? (
-                  <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stat-border)] bg-[color:var(--premium-pill)] px-3 py-1.5">
-                    <Clock3 className="h-4 w-4 text-[color:var(--primary)]" />
-                    {blog.readTime}
-                  </span>
-                ) : null}
+            {/* Inline CTA */}
+            <div className="mt-10 flex flex-wrap items-center justify-between gap-5 rounded-[1.2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-6 shadow-[var(--shadow-soft)] backdrop-blur">
+              <div className="max-w-xl">
+                <h3 className="text-[18px] font-semibold text-[color:var(--foreground)]">
+                  Planning a scalable software product?
+                </h3>
+                <p className="mt-1.5 text-[13px] leading-6 text-[color:var(--muted-foreground)]">
+                  Talk to the Shei IT engineering team about architecture
+                  strategy and implementation.
+                </p>
               </div>
-            </header>
-
-            {blog.coverImage ? (
-              <div className="overflow-hidden rounded-[1.2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] shadow-[var(--shadow-soft)]">
-                <img
-                  src={blog.coverImage}
-                  alt={blog.title}
-                  className="aspect-[16/8] w-full object-cover"
-                  loading="eager"
-                />
-              </div>
-            ) : null}
-
-            <div className="mt-8 rounded-[1.2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-5 shadow-[var(--shadow-soft)] backdrop-blur md:p-8">
-              <div className="mx-auto max-w-4xl space-y-6">
-                {contentBlocks.map((block, index) =>
-                  block.type === "list" ? (
-                    <ul
-                      key={`list-${index}`}
-                      className="space-y-3 text-[15px] leading-8 text-[color:var(--muted-foreground)]"
-                    >
-                      {block.items.map((item) => (
-                        <li key={item} className="flex gap-3">
-                          <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--primary)]" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p
-                      key={`paragraph-${index}`}
-                      className="text-[15px] leading-8 text-[color:var(--muted-foreground)]"
-                    >
-                      {block.text}
-                    </p>
-                  ),
-                )}
-              </div>
+              <Link
+                href="/contact#contact-form"
+                className="inline-flex items-center gap-2 rounded-xl bg-[color:var(--cta-dark)] px-6 py-3 text-[13px] font-semibold text-[color:var(--talk-fg)]"
+              >
+                Book a Consultation
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </article>
 
+          {/* Sticky sidebar */}
           <aside className="space-y-5 lg:sticky lg:top-24">
-            <section className="rounded-[1.2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-4 shadow-[var(--shadow-soft)] backdrop-blur">
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <h2 className="text-[15px] font-semibold text-[color:var(--foreground)]">
-                  Featured Blogs
+            {tocHeadings.length > 0 ? <ArticleToc headings={tocHeadings} /> : null}
+
+            {relatedBlogs.length > 0 ? (
+              <section className="rounded-[1.2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-4 shadow-[var(--shadow-soft)] backdrop-blur">
+                <h2 className="mb-4 text-[14px] font-semibold text-[color:var(--foreground)]">
+                  Related reading
                 </h2>
-                <span className="rounded-full bg-[color:var(--button-secondary-icon)] px-2.5 py-1 text-[11px] font-bold text-[color:var(--primary)]">
-                  {featuredBlogs.length}
-                </span>
-              </div>
-              <div className="space-y-3">
-                {featuredBlogs.map((item) => (
-                  <SidebarPost key={item.slug} blog={item} compact />
-                ))}
-              </div>
-            </section>
-
-            <section className="rounded-[1.2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-4 shadow-[var(--shadow-soft)] backdrop-blur">
-              <h2 className="mb-4 text-[15px] font-semibold text-[color:var(--foreground)]">
-                Related Blogs
-              </h2>
-              <div className="space-y-3">
-                {relatedBlogs.map((item) => (
-                  <SidebarPost key={item.slug} blog={item} />
-                ))}
-              </div>
-            </section>
-
-            <section className="rounded-[1.2rem] border border-[color:var(--stat-border)] bg-[color:var(--stat-bg)] p-4 shadow-[var(--shadow-soft)] backdrop-blur">
-              <h2 className="mb-4 text-[15px] font-semibold text-[color:var(--foreground)]">
-                Related Categories
-              </h2>
-              <div className="space-y-3">
-                {relatedCategories.map(([category, items]) => {
-                  const firstPost =
-                    items.find((item) => item.slug !== blog.slug) ?? items[0];
-
-                  return (
+                <div className="space-y-3">
+                  {relatedBlogs.map((item) => (
                     <Link
-                      key={category}
-                      href={`/blog/${firstPost.slug}`}
-                      className="flex items-center justify-between gap-3 rounded-[0.85rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] px-3 py-3 text-[13px] font-semibold text-[color:var(--foreground)] transition hover:border-[color:var(--primary)] hover:text-[color:var(--primary)]"
+                      key={item.slug}
+                      href={`/blog/${item.slug}`}
+                      className="group block rounded-[0.85rem] border border-[color:var(--stat-border)] bg-[color:var(--card-solid)] p-3 transition hover:border-[color:var(--primary)]"
                     >
-                      <span>{category}</span>
-                      <span className="inline-flex items-center gap-1 text-[12px] text-[color:var(--muted-foreground)]">
-                        {items.length}
-                        <ArrowRight className="h-3.5 w-3.5" />
+                      <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[color:var(--primary)]">
+                        {item.category || "General"}
                       </span>
+                      <h3 className="mt-1 line-clamp-2 text-[13px] font-semibold leading-5 text-[color:var(--foreground)] group-hover:text-[color:var(--primary)]">
+                        {item.title}
+                      </h3>
                     </Link>
-                  );
-                })}
-              </div>
-            </section>
+                  ))}
+                </div>
+              </section>
+            ) : null}
           </aside>
         </div>
       </div>
+
+      {/* Continue reading */}
+      {relatedBlogs.length > 0 ? (
+        <section className="border-t border-[color:var(--stat-border)] bg-[color:var(--surface)] py-14">
+          <div className="mx-auto w-11/12 max-w-[1180px]">
+            <div className="mb-7 flex items-end justify-between gap-4">
+              <h2 className="text-[24px] font-bold text-[color:var(--foreground)]">
+                Continue reading
+              </h2>
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[color:var(--primary)]"
+              >
+                View all
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {relatedBlogs.map((item) => (
+                <BlogCard key={item.slug} blog={item} />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* Global CTA */}
+      <CtaSection />
     </main>
   );
 }
