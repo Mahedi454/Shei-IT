@@ -26,9 +26,9 @@ const contactMethods = [
   },
   {
     title: "Call Us",
-    value: "+880 1768 57058",
+    value: "+880 17688 57058",
     description: "Mon - Sat, 9:00 AM - 7:00 PM",
-    href: "tel:+880176857058",
+    href: "tel:+8801768857058",
     icon: Phone,
     accent:
       "bg-[linear-gradient(180deg,rgba(111,231,200,0.2),rgba(111,231,200,0.08))] text-[#0f9f7f]",
